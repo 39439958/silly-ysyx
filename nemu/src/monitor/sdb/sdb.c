@@ -23,6 +23,12 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+WP* new_wp(char *expr, word_t val);
+void free_wp(WP *wp);
+void show_watchpoint();
+int delete_watchpoint(int n);
+
+word_t vaddr_read(vaddr_t addr, int len);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -55,6 +61,18 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
+static int cmd_info(char *args);
+
+static int cmd_x(char *args);
+
+static int cmd_p(char *args);
+
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -63,9 +81,12 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
-  /* TODO: Add more commands */
-
+  { "si", "Step through N instructions", cmd_si},
+  { "info", "Show the infomation of reg and watch point", cmd_info},
+  { "x", "Scan the memory", cmd_x},
+  { "p", "Expressions evaluate", cmd_p},
+  { "w", "Set the watch point", cmd_w},
+  { "d", "delete the watch point", cmd_d},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -89,6 +110,93 @@ static int cmd_help(char *args) {
       }
     }
     printf("Unknown command '%s'\n", arg);
+  }
+  return 0;
+}
+
+static int cmd_si(char *args) {
+  int n = 0;
+  if (args == NULL)
+    n = 1;
+  else
+    sscanf(args, "%d", &n);
+  cpu_exec(n);
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  if (strcmp(args, "r") == 0) {
+    isa_reg_display();
+  } else if (strcmp(args, "w") == 0) {
+    show_watchpoint();
+  } else {
+    printf("Unknow parma\n");
+  }
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  char *parma1 = strtok(args, " ");
+  char *parma2 = strtok(NULL, " ");
+
+  if (parma1 == NULL || parma2 == NULL) {
+    printf("Unknow parma\n");
+  } else {
+    int n = 0;
+    sscanf(parma1, "%d", &n);
+    bool success = false; 
+    vaddr_t addr = expr(parma2, &success);
+
+    for (int i = 0; i < 4 * n; i++) {
+      uint8_t val= vaddr_read(addr + i, 1);
+      printf("%02x ",val);
+    }
+    printf("\n");
+  }
+
+  return 0;
+}
+
+static int cmd_p(char *args) {
+    bool success = true;
+    sword_t val = expr(args, &success);
+
+    if (success) {
+      printf("val = %d\n", val);
+    } else {
+      printf("expr false, please correctly input again!\n");
+    }
+
+    return 0;
+}
+
+static int cmd_w(char *args) {
+  bool success = true;
+  word_t val = expr(args, &success);
+
+  if (success) {
+    WP *wp = new_wp(args, val);
+    printf("watch point %d set succeed\n", wp->NO);
+  }
+
+  return 0;
+}
+
+static int cmd_d(char *args) {
+  char *param = strtok(args, " ");
+  int n = 0;
+
+  if (param == NULL) {
+    printf("Unknow parma\n");
+  } else {
+    sscanf(param, "%d", &n);
+    if (delete_watchpoint(n) == 1) {
+      printf("delete succeed!\n");
+      return 0;
+    } else {
+      printf("delete failed, please input correct number!\n");
+      return -1;
+    }
   }
   return 0;
 }
