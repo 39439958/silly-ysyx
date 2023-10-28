@@ -20,6 +20,10 @@ void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
 
+// for test
+word_t expr(char *e, bool *success);
+void test_expr();
+
 int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
@@ -31,5 +35,35 @@ int main(int argc, char *argv[]) {
   /* Start engine. */
   engine_start();
 
+  /* test expr */
+    // test_expr();
+
   return is_exit_status_bad();
+}
+
+void test_expr(){
+    char buf[65535];
+    FILE *fptr;
+    if ((fptr = fopen("/home/silly/ysyx-workbench/nemu/tools/gen-expr/input", "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);         
+    }
+    int cnt = 1;
+    bool flag = false;
+     while (fgets(buf, sizeof(buf), fptr) != NULL) {
+         bool *success = false;
+         char *param = strtok(buf, " ");
+         word_t res = expr(param, success);
+         word_t res1 = atoi(buf);
+         if (res != res1) {
+         printf("%d: %dfalse\n",cnt, res1);
+            flag = true;
+            break;
+        }
+        cnt++;
+    }
+    if (!flag) printf("ALL test accept![%d]\n",cnt - 1);
+    fclose(fptr);
+	exit(0);
 }
