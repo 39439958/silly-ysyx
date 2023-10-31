@@ -1,43 +1,35 @@
 module top (
-    input clk,
-    input rst,
-    input ps2_clk,
-    input ps2_data,
-    output [6:0] seg0,
-    output [6:0] seg1,
-    output [6:0] seg4,
-    output [6:0] seg5,
-    output [6:0] seg2,
-    output [6:0] seg3
+  input wire clk,
+  input wire rst,
+  input wire [31:0] inst,
+  output wire [31:0] pc,
 );
+wire [] inst_type;
+wire [4:0] inst_rs1;
+wire [4:0] inst_rs2;
+wire [4:0] inst_rd;
+wire [31:0] inst_imm;
 
-reg [7:0] ps2_output;
-reg [7:0] ascii_out;
 
-ps2_keyboard my_keyboard(
-    .clk(clk),
-    .resetn(~rst),
-    .ps2_clk(ps2_clk),
-    .ps2_data(ps2_data),
-    .ps2_output(ps2_output)
+ysyx_PC pc0(
+  .clk (clk),
+  .rst (rst),
+  .pc (pc)
 );
-
-seg my_seg(
-    .clk(clk),
-    .rst(rst),
-    .in(ps2_output),
-    .in2(ascii_out),
-    .h1(seg0),
-    .h2(seg1),
-    .h3(seg4),
-    .h4(seg5),
-    .h5(seg2),
-    .h6(seg3)
+ysyx_IDU idu0(
+  .inst (inst),
+  .inst_type (inst_type),
+  .inst_rs1 (inst_rs1),
+  .inst_rs2 (inst_rs2)
+  .inst_rd (inst_rd),
+  .inst_imm (inst_imm)
 );
-
-rom my_rom(
-    .addr(ps2_output),
-    .q(ascii_out)
+ysyx_EXU(
+  .clk (clk),
+  .rs1 (rs1),
+  .rd (rd),
+  .imm (imm)
 );
+    
 
 endmodule
