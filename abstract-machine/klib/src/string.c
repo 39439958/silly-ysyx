@@ -20,6 +20,7 @@ char *strcpy(char *dst, const char *src) {
   size_t i = 0;
   while (src[i] != '\0') {
     dst[i] = src[i];
+    i++;
   }
   dst[i] = '\0';
   return dst;
@@ -32,6 +33,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
   size_t i = 0;
   while (src[i] != '\0' && i < n) {
     dst[i] = src[i];
+    i++;
   }
   dst[i] = '\0';
   return dst;
@@ -128,12 +130,14 @@ void *memmove(void *dst, const void *src, size_t n) {
     size_t i = 0;
     while (i < n) {
       tmp_dst[i] = tmp_src[i];
+      i++;
     }
   }
   else if (tmp_dst > tmp_src) {
     size_t i = n - 1;
     while (i > 0) {
       tmp_dst[i] = tmp_src[i];
+      i--;
     }
   }
   return dst;
@@ -149,6 +153,7 @@ void *memcpy(void *out, const void *in, size_t n) {
   size_t i = 0;
   while (i < n) {
     tmp_out[i] = tmp_in[i];
+    i++;
   }
   return out;
 }
