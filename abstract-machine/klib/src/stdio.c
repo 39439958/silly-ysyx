@@ -43,7 +43,7 @@ int sprintf(char *out, const char *fmt, ...) {
           *out-- = tmp + 48;
           tmp_int /= 10;
         }
-        out += len;
+        out += (len+1);
       }
       else {
         return -1;
