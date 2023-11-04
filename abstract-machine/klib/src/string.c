@@ -7,47 +7,41 @@
 size_t strlen(const char *s) {
   if (s == NULL) 
     return 0;
-  size_t i = 0;
-  while (s[i] != '\0') {
-    i++;
+  size_t len = 0;
+  while (*s++ != '\0') {
+    len++;
   }
-  return i;
+  return len;
 }
 
 char *strcpy(char *dst, const char *src) {
-  if (src == NULL || dst == NULL)
-    return NULL;
-  size_t i = 0;
-  while (src[i] != '\0') {
-    dst[i] = src[i];
-    i++;
+  assert(dst == NULL && src == NULL);
+  char *res = dst;
+  while (*src != '\0') {
+    *dst++ = *src++;
   }
-  dst[i] = '\0';
-  return dst;
+  *dst = '\0';
+  return res;
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
-  if (src == NULL || dst == NULL)
-    return NULL;
-  assert(strlen(src) >= n);
-  size_t i = 0;
-  while (src[i] != '\0' && i < n) {
-    dst[i] = src[i];
-    i++;
+  assert(dst == NULL && src == NULL && n >= 0);
+  if (n == 0)
+    return dst;
+  char *res = dst;
+  while (*src != '\0' && n--) {
+    *dst++ = *src++;
   }
-  dst[i] = '\0';
-  return dst;
+  *dst = '\0';
+  return res;
 }
 
 char *strcat(char *dst, const char *src) {
-  if (src == NULL || dst == NULL)
-    return NULL;
+  assert(dst == NULL && src == NULL);
   char *res = dst;
   while (*dst != '\0') dst++;
   while (*src != '\0') {
-    *dst = *src;
-    dst++;
-    src++;
+    *dst++ = *src++;
   } 
   *dst = '\0';
   return res;
@@ -142,6 +136,8 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
+  assert(s1 != NULL && s2 != NULL && n >= 0);
+  
   char *tmp_s1 = (char *)s1;
   char *tmp_s2 = (char *)s2;
   return strncmp(tmp_s1, tmp_s2, n);
