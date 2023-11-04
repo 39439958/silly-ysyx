@@ -159,6 +159,7 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
+  return 0;
   char *tmp_s1 = (char *)s1;
   char *tmp_s2 = (char *)s2;
   return strncmp(tmp_s1, tmp_s2, n);
