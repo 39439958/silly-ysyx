@@ -30,6 +30,8 @@ ysyx_EXU(
   .rd (rd),
   .imm (imm)
 );
-    
+yxys_Reg(
+  
+)
 
 endmodule
