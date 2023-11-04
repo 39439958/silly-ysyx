@@ -78,35 +78,18 @@ int strcmp(const char *s1, const char *s2) {
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
-  assert(n > 0);
-  if (n == 0) 
+  assert(s1 != NULL && s2 != NULL && n >= 0);
+  if (n == 0)
     return 0;
-  if (s1 == NULL && s2 == NULL)
-    return 0;
-  else if (s1 == NULL)
-    return -1;
-  else if (s2 == NULL)
-    return 1;
-  
-  size_t i = 0;
-  while (i < n && s1[i] != '\0' && s2[i] != '\0') {
-    if (s1[i] < s2[i])
-      return -1;
-    else if (s1[i] > s2[i])
-      return 1;
-    i++;
+    
+  while (n--) {
+    if (*s1 == 0 || *s2 == 0 || *s1 != *s2) {
+      return *s1 - *s2;
+    }
+    s1++;
+    s2++;
   }
-
-  if (i < n) {
-    return 0;
-  }
-
-  if (s1[i] == '\0' && s2[i] == '\0')
-    return 0;
-  else if (s1[i] == '\0')
-    return -1;
-  else
-    return 1;
+  return 0;
 }
 
 void *memset(void *s, int c, size_t n) {
@@ -159,7 +142,6 @@ void *memcpy(void *out, const void *in, size_t n) {
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  return 0;
   char *tmp_s1 = (char *)s1;
   char *tmp_s2 = (char *)s2;
   return strncmp(tmp_s1, tmp_s2, n);
