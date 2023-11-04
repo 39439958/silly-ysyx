@@ -15,7 +15,7 @@ size_t strlen(const char *s) {
 }
 
 char *strcpy(char *dst, const char *src) {
-  assert(dst == NULL && src == NULL);
+  assert(dst != NULL && src != NULL);
   char *res = dst;
   while (*src != '\0') {
     *dst++ = *src++;
@@ -25,7 +25,7 @@ char *strcpy(char *dst, const char *src) {
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
-  assert(dst == NULL && src == NULL && n >= 0);
+  assert(dst != NULL && src != NULL && n >= 0);
   if (n == 0)
     return dst;
   char *res = dst;
@@ -37,7 +37,7 @@ char *strncpy(char *dst, const char *src, size_t n) {
 }
 
 char *strcat(char *dst, const char *src) {
-  assert(dst == NULL && src == NULL);
+  assert(dst != NULL && src != NULL);
   char *res = dst;
   while (*dst != '\0') dst++;
   while (*src != '\0') {
@@ -48,7 +48,7 @@ char *strcat(char *dst, const char *src) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  if (s1 == NULL && s2 == NULL)
+  if (s1 != NULL && s2 != NULL)
     return 0;
   else if (s1 == NULL)
     return -1;
