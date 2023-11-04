@@ -54,6 +54,7 @@ int sprintf(char *out, const char *fmt, ...) {
     }
     fmt++;
   }
+  va_end(ap);
   return 0;
 }
 
