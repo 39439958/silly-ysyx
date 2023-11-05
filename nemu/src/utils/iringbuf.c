@@ -26,7 +26,7 @@ void iringbuf_display() {
   int i = 20;
   while (i--) {
     char *p = logbuf;
-    if(i == 1) {
+    if(i == 0) {
       p += snprintf(p, 8, "--->");
     } else {
       memset(p, ' ', 4);
