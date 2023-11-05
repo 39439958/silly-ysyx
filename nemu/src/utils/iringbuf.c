@@ -23,10 +23,9 @@ void iringbuf_write_inst(vaddr_t pc, uint32_t inst) {
 
 void iringbuf_display() {
   char logbuf[64];
-  int i = 20;
-  while (i--) {
+  while (irb.iring_rf != irb.iring_wf) {
     char *p = logbuf;
-    if(i == 0) {
+    if(irb.iring_rf + 1 == irb.iring_wf) {
       p += snprintf(p, 8, "--->");
     } else {
       memset(p, ' ', 4);
