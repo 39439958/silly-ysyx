@@ -16,6 +16,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 int sprintf(char *out, const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
+  char *start = out;
 
   while (*fmt != '\0') {
     if (*fmt == '%') {
@@ -28,8 +29,12 @@ int sprintf(char *out, const char *fmt, ...) {
       }
       else if (*fmt == 'd') {
         int tmp_int = va_arg(ap, int);
-        int number = tmp_int;
+        if (tmp_int < 0) {
+          *out++ = '-';
+          tmp_int = -1 * tmp_int;
+        }
 
+        int number = tmp_int;
         int len  = 0;
         do {
           number /= 10;
@@ -56,7 +61,8 @@ int sprintf(char *out, const char *fmt, ...) {
   }
   *out = '\0';
   va_end(ap);
-  return 0;
+
+  return out - start;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
