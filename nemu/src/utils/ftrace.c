@@ -19,36 +19,36 @@ int symbol_tables_size = 0;
 */
 void parse_elf(const char *elf_file) {
     // 打开ELF文件
-    FILE *fp = fopen(elf_file, "rb");
-    if (fp == NULL) {
-        fclose(fp);
+    int fd = open(elf_file, O_RDONLY);
+    if (fd == -1) {
+        perror("Error opening file");
         exit(EXIT_FAILURE);
     }
-    printf("%s\n", elf_file);
     
     // 读取ELF header
     Elf64_Ehdr elf_header;
-    if (fread(&elf_header, sizeof(Elf64_Ehdr), 1, fp) <= 0) {
-        fclose(fp);
+    if (read(fd, &elf_header, sizeof(Elf64_Ehdr)) <= 0) {
+        close(fd);
         exit(EXIT_FAILURE);
     }
-    
+
+    printf("%u\n", elf_header.e_shstrndx);
 
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
-        fprintf(stderr, "Not an ELF file\n");
-        fclose(fp);
+        perror("Error opening file");
+        close(fd);
         exit(EXIT_FAILURE);
     }
 
     // 移动到Section header table
-    fseek(fp, elf_header.e_shoff, SEEK_SET);
+    lseek(fd, elf_header.e_shoff, SEEK_SET);
 
     // 读取Section header table中的字符串表节
     Elf64_Shdr section_header;
     for (int i = 0; i < elf_header.e_shnum; ++i) {
-        if (fread(&section_header, sizeof(Elf64_Shdr), 1, fp) <= 0) {
-            fclose(fp);
+        if (read(fd, &section_header, sizeof(Elf64_Shdr)) <= 0) {
+            close(fd);
             exit(EXIT_FAILURE);
         }
         if (section_header.sh_type == SHT_STRTAB) {
@@ -59,24 +59,22 @@ void parse_elf(const char *elf_file) {
     // 读取字符串表内容
     char *string_table = malloc(section_header.sh_size);
     if (string_table == NULL) {
-        fclose(fp);
+        close(fd);
         exit(EXIT_FAILURE);
     }
-    fseek(fp, section_header.sh_offset, SEEK_SET);
-    if (fread(string_table, section_header.sh_size, 1, fp) <= 0) {
-        fclose(fp);
+    lseek(fd, section_header.sh_offset, SEEK_SET);
+    if (read(fd, string_table, section_header.sh_size) <= 0) {
+        close(fd);
         exit(EXIT_FAILURE);
     }
-
-
 
 
     // 寻找符号表节
     Elf64_Shdr symtab_header;
-    fseek(fp, elf_header.e_shoff, SEEK_SET);
+    lseek(fd, elf_header.e_shoff, SEEK_SET);
     while (1) {
-        if (fread(&symtab_header, sizeof(Elf64_Shdr), 1, fp) <= 0) {
-          fclose(fp);
+        if (read(fd, &symtab_header, sizeof(Elf64_Shdr)) <= 0) {
+          close(fd);
           exit(EXIT_FAILURE);  
         }
         if (symtab_header.sh_type == SHT_SYMTAB) {
@@ -86,7 +84,7 @@ void parse_elf(const char *elf_file) {
 
     /* 读取符号表中的每个符号项 */ 
 
-    fseek(fp, symtab_header.sh_offset, SEEK_SET);
+    lseek(fd, symtab_header.sh_offset, SEEK_SET);
     Elf64_Sym symbol;
     // 确定符号表的大小
     size_t num_symbols = symtab_header.sh_size / symtab_header.sh_entsize;
@@ -94,8 +92,8 @@ void parse_elf(const char *elf_file) {
     symbol_tables = malloc(num_symbols * sizeof(symbol_table));
 
     for (size_t i = 0; i < num_symbols; ++i) {
-        if (fread(&symbol, sizeof(Elf64_Sym), 1, fp) <= 0) {
-            fclose(fp);
+        if (read(fd, &symbol, sizeof(Elf64_Sym)) <= 0) {
+            close(fd);
             exit(EXIT_FAILURE);
         }
 
@@ -114,7 +112,7 @@ void parse_elf(const char *elf_file) {
     }
 
     // 关闭文件并释放内存
-    fclose(fp);
+    close(fd);
     free(string_table);
 }
 
