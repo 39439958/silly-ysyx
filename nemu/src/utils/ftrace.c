@@ -31,7 +31,7 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-
+    printf("%u\n", elf_header.e_shstrndx);
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
         fprintf(stderr, "Not an ELF file\n");
@@ -49,7 +49,6 @@ void parse_elf(const char *elf_file) {
             fclose(fp);
             exit(EXIT_FAILURE);
         }
-        printf("%u\n", section_header.sh_type);
         if (section_header.sh_type == SHT_STRTAB) {
             break;
         }
