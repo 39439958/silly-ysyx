@@ -51,10 +51,9 @@ void parse_elf(const char *elf_file) {
     }
 
     // 读取字符串表内容
-    char *string_table = malloc(strtab_header.sh_size);
+    char *string_table = malloc(strtab_header.sh_size + 1);
     fseek(fp, strtab_header.sh_offset, SEEK_SET);
     if (fread(string_table, strtab_header.sh_size, 1, fp) <= 0) {
-        printf("666\n");
         fclose(fp);
         exit(EXIT_FAILURE);
     }
