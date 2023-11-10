@@ -55,7 +55,7 @@ void parse_elf(const char *elf_file) {
     }
 
 
-    printf("%d\n", section_header.sh_name);
+    printf("%d\n", section_header.sh_type);
     // 读取字符串表内容
     char *string_table = malloc(section_header.sh_size);
     if (string_table == NULL) {
@@ -68,7 +68,7 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("String Table Content:\n%s\n", string_table);
+
 
 
     // 寻找符号表节
