@@ -20,7 +20,10 @@ int symbol_tables_size = 0;
 void parse_elf(const char *elf_file) {
     // 打开ELF文件
     FILE *fp = fopen(elf_file, "rb");
-    Assert(fp, "Can not open '%s'", elf_file);
+    if (fp == NULL) {
+        fclose(fp);
+        exit(EXIT_FAILURE);
+    }
 
     // 读取ELF header
     Elf64_Ehdr elf_header;
