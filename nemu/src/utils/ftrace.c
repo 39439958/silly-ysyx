@@ -41,19 +41,16 @@ void parse_elf(const char *elf_file) {
 
     // 移动到Section header table
     fseek(fp, elf_header.e_shoff, SEEK_SET);
+
     // 读取Section header table中的字符串表节
     Elf64_Shdr strtab_header;
-    while (1) {
-        if (fread(&strtab_header, sizeof(Elf64_Shdr), 1, fp) <= 0) {
-            fclose(fp);
-            exit(EXIT_FAILURE);
-        }
-        
-        if (strtab_header.sh_type == SHT_STRTAB) {
-            break;
-        }
+    fseek(fp, elf_header.e_shoff + elf_header.e_shentsize * elf_header.e_shstrndx, SEEK_SET);
+    if (fread(&strtab_header, sizeof(Elf64_Shdr), 1, fp) <= 0 ) {
+        fclose(fp);
+        exit(EXIT_FAILURE);
     }
-printf("666\n");
+
+    printf("666\n");
     // 读取字符串表内容
     char *string_table = malloc(strtab_header.sh_size);
     if (string_table == NULL) {
