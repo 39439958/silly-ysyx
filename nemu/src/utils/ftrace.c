@@ -109,6 +109,7 @@ void parse_elf(const char *elf_file) {
             symbol_tables[i].info = symbol.st_info;
             symbol_tables[i].size = symbol.st_size;
             symbol_tables_size++;
+            printf("%x %s\n", symbol_tables[i].addr, symbol_tables[i].name);
         }
     }
 
