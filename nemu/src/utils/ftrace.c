@@ -41,7 +41,7 @@ void parse_elf(const char *elf_file) {
 
     // 移动到Section header table
     fseek(fp, elf_header.e_shoff, SEEK_SET);
-
+    printf("666\n");
     // 读取Section header table中的字符串表节
     Elf64_Shdr strtab_header;
     while (1) {
@@ -60,7 +60,6 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-    printf("666\n");
     fseek(fp, strtab_header.sh_offset, SEEK_SET);
     if (fread(string_table, strtab_header.sh_size, 1, fp) <= 0) {
         fclose(fp);
