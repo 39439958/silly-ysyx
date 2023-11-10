@@ -31,7 +31,7 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-printf("666\n");
+
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
         fprintf(stderr, "Not an ELF file\n");
@@ -41,7 +41,7 @@ printf("666\n");
 
     // 移动到Section header table
     fseek(fp, elf_header.e_shoff, SEEK_SET);
-
+printf("666\n");
     // 读取Section header table中的字符串表节
     Elf64_Shdr strtab_header;
     fseek(fp, elf_header.e_shoff + elf_header.e_shentsize * elf_header.e_shstrndx, SEEK_SET);
