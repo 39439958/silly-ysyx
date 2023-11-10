@@ -90,7 +90,7 @@ void parse_elf(const char *elf_file) {
         // 判断符号是否为函数，并且函数的大小不为零
         if (ELF64_ST_TYPE(symbol.st_info) == STT_FUNC && symbol.st_size != 0) {
             // 从字符串表中获取符号名称
-            printf("%d\n", symbol.st_name);
+            printf("%d\n", symtab_header.sh_link);
             const char *name = string_table + symtab_header.sh_link + symbol.st_name;
             //printf("%s\n", name);
             // 存储符号信息到 symbol_table 结构体数组
