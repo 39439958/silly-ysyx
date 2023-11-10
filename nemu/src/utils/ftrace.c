@@ -50,7 +50,7 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("%d\n", strtab_header.sh_type);
+    printf("%d\n", strtab_header.sh_name);
     // 读取字符串表内容
     char *string_table = malloc(strtab_header.sh_size);
     if (string_table == NULL) {
