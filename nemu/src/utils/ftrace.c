@@ -31,8 +31,6 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("%u\n", elf_header.e_shoff);
-
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
         fprintf(stderr, "Not an ELF file\n");
@@ -50,6 +48,8 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
+
+    printf("%u %u\n", elf_header.e_shentsize, elf_header.e_shstrndx);
 
     // 读取字符串表内容
     char *string_table = malloc(strtab_header.sh_size);
