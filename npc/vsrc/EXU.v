@@ -1,26 +1,44 @@
 module ysyx_EXU (
   input clk,
+  input rf_wr_en,
   input [4:0] rs1,
   input [4:0] rd,
   input [31:0] imm
 );
 
+wire [31:0] alu_a;
+wire [31:0] alu_out;
 
+ysyx_ALU alu0(
+  .SrcA (alu_a),
+  .SrcB (imm),
+  .func (4'b000),
+  .ALUout (alu_out)
+);
+
+ysyx_reg_file reg0(
+  .clk (clk),
+  .rf_wr_en (rf_wr_en),
+  .rd (rd),
+  .rs1 (rs1),
+  .alu_out (alu_out),
+  .alu_a (alu_a)
+);
 
   
 endmodule
 
-module RegisterFile #(ADDR_WIDTH = 1, DATA_WIDTH = 1) (
+module ysyx_reg_file(
   input clk,
-  input [DATA_WIDTH-1:0] wdata,
-  input [ADDR_WIDTH-1:0] waddr,
-  input wen
+  input rf_wr_en,
+  input [4:0] rd,
+  input [4:0] rs1,
+  input [31:0] alu_out,
+  output [31:0] alu_a
 );
-  
-  reg [DATA_WIDTH-1:0] rf [ADDR_WIDTH-1:0];
-  always @(posedge clk) begin
-    if (wen) rf[waddr] <= wdata;
-  end
+
+  RegisterFile #(5, 32) r0 (clk, rd, alu_out, rf_wr_en, rs1, alu_a);
+
 endmodule
 
 module ysyx_ALU(
