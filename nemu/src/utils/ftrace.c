@@ -76,10 +76,8 @@ void parse_elf(const char *elf_file) {
 
     fseek(fp, symtab_header.sh_offset, SEEK_SET);
     Elf32_Sym symbol;
-    // 确定符号表的大小
+    // 确定符号表的条数
     size_t num_symbols = symtab_header.sh_size / symtab_header.sh_entsize;
-
-    printf("%ld\n", num_symbols);
     // 分配内存用于存储符号表
     symbol_tables = malloc(num_symbols * sizeof(symbol_table));
 
@@ -92,8 +90,9 @@ void parse_elf(const char *elf_file) {
         // 判断符号是否为函数，并且函数的大小不为零
         if (ELF64_ST_TYPE(symbol.st_info) == STT_FUNC && symbol.st_size != 0) {
             // 从字符串表中获取符号名称
+            printf("%d\n", symbol.st_name);
             const char *name = string_table + symtab_header.sh_link + symbol.st_name;
-
+            //printf("%s\n", name);
             // 存储符号信息到 symbol_table 结构体数组
             strncpy(symbol_tables[i].name, name, sizeof(symbol_tables[i].name) - 1);
             symbol_tables[i].addr = symbol.st_value;
