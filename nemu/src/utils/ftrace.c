@@ -90,16 +90,14 @@ void parse_elf(const char *elf_file) {
         // 判断符号是否为函数，并且函数的大小不为零
         if (ELF64_ST_TYPE(symbol.st_info) == STT_FUNC && symbol.st_size != 0) {
             // 从字符串表中获取符号名称
-            printf("%d ", symbol.st_name);
             const char *name = string_table  + symbol.st_name;
-            printf("%s\n", name);
             // 存储符号信息到 symbol_table 结构体数组
             strncpy(symbol_tables[i].name, name, sizeof(symbol_tables[i].name) - 1);
             symbol_tables[i].addr = symbol.st_value;
             symbol_tables[i].info = symbol.st_info;
             symbol_tables[i].size = symbol.st_size;
-            symbol_tables_size++;
         }
+        symbol_tables_size = num_symbols;
     }
 
     // 关闭文件并释放内存
