@@ -44,21 +44,30 @@ void parse_elf(const char *elf_file) {
 
     // 读取Section header table中的字符串表节
     Elf64_Shdr strtab_header;
-    fseek(fp, elf_header.e_shoff + elf_header.e_shentsize * elf_header.e_shstrndx, SEEK_SET);
-    if (fread(&strtab_header, sizeof(Elf64_Shdr), 1, fp) <= 0) {
+    while (1) {
+        if (fread(&strtab_header, sizeof(Elf64_Shdr), 1, fp) <= 0) {
+            fclose(fp);
+            exit(EXIT_FAILURE);
+        }
+        if (strtab_header.sh_type == SHT_STRTAB) {
+            break;
+        }
+    }
+
+    // 读取字符串表内容
+    char *string_table = malloc(strtab_header.sh_size);
+    if (string_table == NULL) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
 
-    // 读取字符串表内容
-    
-    char *string_table = malloc(strtab_header.sh_size * 10);
-    //fseek(fp, strtab_header.sh_offset, SEEK_SET);
-    fseek(fp, elf_header.e_shoff + elf_header.e_shentsize * elf_header.e_shstrndx, SEEK_SET);
+    fseek(fp, strtab_header.sh_offset, SEEK_SET);
     if (fread(string_table, strtab_header.sh_size, 1, fp) <= 0) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
+
+    printf("String Table Content:\n%s\n", string_table);
 
 
     // 寻找符号表节
