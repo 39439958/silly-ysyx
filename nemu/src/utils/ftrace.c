@@ -24,14 +24,14 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-    printf("666\n");
+    
     // 读取ELF header
     Elf64_Ehdr elf_header;
     if (fread(&elf_header, sizeof(Elf64_Ehdr), 1, fp) <= 0) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-
+printf("666\n");
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
         fprintf(stderr, "Not an ELF file\n");
