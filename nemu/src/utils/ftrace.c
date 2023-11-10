@@ -48,13 +48,10 @@ void parse_elf(const char *elf_file) {
             fclose(fp);
             exit(EXIT_FAILURE);
         }
-
         if (strtab_header.sh_type == SHT_STRTAB) {
             break;
         }
     }
-
-    printf("%u\n", strtab_header.sh_offset);
 
     // 读取字符串表内容
     char *string_table = malloc(strtab_header.sh_size);
@@ -63,7 +60,6 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-
 
 
     // 寻找符号表节
