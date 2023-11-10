@@ -70,7 +70,7 @@ void parse_elf(const char *elf_file) {
             break;
         }
     }
-
+printf("666\n");
     /* 读取符号表中的每个符号项 */ 
 
     fseek(fp, symtab_header.sh_offset, SEEK_SET);
@@ -79,7 +79,7 @@ void parse_elf(const char *elf_file) {
     size_t num_symbols = symtab_header.sh_size / symtab_header.sh_entsize;
     // 分配内存用于存储符号表
     symbol_tables = malloc(num_symbols * sizeof(symbol_table));
-printf("666\n");
+
     for (size_t i = 0; i < num_symbols; ++i) {
         if (fread(&symbol, sizeof(Elf64_Sym), 1, fp) <= 0) {
             fclose(fp);
