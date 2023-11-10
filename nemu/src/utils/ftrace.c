@@ -49,12 +49,12 @@ void parse_elf(const char *elf_file) {
             fclose(fp);
             exit(EXIT_FAILURE);
         }
+        printf("%u\n", section_header.sh_type);
         if (section_header.sh_type == SHT_STRTAB) {
             break;
         }
     }
     
-    printf("%u\n", section_header.sh_type);
     // 读取字符串表内容
     char *string_table = malloc(section_header.sh_size);
     if (string_table == NULL) {
