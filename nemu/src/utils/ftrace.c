@@ -57,6 +57,7 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
+printf("666\n");
 
     // 寻找符号表节
     Elf64_Shdr symtab_header;
@@ -70,7 +71,7 @@ void parse_elf(const char *elf_file) {
             break;
         }
     }
-printf("666\n");
+
     /* 读取符号表中的每个符号项 */ 
 
     fseek(fp, symtab_header.sh_offset, SEEK_SET);
