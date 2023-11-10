@@ -19,6 +19,7 @@ int symbol_tables_size = 0;
 */
 void parse_elf(const char *elf_file) {
     // 打开ELF文件
+    printf("%s\n", elf_file);
     FILE *fp = fopen(elf_file, "rb");
     if (fp == NULL) {
         fclose(fp);
