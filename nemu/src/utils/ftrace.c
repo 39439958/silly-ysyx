@@ -25,6 +25,8 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
     
+    printf("%s\n",elf_file);
+
     // 读取ELF header
     Elf64_Ehdr elf_header;
     if (read(fd, &elf_header, sizeof(Elf64_Ehdr)) <= 0) {
