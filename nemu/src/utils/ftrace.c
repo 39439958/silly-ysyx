@@ -49,7 +49,6 @@ void parse_elf(const char *elf_file) {
             fclose(fp);
             exit(EXIT_FAILURE);
         }
-        printf("666\n");
         if (section_header.sh_type == SHT_STRTAB) {
             break;
         }
