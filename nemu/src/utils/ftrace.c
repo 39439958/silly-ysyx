@@ -38,10 +38,8 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    // 移动到Section header table
+    // 移动到Section header table,寻找字符表节
     fseek(fp, elf_header.e_shoff, SEEK_SET);
-
-    // 读取Section header table中的字符串表节
     Elf32_Shdr strtab_header;
     while (1) {
         if (fread(&strtab_header, sizeof(Elf32_Shdr), 1, fp) <= 0) {
@@ -61,8 +59,6 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("%d \n",elf_header.e_shoff);
-
     // 寻找符号表节
     Elf32_Shdr symtab_header;
     fseek(fp, elf_header.e_shoff, SEEK_SET);
@@ -75,6 +71,8 @@ void parse_elf(const char *elf_file) {
             break;
         }
     }
+
+    printf("%d \n",symtab_header.sh_type);
 
     /* 读取符号表中的每个符号项 */ 
 
