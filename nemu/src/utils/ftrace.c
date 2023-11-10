@@ -49,7 +49,7 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-
+printf("666\n");
     // 读取字符串表内容
     char *string_table = malloc(strtab_header.sh_size);
     fseek(fp, strtab_header.sh_offset, SEEK_SET);
@@ -57,7 +57,7 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-printf("666\n");
+
 
     // 寻找符号表节
     Elf64_Shdr symtab_header;
