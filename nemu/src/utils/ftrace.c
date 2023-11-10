@@ -24,6 +24,7 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
+    printf("%s\n", elf_file);
     
     // 读取ELF header
     Elf64_Ehdr elf_header;
@@ -45,7 +46,6 @@ void parse_elf(const char *elf_file) {
 
     // 读取Section header table中的字符串表节
     Elf64_Shdr section_header;
-    printf("%u\n", elf_header.e_shnum);
     for (int i = 0; i < elf_header.e_shnum; ++i) {
         if (fread(&section_header, sizeof(Elf64_Shdr), 1, fp) <= 0) {
             fclose(fp);
