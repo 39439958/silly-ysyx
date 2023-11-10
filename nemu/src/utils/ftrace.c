@@ -31,6 +31,8 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
+    printf("%u\n", elf_header.e_shoff);
+
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
         fprintf(stderr, "Not an ELF file\n");
@@ -56,8 +58,6 @@ void parse_elf(const char *elf_file) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-
-    printf("%s\n",string_table);
 
     // 寻找符号表节
     Elf32_Shdr symtab_header;
@@ -100,10 +100,6 @@ void parse_elf(const char *elf_file) {
             symbol_tables_size++;
         }
     }
-
-    // for (size_t i = 0; i < num_symbols; ++i) {
-    //     printf("%x %s\n", symbol_tables[i].addr, symbol_tables[i].name);
-    // }
 
     // 关闭文件并释放内存
     fclose(fp);
