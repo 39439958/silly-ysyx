@@ -18,9 +18,12 @@ int symbol_tables_size = 0;
  * 解析elf文件并存入symbol_tables
 */
 void parse_elf(const char *elf_file) {
+    if (elf_file == NULL) return;
+	Log("no ELF file: %s", elf_file);
+
     // 打开ELF文件
-    int fd = open(elf_file, O_RDONLY);
-    if (fd == -1) {
+    int fd = open(elf_file, O_RDONLY|O_SYNC);
+    if (fd < 0) {
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
