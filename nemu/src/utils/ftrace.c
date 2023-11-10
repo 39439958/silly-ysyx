@@ -49,7 +49,7 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("%u %u\n", elf_header.e_shentsize, elf_header.e_shstrndx);
+    printf("%u\n", strtab_header.sh_size);
 
     // 读取字符串表内容
     char *string_table = malloc(strtab_header.sh_size);
