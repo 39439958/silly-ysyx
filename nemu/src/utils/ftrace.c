@@ -19,7 +19,6 @@ int symbol_tables_size = 0;
 */
 void parse_elf(const char *elf_file) {
     if (elf_file == NULL) return;
-	Log("no ELF file: %s", elf_file);
 
     // 打开ELF文件
     int fd = open(elf_file, O_RDONLY|O_SYNC);
