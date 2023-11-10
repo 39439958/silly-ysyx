@@ -19,13 +19,12 @@ int symbol_tables_size = 0;
 */
 void parse_elf(const char *elf_file) {
     // 打开ELF文件
-    
     FILE *fp = fopen(elf_file, "rb");
     if (fp == NULL) {
         fclose(fp);
         exit(EXIT_FAILURE);
     }
-
+    printf("666\n");
     // 读取ELF header
     Elf64_Ehdr elf_header;
     if (fread(&elf_header, sizeof(Elf64_Ehdr), 1, fp) <= 0) {
