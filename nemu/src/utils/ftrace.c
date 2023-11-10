@@ -27,8 +27,6 @@ void parse_elf(const char *elf_file) {
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
-    
-    printf("%s\n",elf_file);
 
     // 读取ELF header
     Elf64_Ehdr elf_header;
@@ -36,7 +34,6 @@ void parse_elf(const char *elf_file) {
         close(fd);
         exit(EXIT_FAILURE);
     }
-
     printf("%x\n", elf_header.e_shstrndx);
 
     // 检查文件是否为ELF文件
