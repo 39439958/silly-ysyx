@@ -72,7 +72,7 @@ void parse_elf(const char *elf_file) {
         }
     }
 
-    printf("%d \n",symtab_header.sh_type);
+    printf("%d \n",symtab_header.sh_offset);
 
     /* 读取符号表中的每个符号项 */ 
 
