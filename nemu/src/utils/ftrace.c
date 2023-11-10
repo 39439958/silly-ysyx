@@ -57,6 +57,8 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
+    printf("%s\n",string_table);
+
     // 寻找符号表节
     Elf32_Shdr symtab_header;
     fseek(fp, elf_header.e_shoff, SEEK_SET);
@@ -99,9 +101,9 @@ void parse_elf(const char *elf_file) {
         }
     }
 
-    for (size_t i = 0; i < num_symbols; ++i) {
-        printf("%x %s\n", symbol_tables[i].addr, symbol_tables[i].name);
-    }
+    // for (size_t i = 0; i < num_symbols; ++i) {
+    //     printf("%x %s\n", symbol_tables[i].addr, symbol_tables[i].name);
+    // }
 
     // 关闭文件并释放内存
     fclose(fp);
