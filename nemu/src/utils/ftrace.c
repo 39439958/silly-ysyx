@@ -95,7 +95,12 @@ void parse_elf(const char *elf_file) {
             symbol_tables[i].addr = symbol.st_value;
             symbol_tables[i].info = symbol.st_info;
             symbol_tables[i].size = symbol.st_size;
+            symbol_tables_size++;
         }
+    }
+
+    for (size_t i = 0; i < num_symbols; ++i) {
+        printf("%x %s\n", symbol_tables[i].addr, symbol_tables[i].name);
     }
 
     // 关闭文件并释放内存
