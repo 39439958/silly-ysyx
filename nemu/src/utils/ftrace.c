@@ -43,10 +43,15 @@ void parse_elf(const char *elf_file) {
 
     // 读取Section header table中的字符串表节
     Elf32_Shdr strtab_header;
-    fseek(fp, elf_header.e_shoff + elf_header.e_shentsize * elf_header.e_shstrndx, SEEK_SET);
-    if (fread(&strtab_header, sizeof(Elf32_Shdr), 1, fp) <= 0) {
-        fclose(fp);
-        exit(EXIT_FAILURE);
+    while (1) {
+        if (fread(&strtab_header, sizeof(Elf32_Shdr), 1, fp) <= 0) {
+            fclose(fp);
+            exit(EXIT_FAILURE);
+        }
+
+        if (strtab_header.sh_type == SHT_STRTAB) {
+            break;
+        }
     }
 
     printf("%u\n", strtab_header.sh_offset);
