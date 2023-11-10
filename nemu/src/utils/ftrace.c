@@ -72,14 +72,14 @@ void parse_elf(const char *elf_file) {
         }
     }
 
-    printf("%d \n",symtab_header.sh_offset);
-
     /* 读取符号表中的每个符号项 */ 
 
     fseek(fp, symtab_header.sh_offset, SEEK_SET);
     Elf32_Sym symbol;
     // 确定符号表的大小
     size_t num_symbols = symtab_header.sh_size / symtab_header.sh_entsize;
+
+    printf("%ld\n", num_symbols);
     // 分配内存用于存储符号表
     symbol_tables = malloc(num_symbols * sizeof(symbol_table));
 
