@@ -60,7 +60,7 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-
+printf("666\n");
 
 
     // 寻找符号表节
