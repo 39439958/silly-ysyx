@@ -61,7 +61,7 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("%d %s\n",strtab_header.sh_offset,string_table + 1);
+    printf("%d \n",elf_header.e_shoff);
 
     // 寻找符号表节
     Elf32_Shdr symtab_header;
