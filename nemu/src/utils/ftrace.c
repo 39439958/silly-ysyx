@@ -34,7 +34,7 @@ void parse_elf(const char *elf_file) {
         exit(EXIT_FAILURE);
     }
 
-    printf("%u\n", elf_header.e_shstrndx);
+    printf("%x\n", elf_header.e_shstrndx);
 
     // 检查文件是否为ELF文件
     if (memcmp(elf_header.e_ident, ELFMAG, SELFMAG) != 0) {
