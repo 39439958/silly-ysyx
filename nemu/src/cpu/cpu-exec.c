@@ -32,6 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 bool examine_watchpoint();
+void iringbuf_display();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
@@ -96,6 +97,7 @@ static void statistic() {
 
 void assert_fail_msg() {
   isa_reg_display();
+  iringbuf_display();
   statistic();
 }
 
