@@ -20,8 +20,8 @@ void iringbuf_write_inst(vaddr_t pc, uint32_t inst) {
 }
 
 void iringbuf_display() {
+#ifdef CONFIG_ITRACE
   char logbuf[64];
-  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   while (irb.iring_rf != irb.iring_wf) {
     char *p = logbuf;
     if(irb.iring_rf + 1 == irb.iring_wf) {
@@ -37,10 +37,13 @@ void iringbuf_display() {
     }
     memset(p, ' ', 4);
     p += 4;
+
+    void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
     disassemble(p, logbuf + sizeof(logbuf) - p,
       irb.pcs[irb.iring_rf], (uint8_t *)&irb.insts[irb.iring_rf], 4);
     Log("%s\n", logbuf); 
     irb.iring_rf = (irb.iring_rf + 1) % 20; 
   }
+#endif
 }
 
