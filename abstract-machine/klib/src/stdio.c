@@ -76,6 +76,10 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
             else if (*fmt == '%') {
                 *out++ = '%';
             }
+            else if (*fmt == 'c') {
+                char tmp_char = va_arg(ap, int);
+                *out++ = tmp_char;
+            }
             else {
                 return -1;
             }
