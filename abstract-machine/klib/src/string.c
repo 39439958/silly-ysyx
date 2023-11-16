@@ -17,7 +17,7 @@ char *strcpy(char *dst, const char *src) {
   
   while ((*d++ = *src++) != 0);
 
-  return d;
+  return dst;
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
