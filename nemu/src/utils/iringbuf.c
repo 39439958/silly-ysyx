@@ -23,6 +23,7 @@ void iringbuf_display() {
 #ifdef CONFIG_ITRACE
   char logbuf[64];
   while (irb.iring_rf != irb.iring_wf) {
+    // 存储pc和指令内容到缓冲区
     char *p = logbuf;
     if(irb.iring_rf + 1 == irb.iring_wf) {
       p += snprintf(p, 8, "--->");
@@ -37,7 +38,7 @@ void iringbuf_display() {
     }
     memset(p, ' ', 4);
     p += 4;
-
+    // 解析指令对应的汇编语句
     void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
     disassemble(p, logbuf + sizeof(logbuf) - p,
       irb.pcs[irb.iring_rf], (uint8_t *)&irb.insts[irb.iring_rf], 4);
