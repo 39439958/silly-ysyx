@@ -8,7 +8,7 @@ typedef struct {
     char name[32];
     paddr_t addr;
     unsigned char info;
-    Elf64_Xword size;
+    Elf32_Xword size;
 } symbol_table;
 
 symbol_table *symbol_tables = NULL;
@@ -126,6 +126,9 @@ int symbol_index(paddr_t addr, bool is_call) {
     return i == symbol_tables_size ? -1 : i;
 }
 
+/**
+ * 记录call指令
+*/
 void call_trace(paddr_t pc, paddr_t npc) {
     if (symbol_tables == NULL)
         return;
@@ -133,6 +136,9 @@ void call_trace(paddr_t pc, paddr_t npc) {
     Log(FMT_PADDR":call [%s@"FMT_PADDR"]\n", pc, symbol_tables[i].name, npc);
 }
 
+/**
+ * 记录ret指令
+*/
 void ret_trace(paddr_t pc) {
     if (symbol_tables == NULL)
         return;

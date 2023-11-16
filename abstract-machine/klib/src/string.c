@@ -73,59 +73,74 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 
 void *memset(void *s, int c, size_t n) {
   if (s == NULL || n < 0)
-    return NULL;
+    return s;
+
   char *tmp = (char *)s;
+
   for (size_t i = 0; i < n; i++) {
     tmp[i] = c;
   }
   return s;
 }
 
+/**
+ * 调用时请保证n大于str长度
+*/
 void *memmove(void *dst, const void *src, size_t n) {
   if (dst == NULL || src == NULL)
     return NULL;
-  assert(strlen(src) >= n);
-  char *tmp_dst = (char *)dst;
-  char *tmp_src = (char *)src;
 
-  if (tmp_dst < tmp_src) {
-    size_t i = 0;
-    while (i < n) {
-      tmp_dst[i] = tmp_src[i];
-      i++;
+  if (dst > src && dst < (char *)src + n) {
+    // 内存重叠,需要从后往前复制
+    char *d = (char *)dst + n - 1;
+    char *s = (char *)src + n - 1;
+    
+    while (n--) {
+        *d-- = *s--;
     }
-  }
-  else if (tmp_dst > tmp_src) {
-    size_t i = n - 1;
-    while (i > 0) {
-      tmp_dst[i] = tmp_src[i];
-      i--;
+  } else {
+    // 内存不重叠,从前往后复制
+    char *d = (char *)dst;
+    char *s = (char *)src;
+    
+    while (n--) {
+        *d++ = *s++;
     }
   }
   return dst;
 }
 
+/**
+ * 此函数不处理内存重叠，涉及内存重叠使用memmove
+ * 调用时请保证n大于str长度
+*/
 void *memcpy(void *out, const void *in, size_t n) {
   if (out == NULL || in == NULL)
     return NULL;
-  assert(strlen(in) >= n);
-  char *tmp_out = (char *)out;
-  char *tmp_in = (char *)in;
+  
+  char *d = (char *)out;
+  char *s = (char *)in;
 
-  size_t i = 0;
-  while (i < n) {
-    tmp_out[i] = tmp_in[i];
-    i++;
+  while (n--) {
+    *d++ = *s++;
   }
   return out;
 }
 
 int memcmp(const void *s1, const void *s2, size_t n) {
-  assert(s1 != NULL && s2 != NULL && n >= 0);
-  
-  char *tmp_s1 = (char *)s1;
-  char *tmp_s2 = (char *)s2;
-  return strncmp(tmp_s1, tmp_s2, n);
+    if(s1 != NULL && s2 != NULL && n >= 0);
+
+    const unsigned char *p1 = s1;
+    const unsigned char *p2 = s2;
+
+    for (size_t i = 0; i < n; i++) {
+        if (p1[i] < p2[i]) {
+            return -1;
+        } else if (p1[i] > p2[i]) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 #endif
