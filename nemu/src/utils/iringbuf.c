@@ -11,8 +11,6 @@ typedef struct iringbuf
 
 iringbuf irb;
 
-void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-
 void iringbuf_write_inst(vaddr_t pc, uint32_t inst) {
   irb.pcs[irb.iring_wf] = pc;
   irb.insts[irb.iring_wf] = inst;
@@ -23,6 +21,7 @@ void iringbuf_write_inst(vaddr_t pc, uint32_t inst) {
 
 void iringbuf_display() {
   char logbuf[64];
+  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   while (irb.iring_rf != irb.iring_wf) {
     char *p = logbuf;
     if(irb.iring_rf + 1 == irb.iring_wf) {
