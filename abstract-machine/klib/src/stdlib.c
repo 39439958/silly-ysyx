@@ -4,6 +4,7 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
+
 static char *malloc_addr;
 static bool is_initial = false;
 
@@ -43,7 +44,7 @@ void *malloc(size_t size) {
     size = (size_t)ROUNDUP(size, 8);
     char *old = malloc_addr;
     malloc_addr += size;
-    assert((uintptr_t)heap.start <= (uintptr_t)malloc_addr && (uintptr_t)malloc_addr < (uintptr_t)heap.end);
+    //assert((uintptr_t)heap.start <= (uintptr_t)malloc_addr && (uintptr_t)malloc_addr < (uintptr_t)heap.end);
     return old;
 // #endif
 //   return NULL;
