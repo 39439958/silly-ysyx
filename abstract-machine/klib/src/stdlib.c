@@ -4,6 +4,7 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
+static char *malloc_addr;
 
 int rand(void) {
   // RAND_MAX assumed to be 32767
@@ -33,8 +34,18 @@ void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
+    if (malloc_addr == NULL) {
+        malloc_addr = (void *)ROUNDUP(heap.start, 8);
+    }
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  panic("Not implemented");
+    size = (size_t)ROUNDUP(size, 8);
+    char *old = malloc_addr;
+    malloc_addr += size;
+    assert((uintptr_t)heap.start <= (uintptr_t)malloc_addr && (uintptr_t)malloc_addr < (uintptr_t)heap.end);
+    for (uint64_t *p = (uint64_t *)old; p != (uint64_t *)malloc_addr; p ++) {
+        *p = 0;
+    }
+    return old;
 #endif
   return NULL;
 }
