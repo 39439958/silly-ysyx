@@ -6,8 +6,9 @@ CSRCS = $(NPC_HOME)/csrc/*.cpp
 VSRCS = $(NPC_HOME)/vsrc/*.v
 
 
-sim: 
+run: 
 	$(VERILATOR) $(VERILATOR_CFLAGS) $(VSRCS) $(CSRCS)
+	./obj_dir/Vtop
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	
 clean:
