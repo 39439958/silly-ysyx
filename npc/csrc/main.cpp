@@ -87,7 +87,7 @@ int main(int argc, char** argv, char** env) {
     // 解析命令行参数
     parse_img(argc, argv);
 
-    printf("argc=%d\n", argc);
+    printf("argc = %d,argv[0] = %s\n", argc, argv[0]);
     exit(EXIT_SUCCESS);
     for (int i = 1; i < argc; i++) {
         printf("%s\n", argv[i]);
