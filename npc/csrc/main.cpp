@@ -109,7 +109,7 @@ int main(int argc, char** argv, char** env) {
           sim_time++;
           dut->clk ^= 1;
           dut->inst = pmem_read(dut->pc);
-          printf("pc : %x\n", dut->pc);
+          printf("pc : %x, inst : %x\n", dut->pc, dut->inst);
           dut->eval();
         }
         m_trace->dump(sim_time);
