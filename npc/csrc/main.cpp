@@ -12,6 +12,15 @@
 vluint64_t sim_time = 0;
 int exited = 0;
 static uint8_t pmem[0x8000000] __attribute((aligned(4096))) = {};
+char *img_file = NULL;
+static const uint32_t img [] = {
+  0x00108093,
+  0x00108093,
+  0x00108093,
+  0x00108093,
+  0x00100073,
+};
+
 
 void ebreak() {
   exited = 1;
@@ -19,10 +28,46 @@ void ebreak() {
 
 void init_mem() {
   memset(pmem, rand(), 0x8000000);
+  memcpy(pmem, img, sizeof(img));
 }
 
 uint32_t pmem_read(uint32_t pc){
     return *(uint32_t *)(pmem + pc - 0x80000000);
+}
+
+void parse_img(int argc, char** argv) {
+    for (int i = 1; i < argc; ++i) {
+        // 检查是否是 "IMG=" 开头的参数
+        if (strncmp(argv[i], "IMG=", 4) == 0) {
+            // 提取等号后面的值
+            img_file = argv[i] + 4;
+            break;
+        }
+    }
+}
+
+void load_img() {
+    if (img_file == NULL) {
+        return;
+    }
+
+    FILE *fp = fopen(img_file, "rb");
+    if (fp == NULL) {
+        fprintf(stderr, "Failed to open img file: %s\n", img_file);
+        exit(EXIT_FAILURE);
+    }
+
+    fseek(fp, 0, SEEK_END);
+    int img_size = ftell(fp);
+
+    printf("The image is %s, size = %d", img_file, img_size);
+
+    fseek(fp, 0, SEEK_SET);
+    if (fread(pmem, img_size, 1, fp) != img_size) {
+        fprintf(stderr, "Failed to read img file: %s\n", img_file);
+        exit(EXIT_FAILURE);
+    }
+    fclose(fp);
 }
 
 
@@ -35,6 +80,15 @@ int main(int argc, char** argv, char** env) {
     VerilatedVcdC *m_trace = new VerilatedVcdC;
     dut->trace(m_trace, 5);
     m_trace->open("waveform.vcd");
+
+    // 初始化内存
+    init_mem();
+
+    // 解析命令行参数
+    parse_img(argc, argv);
+
+    // 加载镜像文件
+    load_img();
 
     while (!exited) {
         if (sim_time == 0) {
