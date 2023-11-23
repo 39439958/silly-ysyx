@@ -104,6 +104,7 @@ static int parse_args(int argc, char *argv[]) {
 }
 
 void init_monitor(int argc, char *argv[]) {
+    printf("init_monitor\n");
   /* Perform some global initialization. */
 
   /* Parse arguments. */
