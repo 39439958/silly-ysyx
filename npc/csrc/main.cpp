@@ -36,15 +36,8 @@ uint32_t pmem_read(uint32_t pc){
 }
 
 void parse_img(int argc, char** argv) {
-    for (int i = 1; i < argc; ++i) {
-        printf("argv[%d] = %s\n", i, argv[i]);
-        if (strncmp(argv[i], "IMG=", 4) == 0) {
-            // 提取等号后面的值
-            img_file = argv[i] + 4;
-            break;
-            printf("img_file = %s\n", img_file);
-        }
-    }
+    img_file = argv[1];
+    printf("img_file = %s\n", img_file);
 }
 
 void load_img() {
@@ -61,13 +54,11 @@ void load_img() {
     fseek(fp, 0, SEEK_END);
     int img_size = ftell(fp);
 
-    printf("The image is %s, size = %d", img_file, img_size);
+    printf("The image is %s, size = %d\n", img_file, img_size);
 
     fseek(fp, 0, SEEK_SET);
-    if (fread(pmem, img_size, 1, fp) != img_size) {
-        fprintf(stderr, "Failed to read img file: %s\n", img_file);
-        exit(EXIT_FAILURE);
-    }
+    fread(pmem, img_size, 1, fp);
+        
     fclose(fp);
 }
 
@@ -91,6 +82,7 @@ int main(int argc, char** argv, char** env) {
     // 加载镜像文件
     load_img();
 
+    int cnt = 1;
     while (!exited) {
         if (sim_time == 0) {
 			    dut->clk = 0;
@@ -111,6 +103,10 @@ int main(int argc, char** argv, char** env) {
           dut->clk ^= 1;
           dut->inst = pmem_read(dut->pc);
           printf("pc : %x, inst : %x\n", dut->pc, dut->inst);
+          cnt++;
+          if(cnt == 10) {
+            ebreak();
+          }
           dut->eval();
         }
         m_trace->dump(sim_time);
