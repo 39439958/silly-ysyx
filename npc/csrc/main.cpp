@@ -88,6 +88,7 @@ int main(int argc, char** argv, char** env) {
     parse_img(argc, argv);
 
     printf("argc=%d\n", argc);
+    exit(EXIT_SUCCESS);
     for (int i = 1; i < argc; i++) {
         printf("%s\n", argv[i]);
     }
