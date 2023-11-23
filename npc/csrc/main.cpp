@@ -41,6 +41,7 @@ void parse_img(int argc, char** argv) {
         if (strncmp(argv[i], "IMG=", 4) == 0) {
             // 提取等号后面的值
             img_file = argv[i] + 4;
+            printf("img_file = %s\n", img_file);
             break;
         }
     }
