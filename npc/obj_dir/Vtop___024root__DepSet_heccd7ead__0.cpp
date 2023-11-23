@@ -54,7 +54,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     // Body
     __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0U;
     vlSelf->pc = ((IData)(vlSelf->rst) ? 0x80000000U
-                   : ((IData)(1U) + vlSelf->pc));
+                   : ((IData)(4U) + vlSelf->pc));
     if ((IData)((0x13U == (0x707fU & vlSelf->inst)))) {
         __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
             = vlSelf->top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h56016fc0__0;
