@@ -42,6 +42,7 @@ void parse_img(int argc, char** argv) {
             // 提取等号后面的值
             img_file = argv[i] + 4;
             break;
+            printf("img_file = %s\n", img_file);
         }
     }
 }
@@ -86,12 +87,6 @@ int main(int argc, char** argv, char** env) {
 
     // 解析命令行参数
     parse_img(argc, argv);
-
-    
-   
-    for (int i = 0; i < argc; i++) {
-        printf("argc = %d,argv = %s\n", i, argv[i]);
-    }
 
     // 加载镜像文件
     load_img();
