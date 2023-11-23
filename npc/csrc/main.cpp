@@ -102,7 +102,7 @@ int main(int argc, char** argv, char** env) {
           sim_time++;
           dut->clk ^= 1;
           dut->inst = pmem_read(dut->pc);
-          printf("pc : %x, inst : %x\n", dut->pc, dut->inst);
+          printf("pc : %x, inst : %8x\n", dut->pc, dut->inst);
           cnt++;
           if(cnt == 10) {
             ebreak();
