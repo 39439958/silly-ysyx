@@ -37,11 +37,10 @@ uint32_t pmem_read(uint32_t pc){
 
 void parse_img(int argc, char** argv) {
     for (int i = 1; i < argc; ++i) {
-        // 检查是否是 "IMG=" 开头的参数
+        printf("argv[%d] = %s\n", i, argv[i]);
         if (strncmp(argv[i], "IMG=", 4) == 0) {
             // 提取等号后面的值
             img_file = argv[i] + 4;
-            printf("img_file = %s\n", img_file);
             break;
         }
     }
