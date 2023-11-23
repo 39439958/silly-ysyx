@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
   printf("AM started\n");
 #else
   init_monitor(argc, argv);
+  printf("argc: %d\n", argc);
 #endif
 
   /* Start engine. */
