@@ -87,10 +87,10 @@ int main(int argc, char** argv, char** env) {
     // 解析命令行参数
     parse_img(argc, argv);
 
-    printf("argc = %d,argv[0] = %s\n", argc, argv[0]);
-    exit(EXIT_SUCCESS);
-    for (int i = 1; i < argc; i++) {
-        printf("%s\n", argv[i]);
+    
+   
+    for (int i = 0; i < argc; i++) {
+        printf("argc = %d,argv = %s\n", i, argv[i]);
     }
 
     // 加载镜像文件
