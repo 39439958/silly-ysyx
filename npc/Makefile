@@ -8,7 +8,7 @@ VSRCS = $(NPC_HOME)/vsrc/*.v
 
 run: 
 	$(VERILATOR) $(VERILATOR_CFLAGS) $(VSRCS) $(CSRCS)
-	./obj_dir/Vtop
+	./obj_dir/Vtop IMG=$(IMAGE).bin
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	
 clean:
