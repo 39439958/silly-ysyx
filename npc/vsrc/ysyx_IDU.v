@@ -32,7 +32,7 @@ assign  is_auipc = (op == 7'h17);
 assign  is_lui = (op == 7'h37);
 assign  is_ebreak = (op == 7'h73);
 assign  is_jal = (op == 7'h6f);
-assign  is_jalr = (op == 7'h67) && (funct == 3'h2);
+assign  is_jalr = (op == 7'h67) && (funct == 3'h0);
 assign  is_sw = (op == 7'h23) && (funct == 3'h2);
 assign  is_I = is_addi | is_jalr;
 assign  is_U = is_auipc;
