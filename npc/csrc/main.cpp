@@ -112,7 +112,7 @@ int main(int argc, char** argv, char** env) {
         m_trace->dump(sim_time);
         sim_time++;
     }
-    err ? printf("HIT BAD TRAP", "\33[1;31m") : printf("HIT GOOD TRAP", "\33[1;32m");
+    err ? printf("HIT BAD TRAP\n") : printf("HIT GOOD TRAP\n");
     m_trace->close();
     delete dut;
     exit(EXIT_SUCCESS);
