@@ -58,7 +58,10 @@ void load_img() {
     printf("The image is %s, size = %d\n", img_file, img_size);
 
     fseek(fp, 0, SEEK_SET);
-    fread(pmem, img_size, 1, fp);
+    if (fread(pmem, img_size, 1, fp) != 1) {
+        fprintf(stderr, "Failed to read img file: %s\n", img_file);
+        exit(EXIT_FAILURE);
+    }
 
     fclose(fp);
 }
