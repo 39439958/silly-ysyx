@@ -58,11 +58,6 @@ void load_img() {
 
     fseek(fp, 0, SEEK_SET);
     fread(pmem, img_size, 1, fp);
-        
-    for (int i = 0; i < img_size * 4; i += 4) {
-        uint32_t inst = *(uint32_t *)(pmem + i);
-        printf("inst[%d] = %08x\n", i, inst);
-    }
 
     fclose(fp);
 }
@@ -72,7 +67,7 @@ int main(int argc, char** argv, char** env) {
     // 新建需要仿真的对象
     Vtop *dut = new Vtop;
 
-    // 生成仿真波形, "vcd" 文件
+    // 生成仿真波形
     Verilated::traceEverOn(true);
     VerilatedVcdC *m_trace = new VerilatedVcdC;
     dut->trace(m_trace, 5);

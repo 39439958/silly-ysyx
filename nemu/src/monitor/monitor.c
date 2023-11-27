@@ -66,6 +66,11 @@ static long load_img() {
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
   assert(ret == 1);
 
+  for (int i = 0; i < size; i += 4) {
+    word_t *p = (word_t *)(guest_to_host(RESET_VECTOR) + i);
+    printf("%08x\n", *p);
+  }
+
   fclose(fp);
   return size;
 }
