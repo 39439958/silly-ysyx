@@ -59,11 +59,11 @@ void load_img() {
     fseek(fp, 0, SEEK_SET);
     fread(pmem, img_size, 1, fp);
         
-    for (int i = 0; i < img_size; i += 4) {
+    for (int i = 0; i < img_size * 4; i += 4) {
         uint32_t inst = *(uint32_t *)(pmem + i);
         printf("inst[%d] = %08x\n", i, inst);
     }
-    
+
     fclose(fp);
 }
 
