@@ -45,7 +45,7 @@ ysyx_ImmExtend imm0(
 );
 
 // 处理寄存器写使能信号
-assign rf_wr_en = is_I | is_U;
+assign rf_wr_en = is_I | is_U | is_J;
 
 // 处理寄存器写选择信号
 assign rf_wr_sel = is_J | is_jalr;

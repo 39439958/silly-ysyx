@@ -60,7 +60,7 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                        << 0xcU) | (vlSelf->inst 
                                                    >> 0x14U));
     vlSelf->top__DOT__idu0__DOT__is_jalr = (IData)(
-                                                   (0x2067U 
+                                                   (0x67U 
                                                     == 
                                                     (0x707fU 
                                                      & vlSelf->inst)));
@@ -168,10 +168,14 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                            ? (0xfffffffeU & vlSelf->top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h56016fc0__0)
                            : vlSelf->top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h56016fc0__0)
                        : ((IData)(4U) + vlSelf->pc)));
-    if (((IData)(vlSelf->top__DOT__alu_a_sel) | (0x17U 
-                                                 == 
-                                                 (0x7fU 
-                                                  & vlSelf->inst)))) {
+    if (((IData)(vlSelf->top__DOT__alu_a_sel) | ((0x17U 
+                                                  == 
+                                                  (0x7fU 
+                                                   & vlSelf->inst)) 
+                                                 | (0x6fU 
+                                                    == 
+                                                    (0x7fU 
+                                                     & vlSelf->inst))))) {
         __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
             = ((IData)(vlSelf->top__DOT__do_jump) ? 
                ((IData)(4U) + vlSelf->pc) : vlSelf->top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h56016fc0__0);
