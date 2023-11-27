@@ -17,6 +17,6 @@ run:
 clean:
 	rm -rf obj_dir
 
-.PHONY: clean sim
+.PHONY: clean run
 
 include ../Makefile

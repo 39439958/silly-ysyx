@@ -1,8 +1,8 @@
 module ysyx_RegisterFile (
   input clk,
-  input rf_wr_en,
 
   input [4:0] waddr,
+  input rf_wr_en,
   input [31:0] wdata,
 
   input [4:0] raddr,
@@ -15,5 +15,6 @@ module ysyx_RegisterFile (
     if (rf_wr_en) rf[waddr] <= wdata;
   end
 
-  assign rdata = rf[raddr];
+    assign rdata = rf[raddr];
+
 endmodule
