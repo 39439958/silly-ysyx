@@ -11,6 +11,7 @@
 #define MAX_SIM_TIME 20
 vluint64_t sim_time = 0;
 int exited = 0;
+int err = 0;
 static uint8_t pmem[0x8000000] __attribute((aligned(4096))) = {};
 char *img_file = NULL;
 static const uint32_t img [] = {
@@ -82,7 +83,6 @@ int main(int argc, char** argv, char** env) {
     // 加载镜像文件
     load_img();
 
-    int cnt = 1;
     while (!exited) {
         if (sim_time == 0) {
 			    dut->clk = 0;
@@ -103,16 +103,16 @@ int main(int argc, char** argv, char** env) {
           dut->clk ^= 1;
           dut->inst = pmem_read(dut->pc);
           printf("pc : %x, inst : %08x\n", dut->pc, dut->inst);
-          cnt++;
-          if(cnt == 30) {
-            ebreak();
+          if (dut->inst == 0x0000006f) {
+            exited = 1;
+            err = 1;
           }
           dut->eval();
         }
         m_trace->dump(sim_time);
         sim_time++;
     }
-
+    err ? printf("HIT BAD TRAP", "\33[1;31m") : printf("HIT GOOD TRAP", "\33[1;32m");
     m_trace->close();
     delete dut;
     exit(EXIT_SUCCESS);
