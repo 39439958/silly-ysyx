@@ -18,7 +18,7 @@ void putch(char ch) {
 }
 
 void halt(int code) {
-    ebreak();
+    //ebreak();
   while (1);
 }
 
