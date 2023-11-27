@@ -7,6 +7,8 @@ int main(const char *args);
 extern char _pmem_start;
 #define PMEM_SIZE (128 * 1024 * 1024)
 #define PMEM_END  ((uintptr_t)&_pmem_start + PMEM_SIZE)
+# define ebreak(code) asm volatile("mv a0, %0; ebreak" : :"r"(code))
+
 
 Area heap = RANGE(&_heap_start, PMEM_END);
 #ifndef MAINARGS
@@ -18,7 +20,7 @@ void putch(char ch) {
 }
 
 void halt(int code) {
-    //ebreak();
+  ebreak(code);
   while (1);
 }
 

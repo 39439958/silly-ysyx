@@ -103,7 +103,6 @@ int main(int argc, char** argv, char** env) {
           dut->clk ^= 1;
           dut->inst = pmem_read(dut->pc);
           printf("pc : %x, inst : %08x\n", dut->pc, dut->inst);
-
           cnt++;
           if(cnt == 30) {
             ebreak();
