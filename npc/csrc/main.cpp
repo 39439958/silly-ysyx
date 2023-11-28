@@ -6,6 +6,7 @@
 #include "Vtop.h"
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
+#include "Vtop___024root.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
@@ -26,6 +27,13 @@ static const uint32_t img [] = {
     0x00108093,
     0x00100073,
 };
+const char *regs[] = {
+  "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
+};
+
 
 Vtop *top = new Vtop;
 VerilatedVcdC *m_trace = new VerilatedVcdC;
@@ -131,6 +139,12 @@ void npc_exec(int n) {
     }
 }
 
+void reg_display() {
+    for (int i = 0; i < 32; i++) {
+    printf("%s : 0x%08x\n", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
+  }
+}
+
 static int cmd_c(char *args) {
     npc_exec(-1);
     return is_quit;
@@ -145,6 +159,8 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
+
 static struct {
     const char *name;
     const char *description;
@@ -154,6 +170,7 @@ static struct {
     { "c", "Continue the execution of the program", cmd_c },
     { "q", "Exit NPC", cmd_q },
     { "si", "Step through N instructions", cmd_si},
+    { "info", "Show the infomation of reg and watch point", cmd_info},
 };
 
 static int cmd_help(char *args) {
@@ -187,6 +204,15 @@ static int cmd_si(char *args) {
         sscanf(args, "%d", &n);
     npc_exec(n);
     return is_quit;
+}
+
+static int cmd_info(char *args) {
+    if (strcmp(args, "r") == 0) {
+        reg_display();
+    } else {
+        printf("Unknow parma\n");
+    }
+    return 0;
 }
 
 void exit_work() {
