@@ -20,6 +20,7 @@ int quit_state = 0;
 
 static uint8_t pmem[0x8000000] __attribute((aligned(4096))) = {};
 char *img_file = NULL;
+char inst_buf[64];
 static const uint32_t img [] = {
     0x00108093,
     0x00108093,
@@ -37,6 +38,8 @@ const char *regs[] = {
 
 Vtop *top = new Vtop;
 VerilatedVcdC *m_trace = new VerilatedVcdC;
+
+// void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 
 void ebreak() {
     is_quit = 1;
@@ -131,7 +134,11 @@ void npc_exec(int n) {
             is_quit = 1;
             quit_state = NPC_ABORT;
         }
+
+        // print instruction
+        //disassemble(inst_buf, sizeof(inst_buf), top->pc, (uint8_t *)&top->inst, 4);
         printf("pc : %x, inst : %08x\n", top->pc, top->inst);
+        //printf("%s\n", inst_buf);
 
         if (is_quit) {
             break;

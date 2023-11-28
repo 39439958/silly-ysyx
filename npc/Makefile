@@ -1,13 +1,12 @@
 VERILATOR = verilator
-VERILATOR_CFLAGS += -cc --build --exe --trace -LDFLAGS "-lreadline"
+VERILATOR_CFLAGS += -cc --build --exe --trace  -LDFLAGS "-lLLVM-14 -lreadline"
 
 # project source
-CSRCS = $(NPC_HOME)/csrc/*.cpp
-VSRCS = $(NPC_HOME)/vsrc/*.v
+CSRCS = $(NPC_HOME)/csrc/*.cpp $(NPC_HOME)/csrc/*.cc
+VSRCS = $(NPC_HOME)/vsrc/*.v  
 
 IMG ?=
 NEMU_EXEC := ./obj_dir/Vtop $(IMG)
-
 
 run: 
 	$(VERILATOR) $(VERILATOR_CFLAGS) $(VSRCS) $(CSRCS)
