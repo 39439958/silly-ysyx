@@ -11,7 +11,7 @@ NEMU_EXEC := ./obj_dir/Vtop $(IMG)
 
 run: 
 	$(VERILATOR) $(VERILATOR_CFLAGS) $(VSRCS) $(CSRCS)
-	# $(NEMU_EXEC)
+	
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	
 clean:
