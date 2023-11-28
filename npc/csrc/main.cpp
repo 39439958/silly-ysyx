@@ -6,8 +6,10 @@
 #include "Vtop.h"
 #include "svdpi.h"
 #include "Vtop__Dpi.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
-// end time
+
 #define MAX_SIM_TIME 20
 vluint64_t sim_time = 0;
 int exited = 0;
@@ -22,18 +24,94 @@ static const uint32_t img [] = {
   0x00100073,
 };
 
+/* We use the `readline' library to provide more flexibility to read from stdin. */
+static char* rl_gets() {
+  static char *line_read = NULL;
+
+  if (line_read) {
+    free(line_read);
+    line_read = NULL;
+  }
+
+  line_read = readline("(npc) ");
+
+  if (line_read && *line_read) {
+    add_history(line_read);
+  }
+
+  return line_read;
+}
+
+static int cmd_c(char *args) {
+  cpu_exec(-1);
+  return 0;
+}
+
+
+static int cmd_q(char *args) {
+  nemu_state.state = NEMU_QUIT;
+  return -1;
+}
+
+static int cmd_help(char *args);
+
+static int cmd_si(char *args);
+
+static struct {
+  const char *name;
+  const char *description;
+  int (*handler) (char *);
+} cmd_table [] = {
+  { "help", "Display information about all supported commands", cmd_help },
+  { "c", "Continue the execution of the program", cmd_c },
+  { "q", "Exit NPC", cmd_q },
+  { "si", "Step through N instructions", cmd_si},
+};
+
+static int cmd_help(char *args) {
+  /* extract the first argument */
+  char *arg = strtok(NULL, " ");
+  int i;
+
+  if (arg == NULL) {
+    /* no argument given */
+    for (i = 0; i < NR_CMD; i ++) {
+      printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+    }
+  }
+  else {
+    for (i = 0; i < NR_CMD; i ++) {
+      if (strcmp(arg, cmd_table[i].name) == 0) {
+        printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+        return 0;
+      }
+    }
+    printf("Unknown command '%s'\n", arg);
+  }
+  return 0;
+}
+
+static int cmd_si(char *args) {
+  int n = 0;
+  if (args == NULL)
+    n = 1;
+  else
+    sscanf(args, "%d", &n);
+  cpu_exec(n);
+  return 0;
+}
 
 void ebreak() {
   exited = 1;
 }
 
+uint32_t pmem_read(uint32_t pc){
+    return *(uint32_t *)(pmem + pc - 0x80000000);
+}
+
 void init_mem() {
   memset(pmem, rand(), 0x8000000);
   memcpy(pmem, img, sizeof(img));
-}
-
-uint32_t pmem_read(uint32_t pc){
-    return *(uint32_t *)(pmem + pc - 0x80000000);
 }
 
 void parse_img(int argc, char** argv) {
@@ -68,55 +146,51 @@ void load_img() {
 
 
 int main(int argc, char** argv, char** env) {
-    // 新建需要仿真的对象
-    Vtop *dut = new Vtop;
+    Vtop *top = new Vtop;
 
-    // 生成仿真波形
     Verilated::traceEverOn(true);
     VerilatedVcdC *m_trace = new VerilatedVcdC;
-    dut->trace(m_trace, 5);
+    top->trace(m_trace, 5);
     m_trace->open("waveform.vcd");
 
-    // 初始化内存
     init_mem();
 
-    // 解析命令行参数
     parse_img(argc, argv);
 
-    // 加载镜像文件
     load_img();
 
     while (!exited) {
+        
         if (sim_time == 0) {
-			    dut->clk = 0;
-			    dut->rst = 1;
-          dut->eval();
+			    top->clk = 0;
+			    top->rst = 1;
+          top->eval();
           m_trace->dump(sim_time);
           sim_time++;
-          dut->clk = 1;
-          dut->rst = 1;
-          dut->eval();
+          top->clk = 1;
+          top->rst = 1;
+          top->eval();
 		    } 
         else {
-          dut->clk ^= 1;
-          dut->rst = 0;
-          dut->eval();
+          top->clk ^= 1;
+          top->rst = 0;
+          top->eval();
           m_trace->dump(sim_time);
           sim_time++;
-          dut->clk ^= 1;
-          dut->inst = pmem_read(dut->pc);
-          printf("pc : %x, inst : %08x\n", dut->pc, dut->inst);
-          if (dut->inst == 0x0000006f) {
+          top->clk ^= 1;
+          top->inst = pmem_read(top->pc);
+          printf("pc : %x, inst : %08x\n", top->pc, top->inst);
+          if (top->inst == 0x0000006f) {
             exited = 1;
             err = 1;
           }
-          dut->eval();
+          top->eval();
         }
         m_trace->dump(sim_time);
         sim_time++;
     }
     err ? printf("\33[1;41mHIT BAD TRAP\33[0m\n") : printf("\33[1;32mHIT GOOD TRAP\33[0m\n");
     m_trace->close();
-    delete dut;
+    delete top;
     exit(EXIT_SUCCESS);
 }
