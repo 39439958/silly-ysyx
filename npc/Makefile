@@ -1,5 +1,5 @@
 VERILATOR = verilator
-VERILATOR_CFLAGS += -cc --exe --build --trace -j
+VERILATOR_CFLAGS += -cc --exe --trace -j
 
 # project source
 CSRCS = $(NPC_HOME)/csrc/*.cpp
@@ -11,7 +11,7 @@ NEMU_EXEC := ./obj_dir/Vtop $(IMG)
 
 run: 
 	$(VERILATOR) $(VERILATOR_CFLAGS) $(VSRCS) $(CSRCS)
-	$(NEMU_EXEC)
+	# $(NEMU_EXEC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	
 clean:
