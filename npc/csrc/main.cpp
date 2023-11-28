@@ -166,6 +166,8 @@ static int cmd_si(char *args);
 
 static int cmd_info(char *args);
 
+static int cmd_x(char *args);
+
 static struct {
     const char *name;
     const char *description;
@@ -176,6 +178,7 @@ static struct {
     { "q", "Exit NPC", cmd_q },
     { "si", "Step through N instructions", cmd_si},
     { "info", "Show the infomation of reg and watch point", cmd_info},
+    { "x", "Examine memory", cmd_x},
 };
 
 static int cmd_help(char *args) {
@@ -216,6 +219,16 @@ static int cmd_info(char *args) {
         reg_display();
     } else {
         printf("Unknow parma\n");
+    }
+    return 0;
+}
+
+static int cmd_x(char *args) {
+    int n;
+    uint32_t addr;
+    sscanf(args, "%d 0x%x", &n, &addr);
+    for (int i = 0; i < n; i++) {
+        printf("0x%08x: 0x%08x\n", addr + i * 4, pmem_read(addr + i * 4));
     }
     return 0;
 }
