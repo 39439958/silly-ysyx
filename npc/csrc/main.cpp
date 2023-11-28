@@ -141,8 +141,13 @@ void npc_exec(int n) {
 
 void reg_display() {
     for (int i = 0; i < 32; i++) {
-    printf("%s : 0x%08x\n", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
-  }
+        printf("%s  : 0x%08x", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
+        if (i % 4 == 3) {
+            printf("\n");
+        } else {
+            printf("\t");
+        }   
+    }
 }
 
 static int cmd_c(char *args) {
