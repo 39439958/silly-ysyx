@@ -127,6 +127,8 @@ void npc_exec(int n) {
         m_trace->dump(sim_time);
         sim_time++;
 
+        printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
+
         if (top->inst == 0x0000006f) {
             is_quit = 1;
             quit_state = NPC_ABORT;
@@ -145,7 +147,7 @@ void npc_exec(int n) {
         // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         // disassemble(inst_buf, 32, top->pc, inst, 4);
         
-        printf("%s\n", inst_buf);
+        //printf("%s\n", inst_buf);
         // printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
 
         if (is_quit) {
