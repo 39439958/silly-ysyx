@@ -38,6 +38,8 @@ const char *regs[] = {
 Vtop *top = new Vtop;
 VerilatedVcdC *m_trace = new VerilatedVcdC;
 
+void init_disasm(const char *triple);
+
 void ebreak() {
     is_quit = 1;
 }
@@ -265,6 +267,7 @@ int main(int argc, char** argv, char** env) {
     init_mem();
     parse_img(argc, argv);
     load_img();
+    init_disasm( "riscv32" "-pc-linux-gnu" );
 
     // initial NPC rst
     npc_rst();
