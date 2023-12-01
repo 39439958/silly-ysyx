@@ -20,7 +20,6 @@ int quit_state = 0;
 
 static uint8_t pmem[0x8000000] __attribute((aligned(4096))) = {};
 char *img_file = NULL;
-char inst_buf[64];
 static const uint32_t img [] = {
     0x00108093,
     0x00108093,
@@ -134,6 +133,7 @@ void npc_exec(int n) {
         }
 
         // print instruction
+        char inst_buf[64];
         char *p = inst_buf;
         uint32_t pc = top->pc;
         uint8_t *inst = (uint8_t *)&top->inst;
