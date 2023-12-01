@@ -133,7 +133,7 @@ void npc_exec(int n) {
             p += snprintf(p, 4, " %02x", inst[j]);
         }
         // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        // disassemble(inst_buf, 32, top->pc, inst, 4);
+        // disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
         printf("%s\n", inst_buf);
         
         top->eval();
