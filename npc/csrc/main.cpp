@@ -135,14 +135,18 @@ void npc_exec(int n) {
         // print instruction
         char inst_buf[64];
         char *p = inst_buf;
-        uint8_t *inst = (uint8_t *)&top->inst;
-        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->pc);
-        for (int j = 3; j >= 0; j--) {
-            p += snprintf(p, 4, " %02x", inst[j]);
-        }
+        // uint32_t my_inst = 0x00108093;
+        // uint8_t *inst = (uint8_t *)&my_inst;
+        // p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->pc);
+        // for (int j = 3; j >= 0; j--) {
+        //     p += snprintf(p, 4, " %02x", inst[j]);
+        // }
+
         // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        // disassemble(p, inst_buf + sizeof(inst_buf) - p, pc, inst_p, 4);
-        printf("%s\n", inst_buf);
+        // disassemble(inst_buf, 32, top->pc, inst, 4);
+        
+        // printf("%s\n", inst_buf);
+        printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
 
         if (is_quit) {
             break;
