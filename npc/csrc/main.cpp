@@ -123,11 +123,11 @@ void npc_exec(int n) {
 
         top->clk ^= 1;
         top->inst = pmem_read(top->pc);
+        printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
         top->eval();
+        printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
         m_trace->dump(sim_time);
         sim_time++;
-
-        printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
 
         if (top->inst == 0x0000006f) {
             is_quit = 1;
