@@ -134,6 +134,8 @@ void npc_exec(int n) {
         for (int j = 3; j >= 0; j--) {
             p += snprintf(p, 4, " %02x", inst[j]);
         }
+        memset(p, ' ', 4);
+        p += 4;
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
         printf("%s\n", inst_buf);
