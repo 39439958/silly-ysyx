@@ -190,7 +190,6 @@ void Vtop___024root__trace_chg_sub_0(Vtop___024root* vlSelf, VerilatedVcd::Buffe
                                                   >> 4U)));
     __Vtemp_h3075430c__0[6U] = 1U;
     bufp->chgWData(oldp+78,(__Vtemp_h3075430c__0),195);
-    bufp->chgIData(oldp+85,(((IData)(4U) + vlSelf->pc)),32);
 }
 
 void Vtop___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {
