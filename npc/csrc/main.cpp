@@ -110,7 +110,7 @@ void npc_rst() {
 }
 
 uint32_t pmem_read(uint32_t pc){
-    return *(uint32_t *)(pmem + pc - 0x80000004);
+    return *(uint32_t *)(pmem + pc - 0x80000000);
 }
 
 void npc_exec(int n) {

@@ -27,6 +27,7 @@ class Vtop___024root final : public VerilatedModule {
     VL_IN(inst,31,0);
     VL_OUT(pc,31,0);
     IData/*31:0*/ top__DOT__inst_imm;
+    IData/*31:0*/ top__DOT__pc0__DOT__pc_next;
     IData/*31:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__lut_out;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h56016fc0__0;
     IData/*31:0*/ __VdfgTmp_h6ea4ae17__0;
