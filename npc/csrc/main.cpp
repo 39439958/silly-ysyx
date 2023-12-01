@@ -136,7 +136,7 @@ void npc_exec(int n) {
         }
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
-        //printf("%s\n", inst_buf);
+        printf("%s\n", inst_buf);
         
         top->eval();
         m_trace->dump(sim_time);
@@ -146,8 +146,6 @@ void npc_exec(int n) {
             is_quit = 1;
             quit_state = NPC_ABORT;
         }
-
-        // printf("pc: %08x, inst: %08x\n", top->pc, top->inst);
 
         if (is_quit) {
             break;
