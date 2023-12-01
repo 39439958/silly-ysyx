@@ -39,8 +39,6 @@ const char *regs[] = {
 Vtop *top = new Vtop;
 VerilatedVcdC *m_trace = new VerilatedVcdC;
 
-// void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-
 void ebreak() {
     is_quit = 1;
 }
@@ -136,9 +134,11 @@ void npc_exec(int n) {
         }
 
         // print instruction
-        //disassemble(inst_buf, sizeof(inst_buf), top->pc, (uint8_t *)&top->inst, 4);
+        // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+        // disassemble(inst_buf, sizeof(inst_buf), top->pc, (uint8_t *)&top->inst, 4);
+        // disassemble(inst_buf, sizeof(inst_buf), top->pc, (uint8_t *)&top->inst, 4);
         printf("pc : %x, inst : %08x\n", top->pc, top->inst);
-        //printf("%s\n", inst_buf);
+        printf("%s\n", inst_buf);
 
         if (is_quit) {
             break;

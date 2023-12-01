@@ -1,8 +1,8 @@
 VERILATOR = verilator
-VERILATOR_CFLAGS += -cc --build --exe --trace  -LDFLAGS "-lLLVM-14 -lreadline"
+VERILATOR_CFLAGS += -cc --build --exe --trace -CFLAGS "$(shell llvm-config --cxxflags) -fPIE" -LDFLAGS "-lLLVM-14 -lreadline"
 
 # project source
-CSRCS = $(NPC_HOME)/csrc/*.cpp $(NPC_HOME)/csrc/*.cc
+CSRCS = $(NPC_HOME)/csrc/*.cpp $(NPC_HOME)/csrc/*.cc 
 VSRCS = $(NPC_HOME)/vsrc/*.v  
 
 IMG ?=
