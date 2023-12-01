@@ -137,7 +137,7 @@ void npc_exec(int n) {
         char *p = inst_buf;
         uint32_t pc = top->pc;
         uint8_t *inst = (uint8_t *)&top->inst;
-        p += snprintf(p, sizeof(inst_buf), "0x%08:", pc);
+        p += snprintf(p, sizeof(inst_buf), "0x%08x:", pc);
         for (int j = 3; j >= 0; j--) {
             p += snprintf(p, 4, " %02x", inst[j]);
         }
