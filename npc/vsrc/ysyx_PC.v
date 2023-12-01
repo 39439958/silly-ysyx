@@ -8,7 +8,7 @@ module ysyx_PC (
   wire [31:0] pc_next;
   assign pc_next = pc + 32'h4;
 
-  always@(posedge clk)
+  always@(posedge clk or posedge rst)
   begin
       if(rst) pc <= 32'h80000000;
       else if(jump) pc <= jump_addr;
