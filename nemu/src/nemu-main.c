@@ -19,6 +19,7 @@ void init_monitor(int, char *[]);
 void am_init_monitor();
 void engine_start();
 int is_exit_status_bad();
+void iringbuf_display();
 
 // for test
 word_t expr(char *e, bool *success);
@@ -38,6 +39,8 @@ int main(int argc, char *argv[]) {
 
   /* test expr */
     // test_expr();
+  
+  iringbuf_display();
 
   return is_exit_status_bad();
 }
