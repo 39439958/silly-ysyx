@@ -137,7 +137,7 @@ void npc_exec(int n) {
         // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         // disassemble(inst_buf, sizeof(inst_buf), top->pc, (uint8_t *)&top->inst, 4);
         // disassemble(inst_buf, sizeof(inst_buf), top->pc, (uint8_t *)&top->inst, 4);
-        printf("pc : %x, inst : %08x\n", top->pc, top->inst);
+        printf("pc : 0x%x, inst : 0x%08x\n", top->pc, top->inst);
         printf("%s\n", inst_buf);
 
         if (is_quit) {
