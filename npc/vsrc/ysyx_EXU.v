@@ -1,5 +1,3 @@
-import "DPI-C" function void ebreak();
-
 module ysyx_EXU (
   input clk,
   input rf_wr_en,
@@ -11,6 +9,7 @@ module ysyx_EXU (
   input [31:0] imm,
   output [31:0] jump_addr
 );
+import "DPI-C" function void ebreak();
 
 wire [31:0] alu_a;
 wire [31:0] alu_out;

@@ -8,6 +8,14 @@
 #include "Vtop__Syms.h"
 #include "Vtop___024root.h"
 
+extern "C" void ebreak();
+
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__ebreak_TOP() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__ebreak_TOP\n"); );
+    // Body
+    ebreak();
+}
+
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vtop___024root___dump_triggers__ico(Vtop___024root* vlSelf);
 #endif  // VL_DEBUG
@@ -50,16 +58,4 @@ void Vtop___024root___eval_triggers__act(Vtop___024root* vlSelf) {
         Vtop___024root___dump_triggers__act(vlSelf);
     }
 #endif
-}
-
-void Vtop___024unit____Vdpiimwrap_ebreak_TOP____024unit();
-
-VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__0(Vtop___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__0\n"); );
-    // Body
-    if (vlSelf->top__DOT__is_ebreak) {
-        Vtop___024unit____Vdpiimwrap_ebreak_TOP____024unit();
-    }
 }

@@ -8,6 +8,7 @@ module ysyx_IDU (
   output wire is_ebreak,
   output wire[31:0] inst_imm
 );
+
 wire [6:0] op;
 wire [2:0] funct;
 
