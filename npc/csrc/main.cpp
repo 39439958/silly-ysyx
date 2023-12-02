@@ -150,7 +150,6 @@ bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
         }
     }
     if (ref_r->pc != cpu.pc) {
-        printf("pc: 0x%08x, ref: 0x%08x\n", cpu.pc, ref_r->pc);
         return false;
     }
     return true;
@@ -194,6 +193,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
     ref_difftest_init(port);
     ref_difftest_memcpy(0x80000000, pmem, img_size, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+    printf("pc : 0x%08x\n", cpu.pc);
 }
 
 void difftest_step(uint32_t pc) {
