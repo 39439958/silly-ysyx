@@ -199,7 +199,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 void difftest_step(uint32_t pc) {
     cpu_state ref_r;
-
+    
     ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
@@ -237,12 +237,12 @@ void npc_exec(int n) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
-        // difftest
-        //difftest_step(top->pc);
-
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
+
+        // difftest
+        difftest_step(top->pc-4);
 
         if (top->inst == 0x0000006f) {
             is_quit = 1;
