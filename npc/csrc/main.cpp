@@ -146,7 +146,6 @@ uint32_t pmem_read(uint32_t pc){
 
 bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
     for (int i = 0; i < 32; i++) {
-        printf ("ref_r->gpr[%d] = 0x%08x, cpu.gpr[%d] = 0x%08x\n", i, ref_r->gpr[i], i, cpu.gpr[i]);
         if (ref_r->gpr[i] != cpu.gpr[i]) {
             return false;
         }
