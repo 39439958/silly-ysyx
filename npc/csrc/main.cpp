@@ -150,6 +150,7 @@ bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
         }
     }
     if (ref_r->pc != cpu.pc) {
+        printf("666\n");
         return false;
     }
     return true;
@@ -201,7 +202,6 @@ void difftest_step(uint32_t pc) {
     //ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
-    printf("666\n");
     checkregs(&ref_r, pc);
 }
 
