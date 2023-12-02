@@ -201,6 +201,7 @@ void difftest_step(uint32_t pc) {
     //ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
+    printf("666\n");
     checkregs(&ref_r, pc);
 }
 
