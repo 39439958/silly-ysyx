@@ -42,6 +42,7 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
+    printf("666\n");
     for (int i = 0; i < 5; i++) {
         uint32_t tmp = paddr_read(0x80000000 + i * 4, 4);
         printf("%04x ", tmp);
