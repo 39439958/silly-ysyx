@@ -193,7 +193,8 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
     ref_difftest_init(port);
     ref_difftest_memcpy(0x80000000, pmem, img_size, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
-    printf("pc : 0x%08x\n", cpu.pc);
+
+
 }
 
 void difftest_step(uint32_t pc) {
@@ -235,6 +236,7 @@ void npc_exec(int n) {
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
+        printf("pc = 0x%08x\n", cpu.pc);
 
         top->eval();
         m_trace->dump(sim_time);
