@@ -49,6 +49,7 @@ enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 
 void init_disasm(const char *triple);
 
+void difftest_step(uint32_t pc);
 void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
 void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
@@ -74,6 +75,17 @@ static char* rl_gets() {
     }
 
     return line_read;
+}
+
+void reg_display() {
+    for (int i = 0; i < 32; i++) {
+        printf("%3s: 0x%08x", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
+        if (i % 4 == 3) {
+            printf("\n");
+        } else {
+            printf("\t");
+        }   
+    }
 }
 
 void init_mem() {
@@ -131,38 +143,67 @@ uint32_t pmem_read(uint32_t pc){
     return *(uint32_t *)(pmem + pc - 0x80000000);
 }
 
+bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
+    for (int i = 0; i < 32; i++) {
+        if (ref_r->gpr[i] != cpu.gpr[i]) {
+            return false;
+        }
+    }
+    if (ref_r->pc != cpu.pc) {
+        return false;
+    }
+    return true;
+}
+
+static void checkregs(cpu_state *ref, uint32_t pc) {
+  if (!difftest_checkregs(ref, pc)) {
+    is_quit = 1;
+    quit_state = NPC_ABORT;
+    reg_display();
+  }
+}
+
 void init_difftest(char *ref_so_file, long img_size, int port) {
-assert(ref_so_file != NULL);
+    assert(ref_so_file != NULL);
 
-void *handle;
-handle = dlopen(ref_so_file, RTLD_LAZY);
-assert(handle);
+    void *handle;
+    handle = dlopen(ref_so_file, RTLD_LAZY);
+    assert(handle);
 
-ref_difftest_memcpy = reinterpret_cast<void (*)(uint32_t, void *, size_t, bool)>(dlsym(handle, "difftest_memcpy"));
-assert(ref_difftest_memcpy);
+    ref_difftest_memcpy = reinterpret_cast<void (*)(uint32_t, void *, size_t, bool)>(dlsym(handle, "difftest_memcpy"));
+    assert(ref_difftest_memcpy);
 
-ref_difftest_regcpy = reinterpret_cast<void (*)(void *, bool)>(dlsym(handle, "difftest_regcpy"));
-assert(ref_difftest_regcpy);
+    ref_difftest_regcpy = reinterpret_cast<void (*)(void *, bool)>(dlsym(handle, "difftest_regcpy"));
+    assert(ref_difftest_regcpy);
 
-void (*ref_difftest_exec)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_exec"));
-assert(ref_difftest_exec);
+    void (*ref_difftest_exec)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_exec"));
+    assert(ref_difftest_exec);
 
-void (*ref_difftest_raise_intr)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_raise_intr"));
-assert(ref_difftest_raise_intr);
+    void (*ref_difftest_raise_intr)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_raise_intr"));
+    assert(ref_difftest_raise_intr);
 
-void (*ref_difftest_init)(int) = reinterpret_cast<void (*)(int)>(dlsym(handle, "difftest_init"));
-assert(ref_difftest_init);
+    void (*ref_difftest_init)(int) = reinterpret_cast<void (*)(int)>(dlsym(handle, "difftest_init"));
+    assert(ref_difftest_init);
 
-printf("Differential testing: \33[1;32mON\33[0m \n");
+    printf("Differential testing: \33[1;32mON\33[0m \n");
 
-  printf("Differential testing: \33[1;32mON\33[0m \n");
-  printf("The result of every instruction will be compared with %s. "
-      "This will help you a lot for debugging, but also significantly reduce the performance. "
-      "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
+    printf("Differential testing: \33[1;32mON\33[0m \n");
+    printf("The result of every instruction will be compared with %s. "
+        "This will help you a lot for debugging, but also significantly reduce the performance. "
+        "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
 
-  ref_difftest_init(port);
-  ref_difftest_memcpy(0x80000000, pmem, img_size, DIFFTEST_TO_REF);
-  ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+    ref_difftest_init(port);
+    ref_difftest_memcpy(0x80000000, pmem, img_size, DIFFTEST_TO_REF);
+    ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+}
+
+void difftest_step(uint32_t pc) {
+    cpu_state ref_r;
+
+    ref_difftest_exec(1);
+    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+
+    checkregs(&ref_r, pc);
 }
 
 void npc_exec(int n) {
@@ -196,6 +237,9 @@ void npc_exec(int n) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
+        // difftest
+        //difftest_step(top->pc);
+
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
@@ -208,17 +252,6 @@ void npc_exec(int n) {
         if (is_quit) {
             break;
         }
-    }
-}
-
-void reg_display() {
-    for (int i = 0; i < 32; i++) {
-        printf("%3s: 0x%08x", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
-        if (i % 4 == 3) {
-            printf("\n");
-        } else {
-            printf("\t");
-        }   
     }
 }
 
