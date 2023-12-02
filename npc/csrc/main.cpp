@@ -150,7 +150,7 @@ bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
         }
     }
     if (ref_r->pc != cpu.pc) {
-        printf("666\n");
+        printf("622\n");
         return false;
     }
     return true;
