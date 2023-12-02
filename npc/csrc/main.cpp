@@ -18,6 +18,7 @@
 vluint64_t sim_time = 0;
 int is_quit = 0;
 int quit_state = 0;
+char *ref_so_file = "/home/silly/ysyx-workbench/nemu/build/riscv32-nemu-interpreter-so";
 
 static uint8_t pmem[0x8000000] __attribute((aligned(4096))) = {};
 char *img_file = NULL;
@@ -85,9 +86,10 @@ void parse_img(int argc, char** argv) {
     printf("img_file = %s\n", img_file);
 }
 
-void load_img() {
+long load_img() {
     if (img_file == NULL) {
-        return;
+        printf("No image is given. Use the default build-in image.\n");
+        return 4096;
     }
 
     FILE *fp = fopen(img_file, "rb");
@@ -108,6 +110,7 @@ void load_img() {
     }
 
     fclose(fp);
+    return img_size;
 }
 
 void npc_rst() {
@@ -129,26 +132,28 @@ uint32_t pmem_read(uint32_t pc){
 }
 
 void init_difftest(char *ref_so_file, long img_size, int port) {
-  assert(ref_so_file != NULL);
+assert(ref_so_file != NULL);
 
-  void *handle;
-  handle = dlopen(ref_so_file, RTLD_LAZY);
-  assert(handle);
+void *handle;
+handle = dlopen(ref_so_file, RTLD_LAZY);
+assert(handle);
 
-  ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
-  assert(ref_difftest_memcpy);
+ref_difftest_memcpy = reinterpret_cast<void (*)(uint32_t, void *, size_t, bool)>(dlsym(handle, "difftest_memcpy"));
+assert(ref_difftest_memcpy);
 
-  ref_difftest_regcpy = dlsym(handle, "difftest_regcpy");
-  assert(ref_difftest_regcpy);
+ref_difftest_regcpy = reinterpret_cast<void (*)(void *, bool)>(dlsym(handle, "difftest_regcpy"));
+assert(ref_difftest_regcpy);
 
-  ref_difftest_exec = dlsym(handle, "difftest_exec");
-  assert(ref_difftest_exec);
+void (*ref_difftest_exec)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_exec"));
+assert(ref_difftest_exec);
 
-  ref_difftest_raise_intr = dlsym(handle, "difftest_raise_intr");
-  assert(ref_difftest_raise_intr);
+void (*ref_difftest_raise_intr)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_raise_intr"));
+assert(ref_difftest_raise_intr);
 
-  void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
-  assert(ref_difftest_init);
+void (*ref_difftest_init)(int) = reinterpret_cast<void (*)(int)>(dlsym(handle, "difftest_init"));
+assert(ref_difftest_init);
+
+printf("Differential testing: \33[1;32mON\33[0m \n");
 
   printf("Differential testing: \33[1;32mON\33[0m \n");
   printf("The result of every instruction will be compared with %s. "
@@ -317,11 +322,14 @@ int main(int argc, char** argv, char** env) {
     // initial memory and instruction
     init_mem();
     parse_img(argc, argv);
-    load_img();
+    long img_size = load_img();
     init_disasm( "riscv32" "-pc-linux-gnu" );
 
     // initial NPC rst
     npc_rst();
+
+    // initial difftest
+    init_difftest(ref_so_file, img_size, 1234);
 
     for (char *str; (str = rl_gets()) != NULL; ) {
         char *str_end = str + strlen(str);
