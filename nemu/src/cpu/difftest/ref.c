@@ -46,7 +46,7 @@ __EXPORT void difftest_exec(uint64_t n) {
         uint32_t tmp = paddr_read(0x80000000 + i * 4, 4);
         printf("%04x ", tmp);
     }
-    cpu_exec(n);
+    //cpu_exec(n);
 }
 
 __EXPORT void difftest_raise_intr(word_t NO) {

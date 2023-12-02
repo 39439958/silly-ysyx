@@ -186,8 +186,6 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
     assert(ref_difftest_init);
 
     printf("Differential testing: \33[1;32mON\33[0m \n");
-
-    printf("Differential testing: \33[1;32mON\33[0m \n");
     printf("The result of every instruction will be compared with %s. "
         "This will help you a lot for debugging, but also significantly reduce the performance. "
         "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
@@ -199,8 +197,9 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 void difftest_step(uint32_t pc) {
     cpu_state ref_r;
-    
+    printf("666\n");
     ref_difftest_exec(1);
+    printf("666\n");
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
     checkregs(&ref_r, pc);
