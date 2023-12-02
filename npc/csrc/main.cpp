@@ -150,7 +150,6 @@ bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
             return false;
         }
     }
-    printf ("ref_r->pc = 0x%08x, cpu.pc = 0x%08x\n", ref_r->pc, cpu.pc);
     if (ref_r->pc != cpu.pc) {
         return false;
     }
