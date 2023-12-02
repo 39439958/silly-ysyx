@@ -178,10 +178,10 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
     ref_difftest_regcpy = reinterpret_cast<void (*)(void *, bool)>(dlsym(handle, "difftest_regcpy"));
     assert(ref_difftest_regcpy);
 
-    void (*ref_difftest_exec)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_exec"));
+    ref_difftest_exec = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_exec"));
     assert(ref_difftest_exec);
 
-    void (*ref_difftest_raise_intr)(uint64_t NO) = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_raise_intr"));
+    ref_difftest_raise_intr = reinterpret_cast<void (*)(uint64_t)>(dlsym(handle, "difftest_raise_intr"));
     assert(ref_difftest_raise_intr);
 
     void (*ref_difftest_init)(int) = reinterpret_cast<void (*)(int)>(dlsym(handle, "difftest_init"));
