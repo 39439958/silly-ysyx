@@ -9,6 +9,7 @@
 #include "Vtop___024root.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <dlfcn.h>
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 #define NPC_QUIT 0
@@ -34,11 +35,23 @@ const char *regs[] = {
     "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
 };
 
+typedef struct cpu_state{
+  uint32_t gpr[32];
+  uint32_t pc;
+} cpu_state;
 
 Vtop *top = new Vtop;
 VerilatedVcdC *m_trace = new VerilatedVcdC;
+cpu_state cpu;
+
+enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 
 void init_disasm(const char *triple);
+
+void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
+void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
+void (*ref_difftest_exec)(uint64_t n) = NULL;
+void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 void ebreak() {
     is_quit = 1;
@@ -115,6 +128,38 @@ uint32_t pmem_read(uint32_t pc){
     return *(uint32_t *)(pmem + pc - 0x80000000);
 }
 
+void init_difftest(char *ref_so_file, long img_size, int port) {
+  assert(ref_so_file != NULL);
+
+  void *handle;
+  handle = dlopen(ref_so_file, RTLD_LAZY);
+  assert(handle);
+
+  ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
+  assert(ref_difftest_memcpy);
+
+  ref_difftest_regcpy = dlsym(handle, "difftest_regcpy");
+  assert(ref_difftest_regcpy);
+
+  ref_difftest_exec = dlsym(handle, "difftest_exec");
+  assert(ref_difftest_exec);
+
+  ref_difftest_raise_intr = dlsym(handle, "difftest_raise_intr");
+  assert(ref_difftest_raise_intr);
+
+  void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
+  assert(ref_difftest_init);
+
+  printf("Differential testing: \33[1;32mON\33[0m \n");
+  printf("The result of every instruction will be compared with %s. "
+      "This will help you a lot for debugging, but also significantly reduce the performance. "
+      "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
+
+  ref_difftest_init(port);
+  ref_difftest_memcpy(0x80000000, pmem, img_size, DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+}
+
 void npc_exec(int n) {
     while (n--) { 
         top->clk ^= 1;
@@ -140,6 +185,12 @@ void npc_exec(int n) {
         disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
         printf("%s\n", inst_buf);
         
+        // store cpu state
+        cpu.pc = top->pc;
+        for (int i = 0; i < 32; i++) {
+            cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
+        }
+
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
