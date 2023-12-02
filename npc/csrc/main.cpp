@@ -229,18 +229,16 @@ void npc_exec(int n) {
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
         printf("%s\n", inst_buf);
-        
-        // store cpu state
-        cpu.pc = top->pc;
-        for (int i = 0; i < 32; i++) {
-            cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
-        }
-
-        reg_display();
 
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
+
+        // store cpu state
+        cpu.pc = top->pc-4;
+        for (int i = 0; i < 32; i++) {
+            cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
+        }
 
         // difftest
         difftest_step(top->pc-4);
@@ -364,8 +362,6 @@ int main(int argc, char** argv, char** env) {
 
     // initial difftest
     init_difftest(ref_so_file, img_size, 1234);
-
-    reg_display();
 
     for (char *str; (str = rl_gets()) != NULL; ) {
         char *str_end = str + strlen(str);
