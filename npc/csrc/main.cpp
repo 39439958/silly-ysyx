@@ -91,6 +91,7 @@ void reg_display() {
 void init_mem() {
     memset(pmem, rand(), 0x8000000);
     memcpy(pmem, img, sizeof(img));
+    cpu.pc = 0x80000000;
 }
 
 void parse_img(int argc, char** argv) {
@@ -236,7 +237,6 @@ void npc_exec(int n) {
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
-        printf("pc = 0x%08x\n", cpu.pc);
 
         top->eval();
         m_trace->dump(sim_time);
