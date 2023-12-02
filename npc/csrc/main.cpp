@@ -197,8 +197,8 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 void difftest_step(uint32_t pc) {
     cpu_state ref_r;
-    
-    ref_difftest_exec(1);
+
+    //ref_difftest_exec(1);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
     checkregs(&ref_r, pc);
