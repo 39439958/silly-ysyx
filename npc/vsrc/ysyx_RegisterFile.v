@@ -1,20 +1,19 @@
 module ysyx_RegisterFile (
-  input clk,
-
-  input [4:0] waddr,
-  input rf_wr_en,
-  input [31:0] wdata,
-
-  input [4:0] raddr,
-  output [31:0] rdata
+    input clk,
+    input rf_wr_en,
+    input [4:0] waddr,
+    input [31:0] wdata,
+    input [4:0] raddr1, raddr2,
+    output [31:0] rdata1, rdata2
 );
   
-  reg [31:0] rf [31:0];
+    reg [31:0] rf [31:0];
   
-  always @(posedge clk) begin
-    if (rf_wr_en) rf[waddr] <= wdata;
-  end
+    always @(posedge clk) begin
+        if (rf_wr_en) rf[waddr] <= wdata;
+    end
 
-    assign rdata = rf[raddr];
+    assign rdata1 = rf[raddr1];
+    assign rdata2 = rf[raddr2];    
 
 endmodule

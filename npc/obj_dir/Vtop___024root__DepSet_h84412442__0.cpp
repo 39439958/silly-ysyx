@@ -10,8 +10,8 @@
 
 extern "C" void ebreak();
 
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__ebreak_TOP() {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__ebreak_TOP\n"); );
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__idu0__DOT__ebreak_TOP() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__idu0__DOT__ebreak_TOP\n"); );
     // Body
     ebreak();
 }
@@ -46,14 +46,14 @@ void Vtop___024root___eval_triggers__act(Vtop___024root* vlSelf) {
                                        & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk))) 
                                       | ((IData)(vlSelf->rst) 
                                          & (~ (IData)(vlSelf->__Vtrigrprev__TOP__rst))));
-    vlSelf->__VactTriggered.at(1U) = ((IData)(vlSelf->top__DOT__is_ebreak) 
-                                      != (IData)(vlSelf->__Vtrigrprev__TOP__top__DOT__is_ebreak));
+    vlSelf->__VactTriggered.at(1U) = ((IData)(vlSelf->top__DOT__idu0__DOT__is_ebreak) 
+                                      != (IData)(vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak));
     vlSelf->__VactTriggered.at(2U) = ((IData)(vlSelf->clk) 
                                       & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk)));
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
     vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
-    vlSelf->__Vtrigrprev__TOP__top__DOT__is_ebreak 
-        = vlSelf->top__DOT__is_ebreak;
+    vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak 
+        = vlSelf->top__DOT__idu0__DOT__is_ebreak;
     if (VL_UNLIKELY((1U & (~ (IData)(vlSelf->__VactDidInit))))) {
         vlSelf->__VactDidInit = 1U;
         vlSelf->__VactTriggered.at(1U) = 1U;
