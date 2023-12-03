@@ -20,6 +20,7 @@ module ysyx_IDU (
     wire is_jalr;
     wire is_sw;
     wire is_ebreak;
+    wire is_lw;
 
     wire is_add_type;
     wire is_I;
