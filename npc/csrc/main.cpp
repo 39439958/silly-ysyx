@@ -58,7 +58,6 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 extern "C" void pmem_read(int raddr, int *rdata) {
     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
     uint32_t addr = raddr & ~0x3u;
-    printf("data: 0x%08x\n", *(uint32_t *)(pmem + addr - 0x80000000));
     *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
 }
 
