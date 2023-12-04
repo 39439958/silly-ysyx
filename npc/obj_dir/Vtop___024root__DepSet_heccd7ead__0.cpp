@@ -320,9 +320,10 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) 
     __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
     // Body
     __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0U;
-    if (((IData)(vlSelf->top__DOT__idu0__DOT__is_I) 
-         | ((0x17U == (0x7fU & vlSelf->top__DOT__inst)) 
-            | (0x6fU == (0x7fU & vlSelf->top__DOT__inst))))) {
+    if (VL_UNLIKELY(((IData)(vlSelf->top__DOT__idu0__DOT__is_I) 
+                     | ((0x17U == (0x7fU & vlSelf->top__DOT__inst)) 
+                        | (0x6fU == (0x7fU & vlSelf->top__DOT__inst)))))) {
+        VL_WRITEF("China NO1!\n");
         __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
             = vlSelf->top__DOT__exu0__DOT__rf_wdata;
         __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 1U;

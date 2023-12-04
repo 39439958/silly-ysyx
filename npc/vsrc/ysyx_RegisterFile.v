@@ -8,11 +8,14 @@ module ysyx_RegisterFile (
 );
   
     reg [31:0] rf [31:0];
-  
-    always @(posedge clk) begin
-        if (rf_wr_en) rf[waddr] <= wdata;
-    end
 
+    always @(posedge clk) begin
+        if (rf_wr_en) begin
+            rf[waddr] <= wdata;
+            $display("China NO1!");
+        end
+    end
+    
     assign rdata1 = rf[raddr1];
     assign rdata2 = rf[raddr2];    
 
