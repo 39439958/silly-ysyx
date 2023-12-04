@@ -7,8 +7,6 @@ module ysyx_IDU (
   output wire alu_a_sel,
   output wire alu_b_sel,
   output reg[3:0] alu_ctrl,
-  output reg[2:0] dm_rd_sel,
-  output reg[1:0] dm_wr_sel,
   output wire[31:0] imm
 );
     wire [6:0] op;
@@ -22,23 +20,13 @@ module ysyx_IDU (
     wire is_jalr;
     wire is_sw;
     wire is_ebreak;
-
-    wire is_lb;
-    wire is_lbu;
-    wire is_lh;
-    wire is_lhu;
     wire is_lw;
-
-    wire is_sb;
-    wire is_sh;
-    wire is_sw;
 
     wire is_add_type;
     wire is_I;
     wire is_U;
     wire is_J;
     wire is_R;
-    wire is_S;
 
     // 解析指令
     assign op = inst[6:0];
@@ -53,12 +41,10 @@ module ysyx_IDU (
     assign  is_jalr = (op == 7'h67) && (funct == 3'h0);
     assign  is_sw = (op == 7'h23) && (funct == 3'h2);
 
-    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S;
+    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr;
     assign  is_I = is_addi | is_jalr;
     assign  is_U = is_auipc;
     assign  is_J = is_jal;
-    assign  is_S = is_sw | is_sb | is_sh;
-    
 
     // 扩展立即数
     ysyx_ImmExtend imm0(
@@ -76,10 +62,10 @@ module ysyx_IDU (
     assign do_jump = is_J | is_jalr;
 
     // alu_a_sel
-    assign alu_a_sel = is_I | is_R | is_S;
+    assign alu_a_sel = is_I | is_R;
 
     // alu_b_sel
-    assign alu_b_sel = 1'b1;
+    assign alu_b_sel = ~is_R;
 
     // alu_sel
     always@(*)
@@ -88,26 +74,6 @@ module ysyx_IDU (
         else if(is_lui) alu_ctrl = 4'b1110;
         else alu_ctrl = 0;
     end
-
-    // dm_rd_sel
-    always@(*)
-    begin
-        if(is_lb) dm_rd_sel = 3'b001;
-        else if(is_lbu) dm_rd_sel = 3'b010;
-        else if(is_lh) dm_rd_sel = 3'b011;
-        else if(is_lhu) dm_rd_sel = 3'b100;
-        else if(is_lw) dm_rd_sel = 3'b101;
-        else dm_rd_sel = 3'b000;
-    end
-
-    // dm_wr_sel
-    always@(*)
-    begin
-        if(is_sb) dm_wr_sel = 2'b01;
-        else if(is_sh) dm_wr_sel = 2'b10;
-        else if(is_sw) dm_wr_sel = 2'b11;
-        else dm_wr_sel = 2'b00;
-    end  
 
     // is_ebreak
     import "DPI-C" function void ebreak();

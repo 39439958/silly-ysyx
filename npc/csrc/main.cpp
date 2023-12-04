@@ -231,47 +231,37 @@ void npc_exec(int n) {
         m_trace->dump(sim_time);
         sim_time++;
 
-        // save pc
+        top->clk ^= 1;
+        pmem_read(top->pc, (int *)&top->inst);
+
+        // print instruction
         char inst_buf[64];
         char *p = inst_buf;
-        uint32_t this_pc = top->rootp->top__DOT__pc;
-        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->rootp->top__DOT__pc);
+        uint8_t *inst = (uint8_t *)&top->inst;
+        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->pc);
+        for (int j = 3; j >= 0; j--) {
+            p += snprintf(p, 4, " %02x", inst[j]);
+        }
+        memset(p, ' ', 4);
+        p += 4;
+        void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+        disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
+        printf("%s\n", inst_buf);
 
-        // execute
-        top->clk ^= 1;
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
 
-        printf("pc : %x\n", top->rootp->top__DOT__pc);
-        printf("inst : %x\n", top->rootp->top__DOT__inst);
-
-        // save inst
-        // uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
-        // for (int j = 3; j >= 0; j--) {
-        //     p += snprintf(p, 4, " %02x", inst[j]);
-        // }
-        // memset(p, ' ', 4);
-        // p += 4;
-        // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        // disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
-        // printf("%s\n", inst_buf);
-
-        // reset r0 = 0
-        top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
-
         // store cpu state
-        cpu.pc = top->rootp->top__DOT__pc;
+        cpu.pc = top->pc;
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
-        //printf("%x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
-
         // difftest
-        difftest_step(top->rootp->top__DOT__pc);
+        difftest_step(top->pc);
 
-        if (top->rootp->top__DOT__inst == 0x0000006f) {
+        if (top->inst == 0x0000006f) {
             is_quit = 1;
             quit_state = NPC_ABORT;
         }
