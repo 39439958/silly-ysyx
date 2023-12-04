@@ -65,7 +65,7 @@ module ysyx_IDU (
     assign alu_a_sel = is_I | is_R;
 
     // alu_b_sel
-    assign alu_b_sel = ~is_R;
+    assign alu_b_sel = 1'b1;
 
     // alu_sel
     always@(*)

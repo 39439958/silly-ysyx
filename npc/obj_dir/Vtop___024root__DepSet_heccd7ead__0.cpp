@@ -130,10 +130,6 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                    | (IData)(vlSelf->top__DOT__idu0__DOT__is_jalr));
     vlSelf->top__DOT__idu0__DOT__is_I = ((IData)(vlSelf->top__DOT__idu0__DOT__is_addi) 
                                          | (IData)(vlSelf->top__DOT__idu0__DOT__is_jalr));
-    vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b 
-        = ((IData)(vlSelf->top__DOT__idu0__DOT__is_R)
-            ? vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
-           [(0x1fU & (vlSelf->inst >> 0x14U))] : vlSelf->top__DOT__imm);
     vlSelf->top__DOT__alu_ctrl = (((IData)(vlSelf->top__DOT__idu0__DOT__is_addi) 
                                    | ((0x17U == (0x7fU 
                                                  & vlSelf->inst)) 
@@ -148,7 +144,7 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
         = ((IData)(vlSelf->top__DOT__alu_a_sel) ? vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
            [(0x1fU & (vlSelf->inst >> 0xfU))] : vlSelf->pc);
     top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0 
-        = (VL_LTS_III(32, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)
+        = (VL_LTS_III(32, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a, vlSelf->top__DOT__imm)
             ? 1U : 0U);
     vlSelf->top__DOT__exu0__DOT__alu_out = ((8U & (IData)(vlSelf->top__DOT__alu_ctrl))
                                              ? ((4U 
@@ -160,14 +156,14 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                  ((1U 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                    ? 0U
-                                                   : vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)
+                                                   : vlSelf->top__DOT__imm)
                                                   : 
                                                  ((1U 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                    ? 
                                                   VL_SHIFTRS_III(32,32,5, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a, 
                                                                  (0x1fU 
-                                                                  & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                                  & vlSelf->top__DOT__imm))
                                                    : 0U))
                                                  : 
                                                 ((2U 
@@ -179,7 +175,7 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                    ? 0U
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   - vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))))
+                                                   - vlSelf->top__DOT__imm))))
                                              : ((4U 
                                                  & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                  ? 
@@ -190,10 +186,10 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                    ? 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)
+                                                   & vlSelf->top__DOT__imm)
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   | vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                   | vlSelf->top__DOT__imm))
                                                   : 
                                                  ((1U 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
@@ -201,10 +197,10 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                    >> 
                                                    (0x1fU 
-                                                    & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                    & vlSelf->top__DOT__imm))
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   ^ vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)))
+                                                   ^ vlSelf->top__DOT__imm)))
                                                  : 
                                                 ((2U 
                                                   & (IData)(vlSelf->top__DOT__alu_ctrl))
@@ -215,12 +211,12 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                   ((vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                     >> 0x1fU)
                                                     ? 
-                                                   ((vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b 
+                                                   ((vlSelf->top__DOT__imm 
                                                      >> 0x1fU)
                                                      ? top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0
                                                      : 0U)
                                                     : 
-                                                   ((vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b 
+                                                   ((vlSelf->top__DOT__imm 
                                                      >> 0x1fU)
                                                      ? 1U
                                                      : top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0))
@@ -232,10 +228,10 @@ VL_INLINE_OPT void Vtop___024root___ico_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                    << 
                                                    (0x1fU 
-                                                    & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                    & vlSelf->top__DOT__imm))
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   + vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)))));
+                                                   + vlSelf->top__DOT__imm)))));
 }
 
 void Vtop___024root___eval_ico(Vtop___024root* vlSelf) {
@@ -320,17 +316,6 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__3(Vtop___024root* vlSelf) 
     vlSelf->pc = vlSelf->__Vdly__pc;
 }
 
-VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__4(Vtop___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__4\n"); );
-    // Body
-    vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b 
-        = ((IData)(vlSelf->top__DOT__idu0__DOT__is_R)
-            ? vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
-           [(0x1fU & (vlSelf->inst >> 0x14U))] : vlSelf->top__DOT__imm);
-}
-
 VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -343,7 +328,7 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
         = ((IData)(vlSelf->top__DOT__alu_a_sel) ? vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
            [(0x1fU & (vlSelf->inst >> 0xfU))] : vlSelf->pc);
     top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0 
-        = (VL_LTS_III(32, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)
+        = (VL_LTS_III(32, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a, vlSelf->top__DOT__imm)
             ? 1U : 0U);
     vlSelf->top__DOT__exu0__DOT__alu_out = ((8U & (IData)(vlSelf->top__DOT__alu_ctrl))
                                              ? ((4U 
@@ -355,14 +340,14 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
                                                  ((1U 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                    ? 0U
-                                                   : vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)
+                                                   : vlSelf->top__DOT__imm)
                                                   : 
                                                  ((1U 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                    ? 
                                                   VL_SHIFTRS_III(32,32,5, vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a, 
                                                                  (0x1fU 
-                                                                  & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                                  & vlSelf->top__DOT__imm))
                                                    : 0U))
                                                  : 
                                                 ((2U 
@@ -374,7 +359,7 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
                                                    ? 0U
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   - vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))))
+                                                   - vlSelf->top__DOT__imm))))
                                              : ((4U 
                                                  & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                  ? 
@@ -385,10 +370,10 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
                                                    ? 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)
+                                                   & vlSelf->top__DOT__imm)
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   | vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                   | vlSelf->top__DOT__imm))
                                                   : 
                                                  ((1U 
                                                    & (IData)(vlSelf->top__DOT__alu_ctrl))
@@ -396,10 +381,10 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                    >> 
                                                    (0x1fU 
-                                                    & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                    & vlSelf->top__DOT__imm))
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   ^ vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)))
+                                                   ^ vlSelf->top__DOT__imm)))
                                                  : 
                                                 ((2U 
                                                   & (IData)(vlSelf->top__DOT__alu_ctrl))
@@ -410,12 +395,12 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
                                                   ((vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                     >> 0x1fU)
                                                     ? 
-                                                   ((vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b 
+                                                   ((vlSelf->top__DOT__imm 
                                                      >> 0x1fU)
                                                      ? top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0
                                                      : 0U)
                                                     : 
-                                                   ((vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b 
+                                                   ((vlSelf->top__DOT__imm 
                                                      >> 0x1fU)
                                                      ? 1U
                                                      : top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0))
@@ -427,10 +412,10 @@ VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                    << 
                                                    (0x1fU 
-                                                    & vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b))
+                                                    & vlSelf->top__DOT__imm))
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
-                                                   + vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b)))));
+                                                   + vlSelf->top__DOT__imm)))));
 }
 
 void Vtop___024root___eval_nba(Vtop___024root* vlSelf) {
@@ -450,9 +435,6 @@ void Vtop___024root___eval_nba(Vtop___024root* vlSelf) {
     }
     if (vlSelf->__VnbaTriggered.at(0U)) {
         Vtop___024root___nba_sequent__TOP__3(vlSelf);
-    }
-    if (vlSelf->__VnbaTriggered.at(2U)) {
-        Vtop___024root___nba_sequent__TOP__4(vlSelf);
     }
     if ((vlSelf->__VnbaTriggered.at(0U) | vlSelf->__VnbaTriggered.at(2U))) {
         Vtop___024root___nba_comb__TOP__0(vlSelf);
