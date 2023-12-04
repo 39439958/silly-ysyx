@@ -242,8 +242,6 @@ void npc_exec(int n) {
 
         // execute
         top->eval();
-        top->eval();
-        top->eval();
         m_trace->dump(sim_time);
         sim_time++;
 
