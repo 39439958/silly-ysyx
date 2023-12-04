@@ -300,7 +300,8 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) 
                 ? ((IData)(4U) + vlSelf->pc) : vlSelf->top__DOT__exu0__DOT__alu_out);
         __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 1U;
         __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
-            = (0x1fU & (vlSelf->inst >> 7U));
+            = ((IData)(vlSelf->top__DOT__alu_a_sel)
+                ? (0x1fU & (vlSelf->inst >> 7U)) : 1U);
     }
     if (__Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0) {
         vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf[__Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0] 

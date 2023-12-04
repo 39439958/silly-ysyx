@@ -45,6 +45,7 @@ VL_ATTR_COLD void Vtop___024root__trace_init_sub__TOP__0(Vtop___024root* vlSelf,
     tracep->declBus(c+71,"rf_wdata", false,-1, 31,0);
     tracep->declBus(c+72,"rs1", false,-1, 31,0);
     tracep->declBus(c+73,"rs2", false,-1, 31,0);
+    tracep->declBus(c+74,"waddr", false,-1, 4,0);
     tracep->pushNamePrefix("alu0 ");
     tracep->declBus(c+69,"SrcA", false,-1, 31,0);
     tracep->declBus(c+9,"SrcB", false,-1, 31,0);
@@ -253,8 +254,9 @@ VL_ATTR_COLD void Vtop___024root__trace_full_sub_0(Vtop___024root* vlSelf, Veril
     bufp->fullIData(oldp+73,(vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
                              [(0x1fU & (vlSelf->inst 
                                         >> 0x14U))]),32);
-    bufp->fullCData(oldp+74,((0x1fU & (vlSelf->inst 
-                                       >> 7U))),5);
+    bufp->fullCData(oldp+74,(((IData)(vlSelf->top__DOT__alu_a_sel)
+                               ? (0x1fU & (vlSelf->inst 
+                                           >> 7U)) : 1U)),5);
     bufp->fullCData(oldp+75,((0x1fU & (vlSelf->inst 
                                        >> 0xfU))),5);
     bufp->fullCData(oldp+76,((0x1fU & (vlSelf->inst 
