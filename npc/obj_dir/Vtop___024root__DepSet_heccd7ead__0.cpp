@@ -316,10 +316,12 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) 
     IData/*31:0*/ __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
     __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
     // Body
-    VL_WRITEF("China NO1! %10# %10#\nChina NO1! %10# %10#\n",
+    VL_WRITEF("China NO1!  %2# %10# %10#\nChina NO1!  %2# %10# %10#\n",
+              5,(0x1fU & (vlSelf->top__DOT__inst >> 7U)),
               32,vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
               [(0x1fU & (vlSelf->top__DOT__inst >> 7U))],
               32,vlSelf->top__DOT__exu0__DOT__rf_wdata,
+              5,(0x1fU & (vlSelf->top__DOT__inst >> 7U)),
               32,vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
               [(0x1fU & (vlSelf->top__DOT__inst >> 7U))],
               32,vlSelf->top__DOT__exu0__DOT__rf_wdata);
