@@ -12,8 +12,8 @@ module ysyx_RegisterFile (
     always @(posedge clk) begin
         if (rf_wr_en) begin
             rf[waddr] <= wdata;
+            $display("China NO1! %d", rf_wr_en);
         end
-        $display("China NO1! %d", rf_wr_en);
     end
     
     assign rdata1 = rf[raddr1];
