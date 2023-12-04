@@ -266,7 +266,7 @@ void npc_exec(int n) {
         }
 
         // difftest
-        difftest_step(this_pc);
+        difftest_step(top->rootp->top__DOT__pc);
 
         if (top->rootp->top__DOT__inst == 0x0000006f) {
             is_quit = 1;
