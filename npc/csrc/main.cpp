@@ -162,7 +162,6 @@ void npc_rst() {
 }
 
 bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
-    printf("ref_r->pc=0x%8x, cpu.pc=0x%8x", ref_r->pc, cpu.pc);
     for (int i = 0; i < 32; i++) {
         if (ref_r->gpr[i] != cpu.gpr[i]) {
             printf("ref_r->gpr[%d] = 0x%08x, cpu.gpr[%d] = 0x%08x\n", i, ref_r->gpr[i], i, cpu.gpr[i]);
@@ -240,10 +239,12 @@ void npc_exec(int n) {
 
         // execute
         top->clk ^= 1;
-        printf("%d", top->clk);
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
+
+        printf("pc : %x\n", top->rootp->top__DOT__pc);
+        printf("inst : %x\n", top->rootp->top__DOT__inst);
 
         // save inst
         // uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
