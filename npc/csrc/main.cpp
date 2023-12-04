@@ -245,6 +245,7 @@ void npc_exec(int n) {
 
         printf("pc : %x\n", top->rootp->top__DOT__pc);
         printf("inst : %x\n", top->rootp->top__DOT__inst);
+        printf("is_addi : %d\n", top->rootp->top__DOT__idu0__DOT__is_addi);
         printf("reg[1] : %x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
         // save inst
