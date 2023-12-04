@@ -1,9 +1,15 @@
 module top (
     input clk,
-    input wire rst,
-    input wire [31:0] inst,
-    output wire [31:0] pc
+    input wire rst
 );
+    // pc
+    import "DPI-C" function void pmem_read(input int raddr, output int rdata);
+    reg [31:0] inst;
+    reg [31:0] pc;
+    always @(pc) begin
+        if(~rst) pmem_read(pc, inst);
+    end
+
     // idu
     wire rf_wr_en;
     wire rf_wr_sel;
