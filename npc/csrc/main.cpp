@@ -264,6 +264,7 @@ void npc_exec(int n) {
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
+        printf("r0 = %d\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0]);
 
         // difftest
         difftest_step(top->pc);
