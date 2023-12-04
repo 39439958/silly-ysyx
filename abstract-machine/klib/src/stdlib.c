@@ -87,14 +87,14 @@ void *malloc(size_t size) {
         malloc_addr = (void *)ROUNDUP(heap.start, 8);
         is_initial = true;
     }
-// #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
+#if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
     size = (size_t)ROUNDUP(size, 8);
     char *old = malloc_addr;
     malloc_addr += size;
     //assert((uintptr_t)heap.start <= (uintptr_t)malloc_addr && (uintptr_t)malloc_addr < (uintptr_t)heap.end);
     return old;
-// #endif
-//   return NULL;
+#endif
+    return NULL;
 }
 
 void free(void *ptr) {
