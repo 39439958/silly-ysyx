@@ -38,6 +38,7 @@ module ysyx_IDU (
     wire is_U;
     wire is_J;
     wire is_R;
+    wire is_S;
 
     // 解析指令
     assign op = inst[6:0];
@@ -52,10 +53,12 @@ module ysyx_IDU (
     assign  is_jalr = (op == 7'h67) && (funct == 3'h0);
     assign  is_sw = (op == 7'h23) && (funct == 3'h2);
 
-    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr;
+    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S;
     assign  is_I = is_addi | is_jalr;
     assign  is_U = is_auipc;
     assign  is_J = is_jal;
+    assign  is_S = is_sw | is_sb | is_sh;
+    
 
     // 扩展立即数
     ysyx_ImmExtend imm0(
@@ -73,7 +76,7 @@ module ysyx_IDU (
     assign do_jump = is_J | is_jalr;
 
     // alu_a_sel
-    assign alu_a_sel = is_I | is_R;
+    assign alu_a_sel = is_I | is_R | is_S;
 
     // alu_b_sel
     assign alu_b_sel = 1'b1;
