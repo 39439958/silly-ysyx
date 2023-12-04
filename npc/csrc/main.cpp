@@ -243,26 +243,16 @@ void npc_exec(int n) {
         m_trace->dump(sim_time);
         sim_time++;
 
-        printf("pc : %x\n", top->rootp->top__DOT__pc);
-        printf("inst : %x\n", top->rootp->top__DOT__inst);
-        printf("is_addi : %d\n", top->rootp->top__DOT__idu0__DOT__is_addi);
-        printf("alu_out : %x\n", top->rootp->top__DOT__exu0__DOT__alu_out);
-        printf("rf_wdata : %x\n", top->rootp->top__DOT__exu0__DOT__rf_wdata);
-        printf("reg[1] : %x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
-        printf("rd : %x\n", (top->rootp->top__DOT__inst & 0x00000f80) >> 7);
-        
-        
-
-        // save inst
-        // uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
-        // for (int j = 3; j >= 0; j--) {
-        //     p += snprintf(p, 4, " %02x", inst[j]);
-        // }
-        // memset(p, ' ', 4);
-        // p += 4;
-        // void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        // disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
-        // printf("%s\n", inst_buf);
+        save inst
+        uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
+        for (int j = 3; j >= 0; j--) {
+            p += snprintf(p, 4, " %02x", inst[j]);
+        }
+        memset(p, ' ', 4);
+        p += 4;
+        void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+        disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
+        printf("%s\n", inst_buf);
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;

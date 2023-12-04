@@ -6,7 +6,7 @@ module top (
     import "DPI-C" function void pmem_read(input int raddr, output int rdata);
     reg [31:0] inst;
     reg [31:0] pc;
-    always @(pc) begin
+    always @(posedge clk) begin
         if(~rst) pmem_read(pc, inst);
     end
 
