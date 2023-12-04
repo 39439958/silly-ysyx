@@ -242,6 +242,8 @@ void npc_exec(int n) {
 
         // execute
         top->eval();
+        top->eval();
+        top->eval();
         m_trace->dump(sim_time);
         sim_time++;
 
@@ -264,22 +266,6 @@ void npc_exec(int n) {
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
-
-        top->clk ^= 1;
-        top->rst = 0;
-        top->eval();
-        
-        top->clk ^= 1;
-        top->rst = 0;
-        top->eval();
-
-        top->clk ^= 1;
-        top->rst = 0;
-        top->eval();
-
-        top->clk ^= 1;
-        top->rst = 0;
-        top->eval();
 
         printf("%x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
