@@ -1,52 +1,21 @@
-TOPNAME = top
-NXDC_FILES = constr/top.nxdc
-INC_PATH ?=
-
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc \
-				-O3 --x-assign fast --x-initial fast --noassert
-
-BUILD_DIR = ./build
-OBJ_DIR = $(BUILD_DIR)/obj_dir
-BIN = $(BUILD_DIR)/$(TOPNAME)
-
-default: $(BIN)
-
-$(shell mkdir -p $(BUILD_DIR))
-
-# constraint file
-SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
-$(SRC_AUTO_BIND): $(NXDC_FILES)
-	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
+VERILATOR_CFLAGS += -cc --build --exe --trace -CFLAGS "$(shell llvm-config --cxxflags) -fPIE" -LDFLAGS "-lLLVM-14 -lreadline"
 
 # project source
-CSRCS = $(NPC_HOME)/csrc/*.cpp
-VSRCS = $(NPC_HOME)/vsrc/*.v
-CSRCS += $(SRC_AUTO_BIND)
+CSRCS = $(NPC_HOME)/csrc/*.cpp $(NPC_HOME)/csrc/*.cc 
+VSRCS = $(NPC_HOME)/vsrc/*.v  
 
-# rules for NVBoard
-include $(NVBOARD_HOME)/scripts/nvboard.mk
+IMG ?=
+NEMU_EXEC := ./obj_dir/Vtop $(IMG)
 
-# rules for verilator
-INCFLAGS = $(addprefix -I, $(INC_PATH))
-CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
-
-$(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
-	@rm -rf $(OBJ_DIR)
-	$(VERILATOR) $(VERILATOR_CFLAGS) \
-		--top-module $(TOPNAME) $^ \
-		$(addprefix -CFLAGS , $(CXXFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-		--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
-
-all: default
-
-sim: $(BIN)
-	@$^
+run: 
+	$(VERILATOR) $(VERILATOR_CFLAGS) $(VSRCS) $(CSRCS)
+	$(NEMU_EXEC)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf obj_dir
 
-.PHONY: default all clean sim
+.PHONY: clean run
 
 include ../Makefile
