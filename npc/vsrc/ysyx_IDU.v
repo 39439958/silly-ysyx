@@ -7,8 +7,7 @@ module ysyx_IDU (
   output wire alu_a_sel,
   output wire alu_b_sel,
   output reg[3:0] alu_ctrl,
-  output wire[31:0] imm,
-  output wire is_jalr
+  output wire[31:0] imm
 );
     wire [6:0] op;
     wire [2:0] funct;
@@ -18,6 +17,7 @@ module ysyx_IDU (
     wire is_auipc;
     wire is_lui;
     wire is_jal;
+    wire is_jalr;
     wire is_sw;
     wire is_ebreak;
     wire is_lw;

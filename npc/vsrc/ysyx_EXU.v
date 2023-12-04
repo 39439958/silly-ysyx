@@ -8,7 +8,6 @@ module ysyx_EXU (
     input alu_b_sel,
     input [3:0] alu_ctrl,
     input [31:0] imm,
-    input wire is_jalr,
     output [31:0] jump_addr
 );
     // alu
@@ -22,11 +21,10 @@ module ysyx_EXU (
     // regfile
     wire [31:0] rf_wdata;
     wire [31:0] rs1, rs2;
-    wire [4:0] waddr;
 
     assign rf_wdata = rf_wr_sel ? pc + 4 : alu_out;
     assign jump_addr = alu_a_sel ? ({alu_out[31:1], 1'b0}) : alu_out;
-    assign waddr = is_jalr ? 5'b00001 : inst[11:7];
+
 
     ysyx_ALU alu0(
         .SrcA (alu_a),
@@ -38,7 +36,7 @@ module ysyx_EXU (
     ysyx_RegisterFile regfile0(
         .clk (clk),
         .rf_wr_en (rf_wr_en),
-        .waddr (waddr),
+        .waddr (inst[11:7]),
         .wdata (rf_wdata),
         .raddr1 (inst[19:15]),
         .raddr2 (inst[24:20]),

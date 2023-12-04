@@ -12,7 +12,6 @@ module top (
     wire alu_b_sel;
     wire [3:0] alu_ctrl;
     wire [31:0] imm;
-    wire is_jalr;
 
     // exu
     wire [31:0] jump_addr;
@@ -36,7 +35,6 @@ module top (
         .alu_b_sel (alu_b_sel), 
         .alu_ctrl (alu_ctrl),
         .imm (imm),
-        .is_jalr (is_jalr)
     );
 
     ysyx_EXU exu0(
@@ -49,7 +47,6 @@ module top (
         .alu_b_sel (alu_b_sel),
         .alu_ctrl (alu_ctrl),
         .imm (imm),
-        .is_jalr (is_jalr),
         .jump_addr (jump_addr)
     );
 
