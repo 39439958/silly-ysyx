@@ -262,6 +262,9 @@ void npc_exec(int n) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
+        // reset r0 = 0
+        top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
+
         // difftest
         difftest_step(top->pc);
 
