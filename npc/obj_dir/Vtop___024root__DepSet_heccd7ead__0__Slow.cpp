@@ -184,7 +184,13 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__idu0__DOT__is_addi = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_ebreak = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_lb = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_lbu = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_lh = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_lhu = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_lw = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_sb = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_sh = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_I = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_R = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 5; ++__Vi0) {

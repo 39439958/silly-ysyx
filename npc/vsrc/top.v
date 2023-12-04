@@ -12,6 +12,8 @@ module top (
     wire alu_b_sel;
     wire [3:0] alu_ctrl;
     wire [31:0] imm;
+    wire [2:0] dm_rd_sel;
+    wire [1:0] dm_wr_sel;
 
     // exu
     wire [31:0] jump_addr;
@@ -34,6 +36,8 @@ module top (
         .alu_a_sel (alu_a_sel),
         .alu_b_sel (alu_b_sel), 
         .alu_ctrl (alu_ctrl),
+        .dm_rd_sel (dm_rd_sel),
+        .dm_wr_sel (dm_wr_sel),
         .imm (imm)
     );
 
@@ -47,6 +51,8 @@ module top (
         .alu_b_sel (alu_b_sel),
         .alu_ctrl (alu_ctrl),
         .imm (imm),
+        .dm_rd_sel (dm_rd_sel),
+        .dm_wr_sel (dm_wr_sel),
         .jump_addr (jump_addr)
     );
 

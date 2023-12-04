@@ -7,6 +7,8 @@ module ysyx_IDU (
   output wire alu_a_sel,
   output wire alu_b_sel,
   output reg[3:0] alu_ctrl,
+  output reg[2:0] dm_rd_sel,
+  output reg[1:0] dm_wr_sel,
   output wire[31:0] imm
 );
     wire [6:0] op;
@@ -20,7 +22,16 @@ module ysyx_IDU (
     wire is_jalr;
     wire is_sw;
     wire is_ebreak;
+
+    wire is_lb;
+    wire is_lbu;
+    wire is_lh;
+    wire is_lhu;
     wire is_lw;
+
+    wire is_sb;
+    wire is_sh;
+    wire is_sw;
 
     wire is_add_type;
     wire is_I;
@@ -74,6 +85,26 @@ module ysyx_IDU (
         else if(is_lui) alu_ctrl = 4'b1110;
         else alu_ctrl = 0;
     end
+
+    // dm_rd_sel
+    always@(*)
+    begin
+        if(is_lb) dm_rd_sel = 3'b001;
+        else if(is_lbu) dm_rd_sel = 3'b010;
+        else if(is_lh) dm_rd_sel = 3'b011;
+        else if(is_lhu) dm_rd_sel = 3'b100;
+        else if(is_lw) dm_rd_sel = 3'b101;
+        else dm_rd_sel = 3'b000;
+    end
+
+    // dm_wr_sel
+    always@(*)
+    begin
+        if(is_sb) dm_wr_sel = 2'b01;
+        else if(is_sh) dm_wr_sel = 2'b10;
+        else if(is_sw) dm_wr_sel = 2'b11;
+        else dm_wr_sel = 2'b00;
+    end  
 
     // is_ebreak
     import "DPI-C" function void ebreak();

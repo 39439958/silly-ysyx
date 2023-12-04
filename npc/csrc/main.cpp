@@ -55,11 +55,11 @@ void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
-// extern "C" void pmem_read(int raddr, int *rdata) {
-//     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
-//     uint32_t addr = raddr & ~0x3u;
-//     *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
-// }
+void pmem_read(int raddr, int *rdata) {
+    // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
+    uint32_t addr = raddr & ~0x3u;
+    *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
+}
 
 // extern "C" void pmem_write(int waddr, int wdata, char wmask) {
 //     // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
@@ -76,9 +76,9 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 //     *p = (*p & ~mask) | (wdata & mask);
 // }
 
-uint32_t pmem_read(uint32_t pc) {
-    return *(uint32_t *)(pmem + pc - 0x80000000);
-}
+// uint32_t pmem_read(uint32_t pc) {
+//     return *(uint32_t *)(pmem + pc - 0x80000000);
+// }
 
 void ebreak() {
     is_quit = 1;
@@ -236,7 +236,7 @@ void npc_exec(int n) {
         sim_time++;
 
         top->clk ^= 1;
-        top->inst = pmem_read(top->pc);
+        pmem_read(top->pc, (int *)&top->inst);
 
         // print instruction
         char inst_buf[64];
@@ -357,7 +357,8 @@ static int cmd_x(char *args) {
     uint32_t addr;
     sscanf(args, "%d 0x%x", &n, &addr);
     for (int i = 0; i < n; i++) {
-        uint32_t data = pmem_read(addr + i * 4);
+        uint32_t data;
+        pmem_read(addr + i * 4, (int *)&data);
         printf("0x%08x: 0x%08x\n", addr + i * 4, data);
     }
     return 0;
