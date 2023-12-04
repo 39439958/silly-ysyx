@@ -243,7 +243,7 @@ void npc_exec(int n) {
         m_trace->dump(sim_time);
         sim_time++;
 
-        save inst
+        // save inst
         uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
         for (int j = 3; j >= 0; j--) {
             p += snprintf(p, 4, " %02x", inst[j]);
