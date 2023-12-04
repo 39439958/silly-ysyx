@@ -345,10 +345,6 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
                                                                           & (vlSelf->top__DOT__inst 
                                                                              >> 0x14U))], 0xfU);
     }
-    vlSelf->top__DOT__exu0__DOT__rf_wdata = ((IData)(vlSelf->top__DOT__rf_wr_sel)
-                                              ? ((IData)(4U) 
-                                                 + vlSelf->top__DOT__pc)
-                                              : vlSelf->top__DOT__exu0__DOT__alu_out);
 }
 
 VL_ATTR_COLD void Vtop___024root___eval_stl(Vtop___024root* vlSelf) {
@@ -444,13 +440,13 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__lut_out = VL_RAND_RESET_I(32);
     vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__hit = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__exu0__DOT__alu_out = VL_RAND_RESET_I(32);
-    vlSelf->top__DOT__exu0__DOT__rf_wdata = VL_RAND_RESET_I(32);
     vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a = VL_RAND_RESET_I(32);
     vlSelf->top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0 = VL_RAND_RESET_I(32);
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__VdfgTmp_h441be388__0 = 0;
+    vlSelf->__Vdly__top__DOT__pc = VL_RAND_RESET_I(32);
     vlSelf->__Vtrigrprev__TOP__clk = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__rst = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak = VL_RAND_RESET_I(1);
