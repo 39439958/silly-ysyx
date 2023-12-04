@@ -260,7 +260,7 @@ void npc_exec(int n) {
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
 
         // store cpu state
-        cpu.pc = this_pc;
+        cpu.pc = top->rootp->top__DOT__pc;
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
