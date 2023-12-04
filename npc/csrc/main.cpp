@@ -232,6 +232,9 @@ void npc_exec(int n) {
         sim_time++;
 
         top->clk ^= 1;
+        top->eval();
+        m_trace->dump(sim_time);
+        sim_time++;
 
         // print instruction
         char inst_buf[64];
@@ -246,10 +249,6 @@ void npc_exec(int n) {
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, top->rootp->top__DOT__pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
         printf("%s\n", inst_buf);
-
-        top->eval();
-        m_trace->dump(sim_time);
-        sim_time++;
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
