@@ -249,6 +249,7 @@ void npc_exec(int n) {
         printf("alu_out : %x\n", top->rootp->top__DOT__exu0__DOT__alu_out);
         printf("rf_wdata : %x\n", top->rootp->top__DOT__exu0__DOT__rf_wdata);
         printf("reg[1] : %x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
+        printf("rd : %x\n", top->rootp->top__DOT__inst & 0x00000f80 >> 7);
 
         // save inst
         // uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
