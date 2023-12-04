@@ -330,6 +330,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) 
         __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
             = (0x1fU & (vlSelf->top__DOT__inst >> 7U));
     }
+    VL_WRITEF("China NO1!\n");
     if (__Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0) {
         vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf[__Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0] 
             = __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;

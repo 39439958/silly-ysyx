@@ -14,6 +14,7 @@ module ysyx_RegisterFile (
             rf[waddr] <= wdata;
             $display("China NO1!");
         end
+        $display("China NO1!");
     end
     
     assign rdata1 = rf[raddr1];
