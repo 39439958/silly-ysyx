@@ -34,7 +34,7 @@ module top (
         .alu_a_sel (alu_a_sel),
         .alu_b_sel (alu_b_sel), 
         .alu_ctrl (alu_ctrl),
-        .imm (imm),
+        .imm (imm)
     );
 
     ysyx_EXU exu0(

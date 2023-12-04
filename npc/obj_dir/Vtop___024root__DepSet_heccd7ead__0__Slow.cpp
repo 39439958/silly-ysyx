@@ -181,8 +181,8 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__alu_a_sel = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__alu_ctrl = VL_RAND_RESET_I(4);
     vlSelf->top__DOT__imm = VL_RAND_RESET_I(32);
-    vlSelf->top__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_addi = VL_RAND_RESET_I(1);
+    vlSelf->top__DOT__idu0__DOT__is_jalr = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_ebreak = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_lw = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_I = VL_RAND_RESET_I(1);
