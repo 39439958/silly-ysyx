@@ -55,25 +55,29 @@ void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
-extern "C" void pmem_read(int raddr, int *rdata) {
-    // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
-    uint32_t addr = raddr & ~0x3u;
-    *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
-}
+// extern "C" void pmem_read(int raddr, int *rdata) {
+//     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
+//     uint32_t addr = raddr & ~0x3u;
+//     *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
+// }
 
-extern "C" void pmem_write(int waddr, int wdata, char wmask) {
-    // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
-    // `wmask`中每比特表示`wdata`中1个字节的掩码,
-    // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-    uint32_t addr = waddr & ~0x3u;
-    uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
-    uint32_t mask = 0; 
-    for (int i = 0; i < 4; i++) {
-        if (wmask & (1 << i)) {
-            mask |= 0xff << (i * 8);
-        }
-    }
-    *p = (*p & ~mask) | (wdata & mask);
+// extern "C" void pmem_write(int waddr, int wdata, char wmask) {
+//     // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
+//     // `wmask`中每比特表示`wdata`中1个字节的掩码,
+//     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
+//     uint32_t addr = waddr & ~0x3u;
+//     uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
+//     uint32_t mask = 0; 
+//     for (int i = 0; i < 4; i++) {
+//         if (wmask & (1 << i)) {
+//             mask |= 0xff << (i * 8);
+//         }
+//     }
+//     *p = (*p & ~mask) | (wdata & mask);
+// }
+
+uint32_t pmem_read(uint32_t pc) {
+    return *(uint32_t *)(pmem + pc - 0x80000000);
 }
 
 void ebreak() {
@@ -232,7 +236,7 @@ void npc_exec(int n) {
         sim_time++;
 
         top->clk ^= 1;
-        pmem_read(top->pc, (int *)&top->inst);
+        top->inst = pmem_read(top->pc);
 
         // print instruction
         char inst_buf[64];
@@ -350,8 +354,7 @@ static int cmd_x(char *args) {
     uint32_t addr;
     sscanf(args, "%d 0x%x", &n, &addr);
     for (int i = 0; i < n; i++) {
-        uint32_t data;
-        pmem_read(addr + i * 4, (int *)&data);
+        uint32_t data = pmem_read(addr + i * 4);
         printf("0x%08x: 0x%08x\n", addr + i * 4, data);
     }
     return 0;
