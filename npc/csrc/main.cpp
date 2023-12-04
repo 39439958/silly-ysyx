@@ -265,7 +265,7 @@ void npc_exec(int n) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
-        printf("%x\n", top->rootp->top__DOT__exu0__DOT__alu_out);
+        printf("%x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
         // difftest
         difftest_step(top->rootp->top__DOT__pc);
