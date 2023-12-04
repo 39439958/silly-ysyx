@@ -5,7 +5,7 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-char buf[1024];
+char print_buf[1024];
 
 int sprintf(char *out, const char *fmt, ...);
 void putch(char ch);
@@ -14,8 +14,8 @@ int printf(const char *fmt, ...) {
     va_list ap;
     va_start(ap, fmt);
     
-    int val = vsnprintf(buf, 1024, fmt, ap);
-    char *tmp = buf;
+    int val = vsnprintf(print_buf, 1024, fmt, ap);
+    char *tmp = print_buf;
     while (*tmp != 0) {
         putch(*tmp);
         tmp++;
