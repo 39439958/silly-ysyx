@@ -12,7 +12,7 @@ module ysyx_RegisterFile (
     always @(posedge clk) begin
         if (rf_wr_en) begin
             rf[waddr] <= wdata;
-            $display("China NO1! %d", rf_wr_en);
+            $display("China NO1! %d %d", rf[waddr], wdata);
         end
     end
     

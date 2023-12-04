@@ -296,25 +296,6 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__1\n"); );
-    // Init
-    CData/*4:0*/ __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
-    __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
-    IData/*31:0*/ __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
-    __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
-    // Body
-    VL_WRITEF("China NO1! 1\n");
-    __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
-        = vlSelf->top__DOT__exu0__DOT__rf_wdata;
-    __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
-        = (0x1fU & (vlSelf->top__DOT__inst >> 7U));
-    vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf[__Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0] 
-        = __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
-}
-
-VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__2\n"); );
     // Body
     vlSelf->top__DOT__pc = ((IData)(vlSelf->rst) ? 0x80000000U
                              : ((IData)(vlSelf->top__DOT__rf_wr_sel)
@@ -323,6 +304,27 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) 
                                         & vlSelf->top__DOT__exu0__DOT__alu_out)
                                      : vlSelf->top__DOT__exu0__DOT__alu_out)
                                  : ((IData)(4U) + vlSelf->top__DOT__pc)));
+}
+
+VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__2(Vtop___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__2\n"); );
+    // Init
+    CData/*4:0*/ __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
+    __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
+    IData/*31:0*/ __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
+    __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
+    // Body
+    VL_WRITEF("China NO1! %10# %10#\n",32,vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
+              [(0x1fU & (vlSelf->top__DOT__inst >> 7U))],
+              32,vlSelf->top__DOT__exu0__DOT__rf_wdata);
+    __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
+        = vlSelf->top__DOT__exu0__DOT__rf_wdata;
+    __Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 
+        = (0x1fU & (vlSelf->top__DOT__inst >> 7U));
+    vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf[__Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0] 
+        = __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
 }
 
 VL_INLINE_OPT void Vtop___024root___nba_comb__TOP__0(Vtop___024root* vlSelf) {
@@ -450,12 +452,12 @@ void Vtop___024root___eval_nba(Vtop___024root* vlSelf) {
     if (vlSelf->__VnbaTriggered.at(2U)) {
         Vtop___024root___nba_sequent__TOP__0(vlSelf);
     }
-    if (vlSelf->__VnbaTriggered.at(3U)) {
-        Vtop___024root___nba_sequent__TOP__1(vlSelf);
-        vlSelf->__Vm_traceActivity[2U] = 1U;
-    }
     if (vlSelf->__VnbaTriggered.at(1U)) {
+        Vtop___024root___nba_sequent__TOP__1(vlSelf);
+    }
+    if (vlSelf->__VnbaTriggered.at(3U)) {
         Vtop___024root___nba_sequent__TOP__2(vlSelf);
+        vlSelf->__Vm_traceActivity[2U] = 1U;
     }
     if ((vlSelf->__VnbaTriggered.at(1U) | vlSelf->__VnbaTriggered.at(3U))) {
         Vtop___024root___nba_comb__TOP__0(vlSelf);
