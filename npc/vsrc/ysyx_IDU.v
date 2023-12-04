@@ -67,7 +67,7 @@ module ysyx_IDU (
     );
 
     // rf_wr_en
-    assign rf_wr_en = is_I | is_U | is_J;
+    assign rf_wr_en = 1'b1;
 
     // rf_wr_sel
     assign rf_wr_sel = is_J | is_jalr;

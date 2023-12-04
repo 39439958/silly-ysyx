@@ -28,7 +28,6 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__idu0__DOT__is_lw;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sb;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sh;
-    CData/*0:0*/ top__DOT__idu0__DOT__is_I;
     CData/*0:0*/ top__DOT__idu0__DOT__is_R;
     CData/*0:0*/ top__DOT__idu0__DOT__is_S;
     CData/*0:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__hit;
