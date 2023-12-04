@@ -256,10 +256,6 @@ void npc_exec(int n) {
         disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
         printf("%s\n", inst_buf);
 
-        top->clk ^= 1;
-        top->rst = 0;
-        top->eval();
-
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
 
@@ -268,6 +264,8 @@ void npc_exec(int n) {
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
+
+        printf("%x\n", top->rootp->top__DOT__exu0__DOT__rf_wdata);
 
         // difftest
         difftest_step(top->rootp->top__DOT__pc);
