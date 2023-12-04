@@ -245,6 +245,7 @@ void npc_exec(int n) {
 
         printf("pc : %x\n", top->rootp->top__DOT__pc);
         printf("inst : %x\n", top->rootp->top__DOT__inst);
+        printf("reg[1] : %x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
         // save inst
         // uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
