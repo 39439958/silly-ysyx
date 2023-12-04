@@ -169,6 +169,7 @@ bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
         }
     }
     if (ref_r->pc != cpu.pc) {
+        printf("ref_r->pc=0x%8x, cpu.pc=0x%8x", ref_r->pc, cpu.pc);
         return false;
     }
     return true;
@@ -232,35 +233,40 @@ void npc_exec(int n) {
         sim_time++;
 
         top->clk ^= 1;
+
+        // save pc
+        char inst_buf[64];
+        char *p = inst_buf;
+        uint32_t this_pc = top->rootp->top__DOT__pc;
+        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->rootp->top__DOT__pc);
+
+        // execute
         top->eval();
         m_trace->dump(sim_time);
         sim_time++;
 
-        // print instruction
-        char inst_buf[64];
-        char *p = inst_buf;
+        // save inst
         uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
-        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->rootp->top__DOT__pc);
         for (int j = 3; j >= 0; j--) {
             p += snprintf(p, 4, " %02x", inst[j]);
         }
         memset(p, ' ', 4);
         p += 4;
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        disassemble(p, inst_buf + sizeof(inst_buf) - p, top->rootp->top__DOT__pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
+        disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
         printf("%s\n", inst_buf);
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
 
         // store cpu state
-        cpu.pc = top->rootp->top__DOT__pc;
+        cpu.pc = this_pc;
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
         // difftest
-        difftest_step(top->rootp->top__DOT__pc);
+        difftest_step(this_pc);
 
         if (top->rootp->top__DOT__inst == 0x0000006f) {
             is_quit = 1;
