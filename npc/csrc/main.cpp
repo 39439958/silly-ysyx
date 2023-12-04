@@ -273,6 +273,14 @@ void npc_exec(int n) {
         top->rst = 0;
         top->eval();
 
+        top->clk ^= 1;
+        top->rst = 0;
+        top->eval();
+
+        top->clk ^= 1;
+        top->rst = 0;
+        top->eval();
+
         printf("%x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
         // difftest
