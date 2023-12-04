@@ -256,15 +256,14 @@ void npc_exec(int n) {
         m_trace->dump(sim_time);
         sim_time++;
 
+        // reset r0 = 0
+        top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
+
         // store cpu state
         cpu.pc = top->pc;
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
-
-        // reset r0 = 0
-        top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
-        printf("r0 = %d\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0]);
 
         // difftest
         difftest_step(top->pc);
