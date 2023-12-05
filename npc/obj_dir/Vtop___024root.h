@@ -46,13 +46,13 @@ class Vtop___024root final : public VerilatedModule {
     VlWide<9>/*272:0*/ top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3;
     IData/*31:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__lut_out;
     IData/*31:0*/ top__DOT__exu0__DOT__alu_out;
-    IData/*31:0*/ top__DOT__exu0__DOT__rf_wdata;
     IData/*31:0*/ top__DOT__exu0__DOT__dm_data;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_a;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0;
     IData/*31:0*/ __VdfgTmp_h441be388__0;
     IData/*31:0*/ __VdfgTmp_hc8691d24__0;
     IData/*31:0*/ __VdfgTmp_h34ce9417__0;
+    IData/*31:0*/ __Vdly__top__DOT__pc;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __Vtrigrprev__TOP__top__DOT__inst;
     IData/*31:0*/ __VactIterCount;

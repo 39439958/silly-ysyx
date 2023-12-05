@@ -31,7 +31,6 @@ module ysyx_EXU (
         2'b11:  rf_wdata = dm_data;
         default:  rf_wdata = 32'h0;
         endcase
-        $display("rf_wdata = %h", rf_wdata);
     end
     assign jump_addr = alu_a_sel ? ({alu_out[31:1], 1'b0}) : alu_out;
 
@@ -42,11 +41,13 @@ module ysyx_EXU (
     always @(inst) begin
         if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
+            $display("wr_data = %h", rs2);
         end
     end
     always @(inst) begin 
         if (dm_rd_sel == 3'b101) begin
             pmem_read(alu_out, dm_data);
+            $display("rd_data = %h", dm_data);
         end
     end
 
