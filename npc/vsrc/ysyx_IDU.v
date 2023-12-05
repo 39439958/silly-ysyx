@@ -72,7 +72,7 @@ module ysyx_IDU (
     assign  is_bltu = (op == 7'h63) && (funct ==3'h6);
     assign  is_bgeu = (op == 7'h63) && (funct ==3'h7);
 
-    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw;
+    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B;
     assign  is_I = is_addi | is_jalr | is_lw | is_sltiu;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
