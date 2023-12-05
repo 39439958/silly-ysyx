@@ -32,6 +32,7 @@ module ysyx_IDU (
     wire  is_sltiu;
 
     wire  is_sub;
+    wire  is_add;
 
     wire  is_beq;
     wire  is_bne;
@@ -76,6 +77,7 @@ module ysyx_IDU (
     assign  is_sltiu = (op == 7'h13) && (funct3 == 3'h3);
 
     assign  is_sub = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h20);
+    assign  is_add = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h00);
 
     assign  is_beq  = (op == 7'h63) && (funct3 ==3'h0);
     assign  is_bne  = (op == 7'h63) && (funct3 ==3'h1);
@@ -84,13 +86,13 @@ module ysyx_IDU (
     assign  is_bltu = (op == 7'h63) && (funct3 ==3'h6);
     assign  is_bgeu = (op == 7'h63) && (funct3 ==3'h7);
 
-    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B;
+    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B | is_add;
     assign  is_I = is_addi | is_jalr | is_lw | is_sltiu;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
     assign  is_B = is_beq | is_bne | is_blt | is_bge | is_bltu | is_bgeu;
-    assign  is_R = is_sub;
+    assign  is_R = is_sub | is_add;
     
 
     // 扩展立即数

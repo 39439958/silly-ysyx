@@ -25,6 +25,7 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__idu0__DOT__is_jalr;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sltiu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sub;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_add;
     CData/*0:0*/ top__DOT__idu0__DOT__is_beq;
     CData/*0:0*/ top__DOT__idu0__DOT__is_bne;
     CData/*0:0*/ top__DOT__idu0__DOT__is_blt;
@@ -40,7 +41,9 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__idu0__DOT__is_sh;
     CData/*0:0*/ top__DOT__idu0__DOT__is_I;
     CData/*0:0*/ top__DOT__idu0__DOT__is_U;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_R;
     CData/*0:0*/ top__DOT__idu0__DOT__is_S;
+    CData/*0:0*/ top__DOT__idu0__DOT____VdfgTmp_he69f398c__0;
     CData/*0:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__hit;
     CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h2387256d__0;
     CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h27b9220a__0;
