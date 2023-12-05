@@ -10,6 +10,8 @@ module ysyx_EXU (
     input [31:0] imm,
     input [2:0] dm_rd_sel,
     input [1:0] dm_wr_sel,
+    input [2:0] BrType,
+    output BrE,
     output [31:0] jump_addr
 );
     // alu
@@ -67,6 +69,13 @@ module ysyx_EXU (
         .raddr2 (inst[24:20]),
         .rdata1 (rs1),
         .rdata2 (rs2)
+    );
+
+    ysyx_branch branch0(
+        .REG1 (rs1),
+        .REG2 (rs2),
+        .Type (BrType),
+        .BrE (BrE)
     );
   
 endmodule

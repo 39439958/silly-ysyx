@@ -19,11 +19,18 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__rf_wr_en;
     CData/*1:0*/ top__DOT__rf_wr_sel;
     CData/*0:0*/ top__DOT__do_jump;
+    CData/*2:0*/ top__DOT__BrType;
     CData/*0:0*/ top__DOT__alu_a_sel;
     CData/*3:0*/ top__DOT__alu_ctrl;
     CData/*0:0*/ top__DOT__idu0__DOT__is_addi;
     CData/*0:0*/ top__DOT__idu0__DOT__is_jalr;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sltiu;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_beq;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_bne;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_blt;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_bge;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_bltu;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_bgeu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_lb;
     CData/*0:0*/ top__DOT__idu0__DOT__is_lbu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_lh;
@@ -37,6 +44,8 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__idu0__DOT__is_R;
     CData/*0:0*/ top__DOT__idu0__DOT__is_S;
     CData/*0:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__hit;
+    CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h2387256d__0;
+    CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h27b9220a__0;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __Vtrigrprev__TOP__rst;
     CData/*0:0*/ __Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak;
@@ -48,6 +57,8 @@ class Vtop___024root final : public VerilatedModule {
     VlWide<10>/*311:0*/ top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3;
     IData/*31:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__lut_out;
     IData/*31:0*/ top__DOT__exu0__DOT__alu_out;
+    IData/*31:0*/ top__DOT__exu0__DOT__rs1;
+    IData/*31:0*/ top__DOT__exu0__DOT__rs2;
     IData/*31:0*/ top__DOT__exu0__DOT__dm_data;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_a;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_b;

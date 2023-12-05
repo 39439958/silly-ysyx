@@ -4,6 +4,7 @@ module ysyx_IDU (
   output wire rf_wr_en,
   output reg[1:0] rf_wr_sel,
   output wire do_jump,
+  output reg[2:0] BrType,
   output wire alu_a_sel,
   output wire alu_b_sel,
   output reg[3:0] alu_ctrl,
@@ -24,6 +25,13 @@ module ysyx_IDU (
     wire is_ebreak;
     wire is_sltiu;
 
+    wire  is_beq;
+    wire  is_bne;
+    wire  is_blt;
+    wire  is_bge;
+    wire  is_bltu;
+    wire  is_bgeu;
+
     wire is_lb;
     wire is_lbu;
     wire is_lh;
@@ -40,6 +48,7 @@ module ysyx_IDU (
     wire is_J;
     wire is_R;
     wire is_S;
+    wire is_B;
 
     // 解析指令
     assign op = inst[6:0];
@@ -56,11 +65,19 @@ module ysyx_IDU (
     assign  is_lw = (op == 7'h3) && (funct == 3'h2);
     assign  is_sltiu = (op == 7'h13) && (funct == 3'h3);
 
+    assign  is_beq  = (op == 7'h63) && (funct ==3'h0);
+    assign  is_bne  = (op == 7'h63) && (funct ==3'h1);
+    assign  is_blt  = (op == 7'h63) && (funct ==3'h4);
+    assign  is_bge  = (op == 7'h63) && (funct ==3'h5);
+    assign  is_bltu = (op == 7'h63) && (funct ==3'h6);
+    assign  is_bgeu = (op == 7'h63) && (funct ==3'h7);
+
     assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw;
     assign  is_I = is_addi | is_jalr | is_lw | is_sltiu;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
+    assign  is_B = is_beq | is_bne | is_blt | is_bge | is_bltu | is_bgeu;
     
 
     // 扩展立即数
@@ -83,6 +100,18 @@ module ysyx_IDU (
 
     // do_jump
     assign do_jump = is_J | is_jalr;
+
+    //[2:0]BrType
+    always@(*)
+    begin
+        if(is_beq) BrType = 3'b010;
+        else if(is_bne) BrType = 3'b011;
+        else if(is_blt) BrType = 3'b100;
+        else if(is_bge) BrType = 3'b101;
+        else if(is_bltu) BrType = 3'b110;
+        else if(is_bgeu) BrType = 3'b111;
+        else BrType = 0;
+    end
 
     // alu_a_sel
     assign alu_a_sel = is_I | is_R | is_S;

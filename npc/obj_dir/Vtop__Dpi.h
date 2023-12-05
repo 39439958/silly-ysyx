@@ -16,11 +16,11 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/silly/ysyx-workbench/npc/vsrc/ysyx_IDU.v:123:34
+    // DPI import at /home/silly/ysyx-workbench/npc/vsrc/ysyx_IDU.v:152:34
     extern void ebreak();
     // DPI import at /home/silly/ysyx-workbench/npc/vsrc/top.v:6:34
     extern void pmem_read(int raddr, int* rdata);
-    // DPI import at /home/silly/ysyx-workbench/npc/vsrc/ysyx_EXU.v:39:34
+    // DPI import at /home/silly/ysyx-workbench/npc/vsrc/ysyx_EXU.v:41:34
     extern void pmem_write(int waddr, int wdata, char wmask);
 
 #ifdef __cplusplus
