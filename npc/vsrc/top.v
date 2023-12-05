@@ -4,8 +4,8 @@ module top (
 );
     // pc
     import "DPI-C" function void pmem_read(input int raddr, output int rdata);
-    reg [31:0] inst;
-    reg [31:0] pc;
+    wire [31:0] inst;
+    wire [31:0] pc;
     wire jump;
     always @(posedge clk) begin
         if(~rst) pmem_read(pc, inst);
