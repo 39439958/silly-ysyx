@@ -190,6 +190,7 @@ static void checkregs(cpu_state *ref, uint32_t pc) {
     is_quit = 1;
     quit_state = NPC_ABORT;
     reg_display();
+    printf("\n");
     ref_reg_display(ref);
   }
 }
