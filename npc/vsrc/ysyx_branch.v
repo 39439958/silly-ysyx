@@ -36,9 +36,5 @@ output reg BrE
                 end
             default: BrE = 0;
         endcase
-        $display("REG1 = %h", REG1);
-        $display("REG2 = %h", REG2);
-        $display("Type = %h", Type);
-        $display("BrE = %h", BrE);
     end
 endmodule
