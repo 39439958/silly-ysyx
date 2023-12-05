@@ -1,14 +1,15 @@
 module ysyx_branch(         
-input[31:0]	REG1,
-input[31:0] REG2,
-input[2:0] Type,
-output reg BrE
+    input[31:0]	REG1,
+    input[31:0] REG2,
+    input[2:0] Type,
+    output reg BrE
 );
     wire signed [31:0] signed_REG1;
     wire signed [31:0] signed_REG2;
 
     assign signed_REG1 = REG1;
     assign signed_REG2 = REG2; 
+
     always@(*)
     begin
         case(Type)
@@ -37,4 +38,5 @@ output reg BrE
             default: BrE = 0;
         endcase
     end
+    
 endmodule

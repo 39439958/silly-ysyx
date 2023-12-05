@@ -18,17 +18,20 @@ module ysyx_IDU (
   output wire[31:0] imm
 );
     wire [6:0] op;
-    wire [2:0] funct;
+    wire [2:0] funct3;
+    wire [6:0] funct7;
 
     // 列出指令类型
-    wire is_addi;
-    wire is_auipc;
-    wire is_lui;
-    wire is_jal;
-    wire is_jalr;
-    wire is_sw;
-    wire is_ebreak;
-    wire is_sltiu;
+    wire  is_addi;
+    wire  is_auipc;
+    wire  is_lui;
+    wire  is_jal;
+    wire  is_jalr;
+    wire  is_sw;
+    wire  is_ebreak;
+    wire  is_sltiu;
+
+    wire  is_sub;
 
     wire  is_beq;
     wire  is_bne;
@@ -37,45 +40,49 @@ module ysyx_IDU (
     wire  is_bltu;
     wire  is_bgeu;
 
-    wire is_lb;
-    wire is_lbu;
-    wire is_lh;
-    wire is_lhu;
-    wire is_lw;
+    wire  is_lb;
+    wire  is_lbu;
+    wire  is_lh;
+    wire  is_lhu;
+    wire  is_lw;
 
-    wire is_sb;
-    wire is_sh;
-    wire is_sw;
+    wire  is_sb;
+    wire  is_sh;
+    wire  is_sw;
 
-    wire is_add_type;
-    wire is_I;
-    wire is_U;
-    wire is_J;
-    wire is_R;
-    wire is_S;
-    wire is_B;
+    wire  is_add_type;
+    wire  is_I;
+    wire  is_U;
+    wire  is_J;
+    wire  is_R;
+    wire  is_S;
+    wire  is_B;
 
     // 解析指令
-    assign op = inst[6:0];
-    assign funct = inst[14:12];
+    assign  op = inst[6:0];
+    assign  funct3 = inst[14:12];
+    assign  funct7 = inst[31:25];
+    
 
     //分析指令类型
-    assign  is_addi = (op == 7'h13) && (funct == 3'h0);
+    assign  is_addi = (op == 7'h13) && (funct3 == 3'h0);
     assign  is_auipc = (op == 7'h17);
     assign  is_lui = (op == 7'h37);
     assign  is_ebreak = (op == 7'h73);
     assign  is_jal = (op == 7'h6f);
-    assign  is_jalr = (op == 7'h67) && (funct == 3'h0);
-    assign  is_sw = (op == 7'h23) && (funct == 3'h2);
-    assign  is_lw = (op == 7'h3) && (funct == 3'h2);
-    assign  is_sltiu = (op == 7'h13) && (funct == 3'h3);
+    assign  is_jalr = (op == 7'h67) && (funct3 == 3'h0);
+    assign  is_sw = (op == 7'h23) && (funct3 == 3'h2);
+    assign  is_lw = (op == 7'h3) && (funct3 == 3'h2);
+    assign  is_sltiu = (op == 7'h13) && (funct3 == 3'h3);
 
-    assign  is_beq  = (op == 7'h63) && (funct ==3'h0);
-    assign  is_bne  = (op == 7'h63) && (funct ==3'h1);
-    assign  is_blt  = (op == 7'h63) && (funct ==3'h4);
-    assign  is_bge  = (op == 7'h63) && (funct ==3'h5);
-    assign  is_bltu = (op == 7'h63) && (funct ==3'h6);
-    assign  is_bgeu = (op == 7'h63) && (funct ==3'h7);
+    assign  is_sub = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h20);
+
+    assign  is_beq  = (op == 7'h63) && (funct3 ==3'h0);
+    assign  is_bne  = (op == 7'h63) && (funct3 ==3'h1);
+    assign  is_blt  = (op == 7'h63) && (funct3 ==3'h4);
+    assign  is_bge  = (op == 7'h63) && (funct3 ==3'h5);
+    assign  is_bltu = (op == 7'h63) && (funct3 ==3'h6);
+    assign  is_bgeu = (op == 7'h63) && (funct3 ==3'h7);
 
     assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B;
     assign  is_I = is_addi | is_jalr | is_lw | is_sltiu;
@@ -83,6 +90,7 @@ module ysyx_IDU (
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
     assign  is_B = is_beq | is_bne | is_blt | is_bge | is_bltu | is_bgeu;
+    assign  is_R = is_sub;
     
 
     // 扩展立即数
@@ -92,13 +100,13 @@ module ysyx_IDU (
     );
 
     // rf_wr_en
-    assign rf_wr_en = is_I | is_U | is_J;
+    assign rf_wr_en = is_I | is_U | is_J | is_R;
     
     // rf_wr_sel
     always@(*)
     begin
         if(is_jal | is_jalr) rf_wr_sel = 2'b01;
-        else if(is_U | is_addi | is_sltiu) rf_wr_sel = 2'b10;
+        else if(is_U | is_addi | is_sltiu | is_R) rf_wr_sel = 2'b10;
         else if(is_lb | is_lh | is_lw | is_lbu | is_lhu) rf_wr_sel = 2'b11;
         else rf_wr_sel = 2'b00;
     end 
@@ -129,6 +137,7 @@ module ysyx_IDU (
     begin
         if(is_add_type) alu_ctrl = 4'b0000;
         else if(is_lui) alu_ctrl = 4'b1110;
+        else if(is_sub) alu_ctrl = 4'b1000;
         else if(is_sltiu) alu_ctrl = 4'b0011;
         else alu_ctrl = 0;
     end
