@@ -48,6 +48,7 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__exu0__DOT__alu_out;
     IData/*31:0*/ top__DOT__exu0__DOT__dm_data;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_a;
+    IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_b;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0;
     IData/*31:0*/ __VdfgTmp_h441be388__0;
     IData/*31:0*/ __VdfgTmp_hc8691d24__0;
