@@ -22,7 +22,7 @@ module ysyx_EXU (
     // regfile
     reg [31:0] rf_wdata;
     wire [31:0] rs1, rs2;
-    always@(rf_wr_sel)
+    always@(*)
     begin
         case(rf_wr_sel)
         2'b00:  rf_wdata = 32'h0;

@@ -28,8 +28,6 @@ VL_ATTR_COLD void Vtop___024root___eval_initial(Vtop___024root* vlSelf) {
     vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
     vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak 
         = vlSelf->top__DOT__idu0__DOT__is_ebreak;
-    vlSelf->__Vtrigrprev__TOP__top__DOT__rf_wr_sel 
-        = vlSelf->top__DOT__rf_wr_sel;
     vlSelf->__Vtrigrprev__TOP__top__DOT__dm_rd_sel 
         = vlSelf->top__DOT__dm_rd_sel;
     vlSelf->__Vtrigrprev__TOP__top__DOT__dm_wr_sel 
@@ -413,6 +411,18 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a 
                                                    + vlSelf->top__DOT__imm)))));
+    vlSelf->top__DOT__exu0__DOT__rf_wdata = ((2U & (IData)(vlSelf->top__DOT__rf_wr_sel))
+                                              ? ((1U 
+                                                  & (IData)(vlSelf->top__DOT__rf_wr_sel))
+                                                  ? vlSelf->top__DOT__exu0__DOT__dm_data
+                                                  : vlSelf->top__DOT__exu0__DOT__alu_out)
+                                              : ((1U 
+                                                  & (IData)(vlSelf->top__DOT__rf_wr_sel))
+                                                  ? 
+                                                 ((IData)(4U) 
+                                                  + vlSelf->top__DOT__pc)
+                                                  : 0U));
+    VL_WRITEF("rf_wdata = %x\n",32,vlSelf->top__DOT__exu0__DOT__rf_wdata);
 }
 
 VL_ATTR_COLD void Vtop___024root___eval_stl(Vtop___024root* vlSelf) {
@@ -447,10 +457,7 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__act(Vtop___024root* vlSelf) {
         VL_DBG_MSGF("         'act' region trigger index 2 is active: @([changed] top.idu0.is_ebreak)\n");
     }
     if (vlSelf->__VactTriggered.at(3U)) {
-        VL_DBG_MSGF("         'act' region trigger index 3 is active: @([changed] top.rf_wr_sel)\n");
-    }
-    if (vlSelf->__VactTriggered.at(4U)) {
-        VL_DBG_MSGF("         'act' region trigger index 4 is active: @([changed] top.dm_rd_sel or [changed] top.dm_wr_sel)\n");
+        VL_DBG_MSGF("         'act' region trigger index 3 is active: @([changed] top.dm_rd_sel or [changed] top.dm_wr_sel)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -474,10 +481,7 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__nba(Vtop___024root* vlSelf) {
         VL_DBG_MSGF("         'nba' region trigger index 2 is active: @([changed] top.idu0.is_ebreak)\n");
     }
     if (vlSelf->__VnbaTriggered.at(3U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @([changed] top.rf_wr_sel)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(4U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 4 is active: @([changed] top.dm_rd_sel or [changed] top.dm_wr_sel)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @([changed] top.dm_rd_sel or [changed] top.dm_wr_sel)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -535,11 +539,9 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->__Vdlyvdim0__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
     vlSelf->__Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = VL_RAND_RESET_I(32);
     vlSelf->__Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
-    vlSelf->__Vdly__top__DOT__pc = VL_RAND_RESET_I(32);
     vlSelf->__Vtrigrprev__TOP__clk = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__rst = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak = VL_RAND_RESET_I(1);
-    vlSelf->__Vtrigrprev__TOP__top__DOT__rf_wr_sel = VL_RAND_RESET_I(2);
     vlSelf->__Vtrigrprev__TOP__top__DOT__dm_rd_sel = VL_RAND_RESET_I(3);
     vlSelf->__Vtrigrprev__TOP__top__DOT__dm_wr_sel = VL_RAND_RESET_I(2);
     vlSelf->__VactDidInit = 0;
