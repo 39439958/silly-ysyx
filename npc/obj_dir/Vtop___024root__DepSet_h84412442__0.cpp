@@ -59,13 +59,27 @@ void Vtop___024root___eval_triggers__act(Vtop___024root* vlSelf) {
                                          & (~ (IData)(vlSelf->__Vtrigrprev__TOP__rst))));
     vlSelf->__VactTriggered.at(2U) = ((IData)(vlSelf->top__DOT__idu0__DOT__is_ebreak) 
                                       != (IData)(vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak));
+    vlSelf->__VactTriggered.at(3U) = ((IData)(vlSelf->top__DOT__rf_wr_sel) 
+                                      != (IData)(vlSelf->__Vtrigrprev__TOP__top__DOT__rf_wr_sel));
+    vlSelf->__VactTriggered.at(4U) = (((IData)(vlSelf->top__DOT__dm_rd_sel) 
+                                       != (IData)(vlSelf->__Vtrigrprev__TOP__top__DOT__dm_rd_sel)) 
+                                      | ((IData)(vlSelf->top__DOT__dm_wr_sel) 
+                                         != (IData)(vlSelf->__Vtrigrprev__TOP__top__DOT__dm_wr_sel)));
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
     vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
     vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak 
         = vlSelf->top__DOT__idu0__DOT__is_ebreak;
+    vlSelf->__Vtrigrprev__TOP__top__DOT__rf_wr_sel 
+        = vlSelf->top__DOT__rf_wr_sel;
+    vlSelf->__Vtrigrprev__TOP__top__DOT__dm_rd_sel 
+        = vlSelf->top__DOT__dm_rd_sel;
+    vlSelf->__Vtrigrprev__TOP__top__DOT__dm_wr_sel 
+        = vlSelf->top__DOT__dm_wr_sel;
     if (VL_UNLIKELY((1U & (~ (IData)(vlSelf->__VactDidInit))))) {
         vlSelf->__VactDidInit = 1U;
         vlSelf->__VactTriggered.at(2U) = 1U;
+        vlSelf->__VactTriggered.at(3U) = 1U;
+        vlSelf->__VactTriggered.at(4U) = 1U;
     }
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {

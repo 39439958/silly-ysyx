@@ -2,7 +2,7 @@ module ysyx_IDU (
   input [31:0] inst,
   input [31:0] pc,
   output wire rf_wr_en,
-  output wire rf_wr_sel,
+  output reg[1:0] rf_wr_sel,
   output wire do_jump,
   output wire alu_a_sel,
   output wire alu_b_sel,
@@ -52,9 +52,10 @@ module ysyx_IDU (
     assign  is_jal = (op == 7'h6f);
     assign  is_jalr = (op == 7'h67) && (funct == 3'h0);
     assign  is_sw = (op == 7'h23) && (funct == 3'h2);
+    assign  is_lw = (op == 7'h3) && (funct == 3'h2);
 
-    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S;
-    assign  is_I = is_addi | is_jalr;
+    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw;
+    assign  is_I = is_addi | is_jalr | is_lw;
     assign  is_U = is_auipc;
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
@@ -70,7 +71,13 @@ module ysyx_IDU (
     assign rf_wr_en = is_I | is_U | is_J;
     
     // rf_wr_sel
-    assign rf_wr_sel = is_J | is_jalr;
+    always@(*)
+    begin
+        if(is_jal|is_jalr) rf_wr_sel = 2'b01;
+        else if(is_U|is_addi) rf_wr_sel = 2'b10;
+        else if(is_lb|is_lh|is_lw|is_lbu|is_lhu) rf_wr_sel = 2'b11;
+        else rf_wr_sel = 2'b00;
+    end 
 
     // do_jump
     assign do_jump = is_J | is_jalr;
@@ -79,7 +86,7 @@ module ysyx_IDU (
     assign alu_a_sel = is_I | is_R | is_S;
 
     // alu_b_sel
-    assign alu_b_sel = 1'b1;
+    assign alu_b_sel = ~is_R;
 
     // alu_sel
     always@(*)

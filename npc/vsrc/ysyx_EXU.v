@@ -3,7 +3,7 @@ module ysyx_EXU (
     input [31:0] inst,
     input [31:0] pc,
     input rf_wr_en,
-    input rf_wr_sel,
+    input [1:0] rf_wr_sel,
     input alu_a_sel,
     input alu_b_sel,
     input [3:0] alu_ctrl,
@@ -20,18 +20,30 @@ module ysyx_EXU (
     assign  alu_b = alu_b_sel ? imm : rs2;
 
     // regfile
-    wire [31:0] rf_wdata;
+    reg [31:0] rf_wdata;
     wire [31:0] rs1, rs2;
-    assign rf_wdata = rf_wr_sel ? pc + 4 : alu_out;
+    always@(rf_wr_sel)
+    begin
+        case(rf_wr_sel)
+        2'b00:  rf_wdata = 32'h0;
+        2'b01:  rf_wdata = pc + 4;
+        2'b10:  rf_wdata = alu_out;
+        2'b11:  rf_wdata = dm_data;
+        default:  rf_wdata = 32'h0;
+        endcase
+    end
     assign jump_addr = alu_a_sel ? ({alu_out[31:1], 1'b0}) : alu_out;
 
     // // memory
-    // import "DPI-C" function void pmem_read(input int raddr, output int rdata);
+    import "DPI-C" function void pmem_read(input int raddr, output int rdata);
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
-    // wire [63:0] rdata;
-    always @(*) begin
+    wire [31:0] dm_data;
+    always @(dm_wr_sel, dm_rd_sel) begin
         if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
+        end
+        if (dm_rd_sel == 3'b101) begin
+            pmem_read(alu_out, dm_data);
         end
     end
 

@@ -12,7 +12,7 @@ module top (
 
     // idu
     wire rf_wr_en;
-    wire rf_wr_sel;
+    wire [1:0] rf_wr_sel;
     wire do_jump;
     wire alu_a_sel;
     wire alu_b_sel;
