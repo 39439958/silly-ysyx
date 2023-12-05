@@ -185,7 +185,6 @@ VL_ATTR_COLD void Vtop___024root__trace_full_sub_0(Vtop___024root* vlSelf, Veril
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root__trace_full_sub_0\n"); );
     // Init
     uint32_t* const oldp VL_ATTR_UNUSED = bufp->oldp(vlSymsp->__Vm_baseCode);
-    VlWide<9>/*287:0*/ __Vtemp_he459a42c__0;
     // Body
     bufp->fullCData(oldp+1,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list[0]),7);
     bufp->fullCData(oldp+2,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list[1]),7);
@@ -195,16 +194,32 @@ VL_ATTR_COLD void Vtop___024root__trace_full_sub_0(Vtop___024root* vlSelf, Veril
     bufp->fullCData(oldp+6,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list[5]),7);
     bufp->fullCData(oldp+7,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list[6]),7);
     bufp->fullIData(oldp+8,(vlSelf->top__DOT__inst),32);
-    bufp->fullBit(oldp+9,(((IData)(vlSelf->top__DOT__idu0__DOT__is_I) 
-                           | ((0x17U == (0x7fU & vlSelf->top__DOT__inst)) 
-                              | (0x6fU == (0x7fU & vlSelf->top__DOT__inst))))));
+    bufp->fullBit(oldp+9,(vlSelf->top__DOT__rf_wr_en));
     bufp->fullCData(oldp+10,(vlSelf->top__DOT__rf_wr_sel),2);
     bufp->fullBit(oldp+11,(vlSelf->top__DOT__do_jump));
     bufp->fullBit(oldp+12,(vlSelf->top__DOT__alu_a_sel));
     bufp->fullCData(oldp+13,(vlSelf->top__DOT__alu_ctrl),4);
     bufp->fullIData(oldp+14,(vlSelf->top__DOT__imm),32);
-    bufp->fullCData(oldp+15,(vlSelf->top__DOT__dm_rd_sel),3);
-    bufp->fullCData(oldp+16,(vlSelf->top__DOT__dm_wr_sel),2);
+    bufp->fullCData(oldp+15,(((IData)(vlSelf->top__DOT__idu0__DOT__is_lb)
+                               ? 1U : ((IData)(vlSelf->top__DOT__idu0__DOT__is_lbu)
+                                        ? 2U : ((IData)(vlSelf->top__DOT__idu0__DOT__is_lh)
+                                                 ? 3U
+                                                 : 
+                                                ((IData)(vlSelf->top__DOT__idu0__DOT__is_lhu)
+                                                  ? 4U
+                                                  : 
+                                                 ((IData)(vlSelf->top__DOT__idu0__DOT__is_lw)
+                                                   ? 5U
+                                                   : 0U)))))),3);
+    bufp->fullCData(oldp+16,(((IData)(vlSelf->top__DOT__idu0__DOT__is_sb)
+                               ? 1U : ((IData)(vlSelf->top__DOT__idu0__DOT__is_sh)
+                                        ? 2U : ((IData)(
+                                                        (0x2023U 
+                                                         == 
+                                                         (0x707fU 
+                                                          & vlSelf->top__DOT__inst)))
+                                                 ? 3U
+                                                 : 0U)))),2);
     bufp->fullCData(oldp+17,((0x1fU & (vlSelf->top__DOT__inst 
                                        >> 7U))),5);
     bufp->fullCData(oldp+18,((0x1fU & (vlSelf->top__DOT__inst 
@@ -219,103 +234,14 @@ VL_ATTR_COLD void Vtop___024root__trace_full_sub_0(Vtop___024root* vlSelf, Veril
     bufp->fullBit(oldp+24,((0x37U == (0x7fU & vlSelf->top__DOT__inst))));
     bufp->fullBit(oldp+25,((0x6fU == (0x7fU & vlSelf->top__DOT__inst))));
     bufp->fullBit(oldp+26,(vlSelf->top__DOT__idu0__DOT__is_jalr));
-    bufp->fullBit(oldp+27,(vlSelf->top__DOT__idu0__DOT__is_sw));
+    bufp->fullBit(oldp+27,((IData)((0x2023U == (0x707fU 
+                                                & vlSelf->top__DOT__inst)))));
     bufp->fullBit(oldp+28,(vlSelf->top__DOT__idu0__DOT__is_ebreak));
     bufp->fullBit(oldp+29,(vlSelf->top__DOT__idu0__DOT__is_lw));
-    bufp->fullBit(oldp+30,(((IData)(vlSelf->top__DOT__idu0__DOT__is_addi) 
-                            | ((0x17U == (0x7fU & vlSelf->top__DOT__inst)) 
-                               | ((0x6fU == (0x7fU 
-                                             & vlSelf->top__DOT__inst)) 
-                                  | ((IData)(vlSelf->top__DOT__idu0__DOT__is_jalr) 
-                                     | ((IData)(vlSelf->top__DOT__idu0__DOT__is_S) 
-                                        | (IData)(vlSelf->top__DOT__idu0__DOT__is_lw))))))));
+    bufp->fullBit(oldp+30,(vlSelf->top__DOT__idu0__DOT__is_add_type));
     bufp->fullBit(oldp+31,(vlSelf->top__DOT__idu0__DOT__is_I));
     bufp->fullBit(oldp+32,(vlSelf->top__DOT__idu0__DOT__is_S));
-    __Vtemp_he459a42c__0[0U] = (IData)((0x300000000ULL 
-                                        | (((QData)((IData)(
-                                                            (vlSelf->top__DOT__inst 
-                                                             >> 0x19U))) 
-                                            << 0x2cU) 
-                                           | (((QData)((IData)(
-                                                               (0x1fU 
-                                                                & (vlSelf->top__DOT__inst 
-                                                                   >> 7U)))) 
-                                               << 0x27U) 
-                                              | (QData)((IData)(vlSelf->__VdfgTmp_h441be388__0))))));
-    __Vtemp_he459a42c__0[1U] = (((- (IData)((vlSelf->top__DOT__inst 
-                                             >> 0x1fU))) 
-                                 << 0x13U) | (IData)(
-                                                     ((0x300000000ULL 
-                                                       | (((QData)((IData)(
-                                                                           (vlSelf->top__DOT__inst 
-                                                                            >> 0x19U))) 
-                                                           << 0x2cU) 
-                                                          | (((QData)((IData)(
-                                                                              (0x1fU 
-                                                                               & (vlSelf->top__DOT__inst 
-                                                                                >> 7U)))) 
-                                                              << 0x27U) 
-                                                             | (QData)((IData)(vlSelf->__VdfgTmp_h441be388__0))))) 
-                                                      >> 0x20U)));
-    __Vtemp_he459a42c__0[2U] = (0x1180U | ((0xffffc000U 
-                                            & (((- (IData)(
-                                                           (vlSelf->top__DOT__inst 
-                                                            >> 0x1fU))) 
-                                                << 0x1aU) 
-                                               | (0x3ffc000U 
-                                                  & (vlSelf->top__DOT__inst 
-                                                     >> 6U)))) 
-                                           | (0x7fU 
-                                              & ((- (IData)(
-                                                            (vlSelf->top__DOT__inst 
-                                                             >> 0x1fU))) 
-                                                 >> 0xdU))));
-    __Vtemp_he459a42c__0[3U] = (0x19c000U | ((0xffc00000U 
-                                              & (vlSelf->top__DOT__inst 
-                                                 << 1U)) 
-                                             | (0x3fffU 
-                                                & ((- (IData)(
-                                                              (vlSelf->top__DOT__inst 
-                                                               >> 0x1fU))) 
-                                                   >> 6U))));
-    __Vtemp_he459a42c__0[4U] = (0xde00000U | ((0xf0000000U 
-                                               & (vlSelf->top__DOT__inst 
-                                                  << 8U)) 
-                                              | ((0x1ffc00U 
-                                                  & ((- (IData)(
-                                                                (vlSelf->top__DOT__inst 
-                                                                 >> 0x1fU))) 
-                                                     << 0xaU)) 
-                                                 | ((0x200U 
-                                                     & (vlSelf->top__DOT__inst 
-                                                        >> 0x16U)) 
-                                                    | ((0x1feU 
-                                                        & (vlSelf->top__DOT__inst 
-                                                           >> 0xbU)) 
-                                                       | (1U 
-                                                          & (vlSelf->top__DOT__inst 
-                                                             >> 0x14U)))))));
-    __Vtemp_he459a42c__0[5U] = (0x30000000U | (0xfffffffU 
-                                               & ((0xfffff00U 
-                                                   & ((- (IData)(
-                                                                 (vlSelf->top__DOT__inst 
-                                                                  >> 0x1fU))) 
-                                                      << 8U)) 
-                                                  | (vlSelf->top__DOT__inst 
-                                                     >> 0x18U))));
-    __Vtemp_he459a42c__0[6U] = (1U | (0xffff8000U & 
-                                      (vlSelf->top__DOT__inst 
-                                       << 3U)));
-    __Vtemp_he459a42c__0[7U] = (0x1b8U | ((0xffc00000U 
-                                           & (vlSelf->top__DOT__inst 
-                                              << 0xaU)) 
-                                          | (0x7fffU 
-                                             & (vlSelf->top__DOT__inst 
-                                                >> 0x1dU))));
-    __Vtemp_he459a42c__0[8U] = (0x5c00U | (0x3fffffU 
-                                           & (vlSelf->top__DOT__inst 
-                                              >> 0x16U)));
-    bufp->fullWData(oldp+33,(__Vtemp_he459a42c__0),273);
+    bufp->fullWData(oldp+33,(vlSelf->top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3),273);
     bufp->fullQData(oldp+42,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list[0]),39);
     bufp->fullQData(oldp+44,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list[1]),39);
     bufp->fullQData(oldp+46,(vlSelf->top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list[2]),39);

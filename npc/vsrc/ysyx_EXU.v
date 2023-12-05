@@ -39,10 +39,12 @@ module ysyx_EXU (
     import "DPI-C" function void pmem_read(input int raddr, output int rdata);
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
     wire [31:0] dm_data;
-    always @(dm_wr_sel, dm_rd_sel) begin
+    always @(inst) begin
         if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
         end
+    end
+    always @(inst) begin 
         if (dm_rd_sel == 3'b101) begin
             pmem_read(alu_out, dm_data);
         end
