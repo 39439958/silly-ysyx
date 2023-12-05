@@ -197,14 +197,15 @@ void Vtop___024root__trace_chg_sub_0(Vtop___024root* vlSelf, VerilatedVcd::Buffe
                               ? (0xfffffffeU & vlSelf->top__DOT__exu0__DOT__alu_out)
                               : vlSelf->top__DOT__exu0__DOT__alu_out)),32);
     bufp->chgIData(oldp+90,(vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_a),32);
-    bufp->chgIData(oldp+91,(vlSelf->top__DOT__exu0__DOT__alu0__DOT__signed_b),32);
-    bufp->chgIData(oldp+92,(vlSelf->top__DOT__exu0__DOT__alu_out),32);
-    bufp->chgIData(oldp+93,(vlSelf->top__DOT__exu0__DOT__rf_wdata),32);
-    bufp->chgIData(oldp+94,(vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
+    bufp->chgIData(oldp+91,(vlSelf->top__DOT__exu0__DOT__alu_out),32);
+    bufp->chgIData(oldp+92,(vlSelf->top__DOT__exu0__DOT__rf_wdata),32);
+    bufp->chgIData(oldp+93,(vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
                             [(0x1fU & (vlSelf->top__DOT__inst 
                                        >> 0xfU))]),32);
-    bufp->chgIData(oldp+95,(vlSelf->top__DOT__exu0__DOT__rs2),32);
-    bufp->chgIData(oldp+96,(vlSelf->top__DOT__exu0__DOT__dm_data),32);
+    bufp->chgIData(oldp+94,(vlSelf->top__DOT__exu0__DOT__regfile0__DOT__rf
+                            [(0x1fU & (vlSelf->top__DOT__inst 
+                                       >> 0x14U))]),32);
+    bufp->chgIData(oldp+95,(vlSelf->top__DOT__exu0__DOT__dm_data),32);
 }
 
 void Vtop___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {
