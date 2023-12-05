@@ -1,15 +1,20 @@
 module ysyx_IDU (
   input [31:0] inst,
   input [31:0] pc,
+
   output wire rf_wr_en,
   output reg[1:0] rf_wr_sel,
+
   output wire do_jump,
   output reg[2:0] BrType,
+
   output wire alu_a_sel,
   output wire alu_b_sel,
   output reg[3:0] alu_ctrl,
+
   output reg[2:0] dm_rd_sel,
   output reg[1:0] dm_wr_sel,
+
   output wire[31:0] imm
 );
     wire [6:0] op;

@@ -53,7 +53,7 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__inst;
     IData/*31:0*/ top__DOT__pc;
     IData/*31:0*/ top__DOT__imm;
-    VlWide<10>/*311:0*/ top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3;
+    VlWide<11>/*350:0*/ top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3;
     IData/*31:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__lut_out;
     IData/*31:0*/ top__DOT__exu0__DOT__alu_out;
     IData/*31:0*/ top__DOT__exu0__DOT__rs1;
@@ -62,15 +62,16 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_a;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT__signed_b;
     IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0;
+    IData/*31:0*/ __VdfgTmp_he8947ce0__0;
     IData/*31:0*/ __VdfgTmp_h441bd1e7__0;
     IData/*31:0*/ __VdfgTmp_hc86901cb__0;
     IData/*31:0*/ __VdfgTmp_h34cdb379__0;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __Vtrigrprev__TOP__top__DOT__inst;
     IData/*31:0*/ __VactIterCount;
-    VlUnpacked<QData/*38:0*/, 8> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list;
-    VlUnpacked<CData/*6:0*/, 8> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list;
-    VlUnpacked<IData/*31:0*/, 8> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__data_list;
+    VlUnpacked<QData/*38:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list;
+    VlUnpacked<CData/*6:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list;
+    VlUnpacked<IData/*31:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__data_list;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__exu0__DOT__regfile0__DOT__rf;
     VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
