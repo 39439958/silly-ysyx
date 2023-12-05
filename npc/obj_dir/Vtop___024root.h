@@ -23,6 +23,7 @@ class Vtop___024root final : public VerilatedModule {
     CData/*3:0*/ top__DOT__alu_ctrl;
     CData/*0:0*/ top__DOT__idu0__DOT__is_addi;
     CData/*0:0*/ top__DOT__idu0__DOT__is_jalr;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_sltiu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_lb;
     CData/*0:0*/ top__DOT__idu0__DOT__is_lbu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_lh;
@@ -32,6 +33,7 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__idu0__DOT__is_sh;
     CData/*0:0*/ top__DOT__idu0__DOT__is_add_type;
     CData/*0:0*/ top__DOT__idu0__DOT__is_I;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_U;
     CData/*0:0*/ top__DOT__idu0__DOT__is_R;
     CData/*0:0*/ top__DOT__idu0__DOT__is_S;
     CData/*0:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__hit;
@@ -43,7 +45,7 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ top__DOT__inst;
     IData/*31:0*/ top__DOT__pc;
     IData/*31:0*/ top__DOT__imm;
-    VlWide<9>/*272:0*/ top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3;
+    VlWide<10>/*311:0*/ top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3;
     IData/*31:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__lut_out;
     IData/*31:0*/ top__DOT__exu0__DOT__alu_out;
     IData/*31:0*/ top__DOT__exu0__DOT__dm_data;
@@ -57,9 +59,9 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __Vtrigrprev__TOP__top__DOT__inst;
     IData/*31:0*/ __VactIterCount;
-    VlUnpacked<QData/*38:0*/, 7> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list;
-    VlUnpacked<CData/*6:0*/, 7> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list;
-    VlUnpacked<IData/*31:0*/, 7> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__data_list;
+    VlUnpacked<QData/*38:0*/, 8> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list;
+    VlUnpacked<CData/*6:0*/, 8> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list;
+    VlUnpacked<IData/*31:0*/, 8> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__data_list;
     VlUnpacked<IData/*31:0*/, 32> top__DOT__exu0__DOT__regfile0__DOT__rf;
     VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
