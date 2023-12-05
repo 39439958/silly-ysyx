@@ -400,6 +400,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__3(Vtop___024root* vlSelf) 
                                                  ((IData)(4U) 
                                                   + vlSelf->top__DOT__pc)
                                                   : 0U));
+    VL_WRITEF("rf_wdata = %x\n",32,vlSelf->top__DOT__exu0__DOT__rf_wdata);
 }
 
 void Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(IData/*31:0*/ waddr, IData/*31:0*/ wdata, CData/*7:0*/ wmask);
