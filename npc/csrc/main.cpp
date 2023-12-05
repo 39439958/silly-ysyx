@@ -109,6 +109,17 @@ void reg_display() {
     }
 }
 
+void ref_reg_display(cpu_state *ref) {
+    for (int i = 0; i < 32; i++) {
+        printf("%3s: 0x%08x", regs[i], ref->gpr[i]);
+        if (i % 4 == 3) {
+            printf("\n");
+        } else {
+            printf("\t");
+        }   
+    }
+}
+
 void init_mem() {
     memset(pmem, rand(), 0x8000000);
     memcpy(pmem, img, sizeof(img));
@@ -169,7 +180,6 @@ bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
     }
     if (ref_r->pc != cpu.pc) {
         printf("ref_r->pc = 0x%08x, cpu.pc = 0x%08x\n", ref_r->pc, cpu.pc);
-        
         return false;
     }
     return true;
@@ -180,6 +190,7 @@ static void checkregs(cpu_state *ref, uint32_t pc) {
     is_quit = 1;
     quit_state = NPC_ABORT;
     reg_display();
+    ref_reg_display(ref);
   }
 }
 
