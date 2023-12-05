@@ -14,8 +14,8 @@ class Vtop___024root final : public VerilatedModule {
 
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);
-    VL_IN8(rst,0,0);
     CData/*0:0*/ top__DOT__idu0__DOT__is_ebreak;
+    VL_IN8(rst,0,0);
     CData/*0:0*/ top__DOT__rf_wr_en;
     CData/*1:0*/ top__DOT__rf_wr_sel;
     CData/*0:0*/ top__DOT__do_jump;
@@ -47,7 +47,6 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h2387256d__0;
     CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h27b9220a__0;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
-    CData/*0:0*/ __Vtrigrprev__TOP__rst;
     CData/*0:0*/ __Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak;
     CData/*0:0*/ __VactDidInit;
     CData/*0:0*/ __VactContinue;
@@ -66,7 +65,6 @@ class Vtop___024root final : public VerilatedModule {
     IData/*31:0*/ __VdfgTmp_h441be388__0;
     IData/*31:0*/ __VdfgTmp_hc8691d24__0;
     IData/*31:0*/ __VdfgTmp_h34ce9417__0;
-    IData/*31:0*/ __Vdly__top__DOT__pc;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __Vtrigrprev__TOP__top__DOT__inst;
     IData/*31:0*/ __VactIterCount;
@@ -76,8 +74,8 @@ class Vtop___024root final : public VerilatedModule {
     VlUnpacked<IData/*31:0*/, 32> top__DOT__exu0__DOT__regfile0__DOT__rf;
     VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
-    VlTriggerVec<4> __VactTriggered;
-    VlTriggerVec<4> __VnbaTriggered;
+    VlTriggerVec<3> __VactTriggered;
+    VlTriggerVec<3> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vtop__Syms* const vlSymsp;

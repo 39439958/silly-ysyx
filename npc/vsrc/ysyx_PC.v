@@ -6,7 +6,7 @@ module ysyx_PC (
     output reg [31:0] pc
 );
 
-    always@(posedge clk or posedge rst)
+    always@(posedge clk)
     begin
         if(rst) pc <= 32'h80000000;
         else if(jump) pc <= jump_addr;

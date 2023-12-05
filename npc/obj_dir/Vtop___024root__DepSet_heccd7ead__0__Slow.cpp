@@ -25,7 +25,6 @@ VL_ATTR_COLD void Vtop___024root___eval_initial(Vtop___024root* vlSelf) {
     vlSelf->__Vm_traceActivity[1U] = 1U;
     vlSelf->__Vm_traceActivity[0U] = 1U;
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
-    vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
     vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak 
         = vlSelf->top__DOT__idu0__DOT__is_ebreak;
     vlSelf->__Vtrigrprev__TOP__top__DOT__inst = vlSelf->top__DOT__inst;
@@ -580,13 +579,10 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__act(Vtop___024root* vlSelf) {
         VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clk)\n");
     }
     if (vlSelf->__VactTriggered.at(1U)) {
-        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(posedge clk or posedge rst)\n");
+        VL_DBG_MSGF("         'act' region trigger index 1 is active: @([changed] top.idu0.is_ebreak)\n");
     }
     if (vlSelf->__VactTriggered.at(2U)) {
-        VL_DBG_MSGF("         'act' region trigger index 2 is active: @([changed] top.idu0.is_ebreak)\n");
-    }
-    if (vlSelf->__VactTriggered.at(3U)) {
-        VL_DBG_MSGF("         'act' region trigger index 3 is active: @([changed] top.inst)\n");
+        VL_DBG_MSGF("         'act' region trigger index 2 is active: @([changed] top.inst)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -604,13 +600,10 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__nba(Vtop___024root* vlSelf) {
         VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clk)\n");
     }
     if (vlSelf->__VnbaTriggered.at(1U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(posedge clk or posedge rst)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @([changed] top.idu0.is_ebreak)\n");
     }
     if (vlSelf->__VnbaTriggered.at(2U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 2 is active: @([changed] top.idu0.is_ebreak)\n");
-    }
-    if (vlSelf->__VnbaTriggered.at(3U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @([changed] top.inst)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 2 is active: @([changed] top.inst)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -680,9 +673,7 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->__VdfgTmp_h441be388__0 = 0;
     vlSelf->__VdfgTmp_hc8691d24__0 = 0;
     vlSelf->__VdfgTmp_h34ce9417__0 = 0;
-    vlSelf->__Vdly__top__DOT__pc = VL_RAND_RESET_I(32);
     vlSelf->__Vtrigrprev__TOP__clk = VL_RAND_RESET_I(1);
-    vlSelf->__Vtrigrprev__TOP__rst = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__top__DOT__idu0__DOT__is_ebreak = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__top__DOT__inst = VL_RAND_RESET_I(32);
     vlSelf->__VactDidInit = 0;
