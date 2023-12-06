@@ -245,6 +245,10 @@ VL_INLINE_OPT void Vtop___024root___act_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                    == 
                                                    (0xfe00707fU 
                                                     & vlSelf->top__DOT__inst)));
+    vlSelf->top__DOT__idu0__DOT__is_sll = (IData)((0x1033U 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->top__DOT__inst)));
     vlSelf->top__DOT__idu0__DOT____VdfgTmp_he69f398c__0 
         = (IData)((0x33U == (0x707fU & vlSelf->top__DOT__inst)));
     vlSelf->top__DOT__idu0__DOT__imm0__DOT____Vcellinp__mux0____pinNumber3[0U] 
@@ -472,12 +476,16 @@ VL_INLINE_OPT void Vtop___024root___act_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                     : 
                                                    ((IData)(vlSelf->top__DOT__idu0__DOT__is_and)
                                                      ? 7U
-                                                     : 0U))))))));
+                                                     : 
+                                                    ((IData)(vlSelf->top__DOT__idu0__DOT__is_sll)
+                                                      ? 1U
+                                                      : 0U)))))))));
     vlSelf->top__DOT__idu0__DOT__is_R = ((IData)(vlSelf->top__DOT__idu0__DOT__is_sub) 
                                          | ((IData)(vlSelf->top__DOT__idu0__DOT__is_add) 
                                             | ((IData)(vlSelf->top__DOT__idu0__DOT__is_xor) 
                                                | ((IData)(vlSelf->top__DOT__idu0__DOT__is_sltu) 
-                                                  | (IData)(vlSelf->top__DOT__idu0__DOT__is_and)))));
+                                                  | ((IData)(vlSelf->top__DOT__idu0__DOT__is_and) 
+                                                     | (IData)(vlSelf->top__DOT__idu0__DOT__is_sll))))));
     vlSelf->top__DOT__rf_wr_sel = ((IData)(vlSelf->top__DOT__do_jump)
                                     ? 1U : (((IData)(vlSelf->top__DOT__idu0__DOT__is_U) 
                                              | ((IData)(vlSelf->top__DOT__idu0__DOT__is_addi) 
