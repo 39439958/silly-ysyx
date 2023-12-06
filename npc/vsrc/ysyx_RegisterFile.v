@@ -12,7 +12,7 @@ module ysyx_RegisterFile (
     always @(posedge clk) begin
         if (rf_wr_en) begin
             rf[waddr] <= wdata;
-            //$display("waddr = %h, wdata = %h", waddr, wdata);
+            $display("waddr = %h, wdata = %h", waddr, wdata);
         end
     end
     
