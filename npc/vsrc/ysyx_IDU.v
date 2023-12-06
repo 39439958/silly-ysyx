@@ -74,10 +74,13 @@ module ysyx_IDU (
     assign  is_auipc = (op == 7'h17);
     assign  is_lui = (op == 7'h37);
     assign  is_ebreak = (op == 7'h73);
+
     assign  is_jal = (op == 7'h6f);
     assign  is_jalr = (op == 7'h67) && (funct3 == 3'h0);
-    assign  is_sw = (op == 7'h23) && (funct3 == 3'h2);
     assign  is_sltiu = (op == 7'h13) && (funct3 == 3'h3);
+
+    assign  is_sw = (op == 7'h23) && (funct3 == 3'h2);
+    assign  is_sh = (op == 7'h23) && (funct3 == 3'h1);
 
     assign  is_lw = (op == 7'h3) && (funct3 == 3'h2);
     assign  is_lbu = (op == 7'h3) && (funct3 == 3'h4);

@@ -277,7 +277,11 @@ VL_ATTR_COLD void Vtop___024root___stl_sequent__TOP__0(Vtop___024root* vlSelf) {
                                                   (0x707fU 
                                                    & vlSelf->top__DOT__inst))) 
                                          | ((IData)(vlSelf->top__DOT__idu0__DOT__is_sb) 
-                                            | (IData)(vlSelf->top__DOT__idu0__DOT__is_sh)));
+                                            | (IData)(
+                                                      (0x1023U 
+                                                       == 
+                                                       (0x707fU 
+                                                        & vlSelf->top__DOT__inst)))));
     vlSelf->top__DOT__idu0__DOT__is_lbu = (IData)((0x4003U 
                                                    == 
                                                    (0x707fU 
@@ -739,7 +743,6 @@ VL_ATTR_COLD void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__idu0__DOT__is_lhu = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_lw = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_sb = VL_RAND_RESET_I(1);
-    vlSelf->top__DOT__idu0__DOT__is_sh = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_I = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_U = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__idu0__DOT__is_R = VL_RAND_RESET_I(1);

@@ -45,6 +45,10 @@ module ysyx_EXU (
             pmem_write(alu_out, rs2, 8'b0000_1111);
             $display("wr_data = %h", rs2);
         end
+        else if (dm_wr_sel == 2'b10) begin 
+            pmem_write(alu_out, rs2, 8'b0000_0011);
+            $display("wr_data = %h", rs2[15:0]);
+        end
     end
     always @(posedge clk) begin 
         if (dm_rd_sel == 3'b101) begin
