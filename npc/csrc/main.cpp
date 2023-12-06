@@ -123,7 +123,7 @@ void ref_reg_display(cpu_state *ref) {
 }
 
 void init_mem() {
-    memset(pmem, rand(), 0x8000000);
+    memset(pmem, 0, 0x8000000);
     memcpy(pmem, img, sizeof(img));
     cpu.pc = 0x80000000;
 }
