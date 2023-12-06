@@ -689,8 +689,8 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                                ? 3U
                                                : 0U)))))) {
         Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, vlSelf->top__DOT__exu0__DOT__rs2, 1U);
-        VL_WRITEF("wr_data:%2x write in addr:%x\n",
-                  8,(0xffU & vlSelf->top__DOT__exu0__DOT__rs2),
+        VL_WRITEF("%2x write in addr:%x\n",8,(0xffU 
+                                              & vlSelf->top__DOT__exu0__DOT__rs2),
                   32,vlSelf->top__DOT__exu0__DOT__alu_out);
     } else if (VL_UNLIKELY((2U == ((IData)((0x23U == 
                                             (0x707fU 
@@ -708,8 +708,8 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                                        & vlSelf->top__DOT__inst)))
                                               ? 3U : 0U)))))) {
         Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, vlSelf->top__DOT__exu0__DOT__rs2, 3U);
-        VL_WRITEF("wr_data:%4x write in addr:%x\n",
-                  16,(0xffffU & vlSelf->top__DOT__exu0__DOT__rs2),
+        VL_WRITEF("%4x write in addr:%x\n",16,(0xffffU 
+                                               & vlSelf->top__DOT__exu0__DOT__rs2),
                   32,vlSelf->top__DOT__exu0__DOT__alu_out);
     } else if (VL_UNLIKELY((3U == ((IData)((0x23U == 
                                             (0x707fU 
@@ -727,8 +727,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                                        & vlSelf->top__DOT__inst)))
                                               ? 3U : 0U)))))) {
         Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, vlSelf->top__DOT__exu0__DOT__rs2, 0xfU);
-        VL_WRITEF("wr_data:%8x write in addr:%x\n",
-                  32,vlSelf->top__DOT__exu0__DOT__rs2,
+        VL_WRITEF("%8x write in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__rs2,
                   32,vlSelf->top__DOT__exu0__DOT__alu_out);
     }
     __Vdly__top__DOT__pc = vlSelf->top__DOT__pc;

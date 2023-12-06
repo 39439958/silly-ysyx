@@ -43,15 +43,15 @@ module ysyx_EXU (
     always @(posedge clk) begin
         if (dm_wr_sel == 2'b01) begin
             pmem_write(alu_out, rs2, 8'b0000_0001);
-            $display("wr_data:%2h write in addr:%h", rs2[7:0], alu_out);
+            $display("%2h write in addr:%h", rs2[7:0], alu_out);
         end
         else if (dm_wr_sel == 2'b10) begin 
             pmem_write(alu_out, rs2, 8'b0000_0011);
-            $display("wr_data:%4h write in addr:%h", rs2[15:0], alu_out);
+            $display("%4h write in addr:%h", rs2[15:0], alu_out);
         end
         else if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
-            $display("wr_data:%8h write in addr:%h", rs2, alu_out);
+            $display("%8h write in addr:%h", rs2, alu_out);
         end
     end
     always @(posedge clk) begin 
