@@ -23,6 +23,8 @@ class Vtop___024root final : public VerilatedModule {
     CData/*3:0*/ top__DOT__alu_ctrl;
     CData/*2:0*/ top__DOT__dm_rd_sel;
     CData/*0:0*/ top__DOT__idu0__DOT__is_addi;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_xori;
+    CData/*0:0*/ top__DOT__idu0__DOT__is_srai;
     CData/*0:0*/ top__DOT__idu0__DOT__is_jalr;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sltiu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sub;
@@ -30,7 +32,6 @@ class Vtop___024root final : public VerilatedModule {
     CData/*0:0*/ top__DOT__idu0__DOT__is_xor;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sltu;
     CData/*0:0*/ top__DOT__idu0__DOT__is_and;
-    CData/*0:0*/ top__DOT__idu0__DOT__is_srai;
     CData/*0:0*/ top__DOT__idu0__DOT__is_beq;
     CData/*0:0*/ top__DOT__idu0__DOT__is_bne;
     CData/*0:0*/ top__DOT__idu0__DOT__is_blt;
