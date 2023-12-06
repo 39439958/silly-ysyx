@@ -41,13 +41,17 @@ module ysyx_EXU (
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
     reg [31:0] dm_data;
     always @(posedge clk) begin
-        if (dm_wr_sel == 2'b11) begin
-            pmem_write(alu_out, rs2, 8'b0000_1111);
-            $display("wr_data:%h write in addr:%h", rs2, alu_out);
+        if (dm_wr_sel == 2'b01) begin
+            pmem_write(alu_out, rs2, 8'b0000_0001);
+            $display("wr_data:%2h write in addr:%h", rs2[7:0], alu_out);
         end
         else if (dm_wr_sel == 2'b10) begin 
             pmem_write(alu_out, rs2, 8'b0000_0011);
-            $display("wr_data:%h write in addr:%h", rs2[15:0], alu_out);
+            $display("wr_data:%4h write in addr:%h", rs2[15:0], alu_out);
+        end
+        else if (dm_wr_sel == 2'b11) begin
+            pmem_write(alu_out, rs2, 8'b0000_1111);
+            $display("wr_data:%8h write in addr:%h", rs2, alu_out);
         end
     end
     always @(posedge clk) begin 
@@ -68,7 +72,6 @@ module ysyx_EXU (
         .func (alu_ctrl),
         .ALUout (alu_out)
     );
-
     ysyx_RegisterFile regfile0(
         .clk (clk),
         .rf_wr_en (rf_wr_en),
@@ -79,7 +82,6 @@ module ysyx_EXU (
         .rdata1 (rs1),
         .rdata2 (rs2)
     );
-
     ysyx_branch branch0(
         .REG1 (rs1),
         .REG2 (rs2),

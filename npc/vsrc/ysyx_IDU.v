@@ -31,7 +31,6 @@ module ysyx_IDU (
     wire  is_lui;
     wire  is_jal;
     wire  is_jalr;
-    wire  is_sw;
     wire  is_ebreak;
     wire  is_sltiu;
 
@@ -87,11 +86,16 @@ module ysyx_IDU (
     assign  is_jalr = (op == 7'h67) && (funct3 == 3'h0);
     assign  is_sltiu = (op == 7'h13) && (funct3 == 3'h3);
 
-    assign  is_sw = (op == 7'h23) && (funct3 == 3'h2);
+    assign  is_sb = (op == 7'h23) && (funct3 == 3'h0);
     assign  is_sh = (op == 7'h23) && (funct3 == 3'h1);
+    assign  is_sw = (op == 7'h23) && (funct3 == 3'h2);
 
-    assign  is_lw = (op == 7'h3) && (funct3 == 3'h2);
+    assign  is_lb = (op == 7'h3) && (funct3 == 3'h0);
     assign  is_lbu = (op == 7'h3) && (funct3 == 3'h4);
+    assign  is_lh = (op == 7'h3) && (funct3 == 3'h1);
+    assign  is_lhu = (op == 7'h3) && (funct3 == 3'h5);
+    assign  is_lw = (op == 7'h3) && (funct3 == 3'h2);
+    
 
     assign  is_sub = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h20);
     assign  is_add = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h00);
@@ -107,11 +111,15 @@ module ysyx_IDU (
     assign  is_bltu = (op == 7'h63) && (funct3 ==3'h6);
     assign  is_bgeu = (op == 7'h63) && (funct3 ==3'h7);
 
-    assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B | is_add;
-    assign  is_I = is_addi | is_jalr | is_lw | is_lbu | is_sltiu | is_srai | is_xori | is_andi;
+    assign  is_add_type = is_auipc | is_jal | is_jalr | is_S | is_B |
+                          is_lb | is_lbu | is_lh | is_lhu | is_lw |
+                          is_add | is_addi;
+    assign  is_I = is_jalr |
+                   is_lb | is_lbu | is_lh | is_lhu | is_lw | 
+                   is_addi | is_sltiu | is_srai | is_xori | is_andi;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
-    assign  is_S = is_sw | is_sb | is_sh;
+    assign  is_S = is_sb | is_sh | is_sw;
     assign  is_B = is_beq | is_bne | is_blt | is_bge | is_bltu | is_bgeu;
     assign  is_R = is_sub | is_add | is_xor | is_sltu | is_and | is_sll;
     
@@ -129,7 +137,7 @@ module ysyx_IDU (
     always@(*)
     begin
         if(is_jal | is_jalr) rf_wr_sel = 2'b01;
-        else if(is_U | is_addi | is_sltiu | is_R | is_srai | is_xori | is_andi) rf_wr_sel = 2'b10;
+        else if(is_U | is_R | is_addi | is_sltiu | is_srai | is_xori | is_andi) rf_wr_sel = 2'b10;
         else if(is_lb | is_lh | is_lw | is_lbu | is_lhu) rf_wr_sel = 2'b11;
         else rf_wr_sel = 2'b00;
     end 

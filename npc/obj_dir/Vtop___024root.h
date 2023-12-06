@@ -47,12 +47,11 @@ class Vtop___024root final : public VerilatedModule {
         CData/*0:0*/ top__DOT__idu0__DOT__is_lh;
         CData/*0:0*/ top__DOT__idu0__DOT__is_lhu;
         CData/*0:0*/ top__DOT__idu0__DOT__is_lw;
-        CData/*0:0*/ top__DOT__idu0__DOT__is_sb;
         CData/*0:0*/ top__DOT__idu0__DOT__is_I;
         CData/*0:0*/ top__DOT__idu0__DOT__is_U;
         CData/*0:0*/ top__DOT__idu0__DOT__is_R;
         CData/*0:0*/ top__DOT__idu0__DOT__is_S;
-        CData/*0:0*/ top__DOT__idu0__DOT____VdfgTmp_h13f6fe84__0;
+        CData/*0:0*/ top__DOT__idu0__DOT____VdfgTmp_h4d8b3a5b__0;
         CData/*0:0*/ top__DOT__idu0__DOT____VdfgTmp_he69f398c__0;
         CData/*0:0*/ top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__hit;
         CData/*0:0*/ top__DOT__exu0__DOT__branch0__DOT____VdfgExtracted_h2387256d__0;
@@ -79,9 +78,9 @@ class Vtop___024root final : public VerilatedModule {
         IData/*31:0*/ __VactIterCount;
         VlUnpacked<QData/*38:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list;
         VlUnpacked<CData/*6:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list;
+        VlUnpacked<IData/*31:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__data_list;
     };
     struct {
-        VlUnpacked<IData/*31:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__data_list;
         VlUnpacked<IData/*31:0*/, 32> top__DOT__exu0__DOT__regfile0__DOT__rf;
         VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     };
