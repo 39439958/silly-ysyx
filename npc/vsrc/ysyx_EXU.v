@@ -57,7 +57,7 @@ module ysyx_EXU (
         end
         else if (dm_rd_sel == 3'b010) begin
             pmem_read(alu_out, dm_data);
-            //dm_data = {{24{1'b0}}, dm_data[7:0]};
+            dm_data = {{24{1'b0}}, dm_data[7:0]};
             $display("rd_data = %h", dm_data);
         end
     end
