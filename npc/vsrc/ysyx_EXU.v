@@ -62,7 +62,7 @@ module ysyx_EXU (
         end
         else if (dm_rd_sel == 3'b010) begin
             pmem_read(alu_out, dm_data);
-            dm_data = {{24{1'b0}}, dm_data[7:0]};
+            dm_data = {{24{1'b0}}, dm_data[7 + (alu_out & 32'h3) * 8 :0 + (alu_out & 32'h3) * 8]};
             $display("read %2h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b011) begin 
