@@ -6,7 +6,7 @@ module ysyx_ImmExtend (
     ysyx_MuxKey #(9, 7, 32) mux0 ( imm, inst[6:0], {
         7'b0010111, {inst[31:12], 12'b0}, // auipc
         7'b0110111, {inst[31:12], 12'b0}, // lui
-        7'b0010011, {{20{inst[31]}}, inst[31:20]}, // addi
+        7'b0010011, {{20{inst[31]}}, inst[31:20]}, // addi srai
         7'b1101111, {{11{inst[31]}}, inst[31], inst[19:12], inst[20], inst[30:21], 1'b0}, // jal
         7'b1100111, {{20{inst[31]}}, inst[31:20]}, // jalr
         7'b0100011, {{20{inst[31]}}, inst[31:25], inst[11:7]}, // sw

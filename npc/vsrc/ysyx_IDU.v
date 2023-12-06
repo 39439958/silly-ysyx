@@ -36,6 +36,8 @@ module ysyx_IDU (
     wire  is_xor;
     wire  is_sltu;
 
+    wire  is_srai;
+
     wire  is_beq;
     wire  is_bne;
     wire  is_blt;
@@ -83,6 +85,8 @@ module ysyx_IDU (
     assign  is_xor = (op == 7'h33) && (funct3 == 3'h4) && (funct7 == 7'h00);
     assign  is_sltu = (op == 7'h33) && (funct3 == 3'h3) && (funct7 == 7'h00);
 
+    assign  is_srai = (op == 7'h13) && (funct3 == 3'h5);
+
     assign  is_beq  = (op == 7'h63) && (funct3 ==3'h0);
     assign  is_bne  = (op == 7'h63) && (funct3 ==3'h1);
     assign  is_blt  = (op == 7'h63) && (funct3 ==3'h4);
@@ -91,7 +95,7 @@ module ysyx_IDU (
     assign  is_bgeu = (op == 7'h63) && (funct3 ==3'h7);
 
     assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B | is_add;
-    assign  is_I = is_addi | is_jalr | is_lw | is_sltiu;
+    assign  is_I = is_addi | is_jalr | is_lw | is_sltiu | is_srai;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
@@ -112,7 +116,7 @@ module ysyx_IDU (
     always@(*)
     begin
         if(is_jal | is_jalr) rf_wr_sel = 2'b01;
-        else if(is_U | is_addi | is_sltiu | is_R) rf_wr_sel = 2'b10;
+        else if(is_U | is_addi | is_sltiu | is_R | is_srai) rf_wr_sel = 2'b10;
         else if(is_lb | is_lh | is_lw | is_lbu | is_lhu) rf_wr_sel = 2'b11;
         else rf_wr_sel = 2'b00;
     end 
@@ -147,6 +151,7 @@ module ysyx_IDU (
         else if(is_sltiu) alu_ctrl = 4'b0011;
         else if(is_xor) alu_ctrl = 4'b0100;
         else if(is_sltu) alu_ctrl = 4'b0011;
+        else if(is_srai) alu_ctrl = 4'b1101;
         else alu_ctrl = 0;
     end
 
