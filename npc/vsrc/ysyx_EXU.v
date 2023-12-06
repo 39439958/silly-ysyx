@@ -43,22 +43,22 @@ module ysyx_EXU (
     always @(posedge clk) begin
         if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
-            $display("wr_data = %h", rs2);
+            $display("wr_data:%h write in addr:%h", rs2, alu_out);
         end
         else if (dm_wr_sel == 2'b10) begin 
             pmem_write(alu_out, rs2, 8'b0000_0011);
-            $display("wr_data = %h", rs2[15:0]);
+            $display("wr_data:%h write in addr:%h", rs2[15:0], alu_out);
         end
     end
     always @(posedge clk) begin 
         if (dm_rd_sel == 3'b101) begin
             pmem_read(alu_out, dm_data);
-            $display("rd_data = %h", dm_data);
+            $display("read rd_data:%h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b010) begin
             pmem_read(alu_out, dm_data);
             dm_data = {{24{1'b0}}, dm_data[7:0]};
-            $display("rd_data = %h", dm_data);
+            $display("read rd_data:%h in addr:%h", dm_data, alu_out);
         end
     end
 
