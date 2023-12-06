@@ -77,8 +77,10 @@ module ysyx_IDU (
     assign  is_jal = (op == 7'h6f);
     assign  is_jalr = (op == 7'h67) && (funct3 == 3'h0);
     assign  is_sw = (op == 7'h23) && (funct3 == 3'h2);
-    assign  is_lw = (op == 7'h3) && (funct3 == 3'h2);
     assign  is_sltiu = (op == 7'h13) && (funct3 == 3'h3);
+
+    assign  is_lw = (op == 7'h3) && (funct3 == 3'h2);
+    assign  is_lbu = (op == 7'h3) && (funct3 == 3'h4);
 
     assign  is_sub = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h20);
     assign  is_add = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h00);
@@ -95,7 +97,7 @@ module ysyx_IDU (
     assign  is_bgeu = (op == 7'h63) && (funct3 ==3'h7);
 
     assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B | is_add;
-    assign  is_I = is_addi | is_jalr | is_lw | is_sltiu | is_srai;
+    assign  is_I = is_addi | is_jalr | is_lw | is_lbu | is_sltiu | is_srai;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;

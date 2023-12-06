@@ -21,6 +21,7 @@ class Vtop___024root final : public VerilatedModule {
     CData/*2:0*/ top__DOT__BrType;
     CData/*0:0*/ top__DOT__alu_a_sel;
     CData/*3:0*/ top__DOT__alu_ctrl;
+    CData/*2:0*/ top__DOT__dm_rd_sel;
     CData/*0:0*/ top__DOT__idu0__DOT__is_addi;
     CData/*0:0*/ top__DOT__idu0__DOT__is_jalr;
     CData/*0:0*/ top__DOT__idu0__DOT__is_sltiu;
