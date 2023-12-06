@@ -99,6 +99,7 @@ static char* rl_gets() {
 }
 
 void reg_display() {
+    printf("npc regs : \n");
     for (int i = 0; i < 32; i++) {
         printf("%3s: 0x%08x", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
         if (i % 4 == 3) {
@@ -190,7 +191,7 @@ static void checkregs(cpu_state *ref, uint32_t pc) {
     is_quit = 1;
     quit_state = NPC_ABORT;
     reg_display();
-    printf("\n");
+    printf("nemu regs : \n");
     ref_reg_display(ref);
   }
 }
