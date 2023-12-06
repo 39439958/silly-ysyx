@@ -33,6 +33,7 @@ module ysyx_IDU (
 
     wire  is_sub;
     wire  is_add;
+    wire  is_xor;
 
     wire  is_beq;
     wire  is_bne;
@@ -78,6 +79,7 @@ module ysyx_IDU (
 
     assign  is_sub = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h20);
     assign  is_add = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h00);
+    assign  is_xor = (op == 7'h33) && (funct3 == 3'h4) && (funct7 == 7'h00);
 
     assign  is_beq  = (op == 7'h63) && (funct3 ==3'h0);
     assign  is_bne  = (op == 7'h63) && (funct3 ==3'h1);
@@ -92,7 +94,7 @@ module ysyx_IDU (
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
     assign  is_B = is_beq | is_bne | is_blt | is_bge | is_bltu | is_bgeu;
-    assign  is_R = is_sub | is_add;
+    assign  is_R = is_sub | is_add | is_xor;
     
 
     // 扩展立即数
@@ -141,6 +143,7 @@ module ysyx_IDU (
         else if(is_lui) alu_ctrl = 4'b1110;
         else if(is_sub) alu_ctrl = 4'b1000;
         else if(is_sltiu) alu_ctrl = 4'b0011;
+        else if(is_xor) alu_ctrl = 4'b0100;
         else alu_ctrl = 0;
     end
 
