@@ -104,7 +104,7 @@ module ysyx_IDU (
     assign  is_bgeu = (op == 7'h63) && (funct3 ==3'h7);
 
     assign  is_add_type = is_addi | is_auipc | is_jal | is_jalr | is_S | is_lw | is_B | is_add;
-    assign  is_I = is_addi | is_jalr | is_lw | is_lbu | is_sltiu | is_srai;
+    assign  is_I = is_addi | is_jalr | is_lw | is_lbu | is_sltiu | is_srai | is_xori;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sw | is_sb | is_sh;
