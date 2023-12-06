@@ -16,6 +16,7 @@
 #define NPC_ABORT 1
 
 vluint64_t sim_time = 0;
+int cnt = 0;
 int is_quit = 0;
 int quit_state = 0;
 char *ref_so_file = "/home/silly/ysyx-workbench/nemu/build/riscv32-nemu-interpreter-so";
@@ -193,6 +194,7 @@ static void checkregs(cpu_state *ref, uint32_t pc) {
     reg_display();
     printf("nemu regs : \n");
     ref_reg_display(ref);
+    printf("cnt : %d\n", cnt);
   }
 }
 
@@ -251,6 +253,10 @@ void npc_exec(int n) {
         uint32_t this_pc = top->rootp->top__DOT__pc;
         p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->rootp->top__DOT__pc);
 
+        if (top->rootp->top__DOT__pc == 0x8000004c) {
+            cnt++;
+        }
+
         // execute
         top->clk ^= 1;
         top->eval();
@@ -286,6 +292,7 @@ void npc_exec(int n) {
             is_quit = 1;
             quit_state = NPC_ABORT;
         }
+
 
         if (is_quit) {
             break;
@@ -360,6 +367,7 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
     if (strcmp(args, "r") == 0) {
         reg_display();
+
     } else {
         printf("Unknow parma\n");
     }
