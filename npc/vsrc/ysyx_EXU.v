@@ -57,7 +57,14 @@ module ysyx_EXU (
     always @(posedge clk) begin 
         if (dm_rd_sel == 3'b001) begin
             pmem_read(alu_out, dm_data);
-            dm_data = {{24{dm_data[7]}}, dm_data[7:0]};
+            if (alu_out[1:0] == 2'b00) 
+                dm_data = {{24{dm_data[7]}}, dm_data[7:0]};
+            else if (alu_out[1:0] == 2'b01)
+                dm_data = {{24{dm_data[15]}}, dm_data[15:8]};
+            else if (alu_out[1:0] == 2'b10)
+                dm_data = {{24{dm_data[23]}}, dm_data[23:16]};
+            else
+                dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
             $display("read %2h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b010) begin
