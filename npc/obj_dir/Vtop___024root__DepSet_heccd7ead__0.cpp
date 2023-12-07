@@ -675,6 +675,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     __Vdlyvval__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
     CData/*0:0*/ __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
     __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
+    IData/*31:0*/ __Vtemp_hba363faa__0;
     // Body
     if (VL_UNLIKELY((1U == ((IData)((0x23U == (0x707fU 
                                                & vlSelf->top__DOT__inst)))
@@ -735,13 +736,37 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     if (VL_UNLIKELY((1U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__5__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__5__rdata;
-        vlSelf->top__DOT__exu0__DOT__dm_data = (((- (IData)(
-                                                            (1U 
-                                                             & (vlSelf->top__DOT__exu0__DOT__dm_data 
-                                                                >> 7U)))) 
-                                                 << 8U) 
-                                                | (0xffU 
-                                                   & vlSelf->top__DOT__exu0__DOT__dm_data));
+        __Vtemp_hba363faa__0 = ((0U == (3U & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                 ? (((- (IData)((1U 
+                                                 & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                    >> 7U)))) 
+                                     << 8U) | (0xffU 
+                                               & vlSelf->top__DOT__exu0__DOT__dm_data))
+                                 : ((1U == (3U & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                     ? (((- (IData)(
+                                                    (1U 
+                                                     & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                        >> 0xfU)))) 
+                                         << 8U) | (0xffU 
+                                                   & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                      >> 8U)))
+                                     : ((2U == (3U 
+                                                & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                         ? (((- (IData)(
+                                                        (1U 
+                                                         & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                            >> 0x17U)))) 
+                                             << 8U) 
+                                            | (0xffU 
+                                               & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                  >> 0x10U)))
+                                         : (((- (IData)(
+                                                        (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                         >> 0x1fU))) 
+                                             << 8U) 
+                                            | (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                               >> 0x18U)))));
+        vlSelf->top__DOT__exu0__DOT__dm_data = __Vtemp_hba363faa__0;
         VL_WRITEF("read %2x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
                   32,vlSelf->top__DOT__exu0__DOT__alu_out);
     } else if (VL_UNLIKELY((2U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
