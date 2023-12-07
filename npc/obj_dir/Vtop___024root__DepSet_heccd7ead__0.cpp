@@ -700,6 +700,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     CData/*0:0*/ __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0;
     __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0;
     IData/*31:0*/ __Vtemp_hba363faa__0;
+    IData/*31:0*/ __Vtemp_h9f56714d__0;
     // Body
     if (VL_UNLIKELY((1U == ((IData)((0x23U == (0x707fU 
                                                & vlSelf->top__DOT__inst)))
@@ -829,20 +830,68 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     } else if (VL_UNLIKELY((3U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__7__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__7__rdata;
-        vlSelf->top__DOT__exu0__DOT__dm_data = (((- (IData)(
-                                                            (1U 
-                                                             & (vlSelf->top__DOT__exu0__DOT__dm_data 
-                                                                >> 0xfU)))) 
-                                                 << 0x10U) 
-                                                | (0xffffU 
-                                                   & vlSelf->top__DOT__exu0__DOT__dm_data));
+        __Vtemp_h9f56714d__0 = ((0U == (3U & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                 ? (((- (IData)((1U 
+                                                 & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                    >> 0xfU)))) 
+                                     << 0x10U) | (0xffffU 
+                                                  & vlSelf->top__DOT__exu0__DOT__dm_data))
+                                 : ((1U == (3U & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                     ? (((- (IData)(
+                                                    (1U 
+                                                     & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                        >> 0x17U)))) 
+                                         << 0x10U) 
+                                        | (0xffffU 
+                                           & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                              >> 8U)))
+                                     : ((2U == (3U 
+                                                & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                         ? (((- (IData)(
+                                                        (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                         >> 0x1fU))) 
+                                             << 0x10U) 
+                                            | (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                               >> 0x10U))
+                                         : (((- (IData)(
+                                                        (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                         >> 0x1fU))) 
+                                             << 8U) 
+                                            | (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                               >> 0x18U)))));
+        vlSelf->top__DOT__exu0__DOT__dm_data = __Vtemp_h9f56714d__0;
         VL_WRITEF("read %4x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
                   32,vlSelf->top__DOT__exu0__DOT__alu_out);
     } else if (VL_UNLIKELY((4U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__8__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__8__rdata;
-        vlSelf->top__DOT__exu0__DOT__dm_data = (0xffffU 
-                                                & vlSelf->top__DOT__exu0__DOT__dm_data);
+        vlSelf->top__DOT__exu0__DOT__dm_data = ((0U 
+                                                 == 
+                                                 (3U 
+                                                  & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                                 ? 
+                                                (0xffffU 
+                                                 & vlSelf->top__DOT__exu0__DOT__dm_data)
+                                                 : 
+                                                ((1U 
+                                                  == 
+                                                  (3U 
+                                                   & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                                  ? 
+                                                 (0xffffU 
+                                                  & (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                     >> 8U))
+                                                  : 
+                                                 ((2U 
+                                                   == 
+                                                   (3U 
+                                                    & vlSelf->top__DOT__exu0__DOT__alu_out))
+                                                   ? 
+                                                  (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                   >> 0x10U)
+                                                   : 
+                                                  (vlSelf->top__DOT__exu0__DOT__dm_data 
+                                                   >> 0x18U))));
         VL_WRITEF("read %4x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
                   32,vlSelf->top__DOT__exu0__DOT__alu_out);
     } else if (VL_UNLIKELY((5U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
