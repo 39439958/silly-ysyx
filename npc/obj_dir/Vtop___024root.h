@@ -36,6 +36,7 @@ class Vtop___024root final : public VerilatedModule {
         CData/*0:0*/ top__DOT__idu0__DOT__is_add;
         CData/*0:0*/ top__DOT__idu0__DOT__is_xor;
         CData/*0:0*/ top__DOT__idu0__DOT__is_sltu;
+        CData/*0:0*/ top__DOT__idu0__DOT__is_slt;
         CData/*0:0*/ top__DOT__idu0__DOT__is_and;
         CData/*0:0*/ top__DOT__idu0__DOT__is_sll;
         CData/*0:0*/ top__DOT__idu0__DOT__is_or;
@@ -78,9 +79,9 @@ class Vtop___024root final : public VerilatedModule {
         IData/*31:0*/ top__DOT__exu0__DOT__alu0__DOT____VdfgExtracted_h3a4640af__0;
         IData/*31:0*/ __VdfgTmp_he8947ce0__0;
         IData/*31:0*/ __VdfgTmp_h441bd1e7__0;
-        IData/*31:0*/ __VstlIterCount;
     };
     struct {
+        IData/*31:0*/ __VstlIterCount;
         IData/*31:0*/ __VactIterCount;
         VlUnpacked<QData/*38:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__pair_list;
         VlUnpacked<CData/*6:0*/, 9> top__DOT__idu0__DOT__imm0__DOT__mux0__DOT__i0__DOT__key_list;

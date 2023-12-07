@@ -16,7 +16,7 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/silly/ysyx-workbench/npc/vsrc/ysyx_IDU.v:209:34
+    // DPI import at /home/silly/ysyx-workbench/npc/vsrc/ysyx_IDU.v:212:34
     extern void ebreak();
     // DPI import at /home/silly/ysyx-workbench/npc/vsrc/top.v:6:34
     extern void pmem_read(int raddr, int* rdata);

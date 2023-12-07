@@ -40,6 +40,7 @@ module ysyx_IDU (
     wire  is_add;
     wire  is_xor;
     wire  is_sltu;
+    wire  is_slt;
     wire  is_and;
     wire  is_sll;
     wire  is_or;
@@ -105,6 +106,7 @@ module ysyx_IDU (
     assign  is_add = (op == 7'h33) && (funct3 == 3'h0) && (funct7 == 7'h00);
     assign  is_xor = (op == 7'h33) && (funct3 == 3'h4) && (funct7 == 7'h00);
     assign  is_sltu = (op == 7'h33) && (funct3 == 3'h3) && (funct7 == 7'h00);
+    assign  is_slt = (op == 7'h33) && (funct3 == 3'h2) && (funct7 == 7'h00);
     assign  is_and = (op == 7'h33) && (funct3 == 3'h7) && (funct7 == 7'h00);
     assign  is_sll = (op == 7'h33) && (funct3 == 3'h1) && (funct7 == 7'h00);
     assign  is_or = (op == 7'h33) && (funct3 == 3'h6) && (funct7 == 7'h00);
@@ -126,7 +128,7 @@ module ysyx_IDU (
     assign  is_J = is_jal;
     assign  is_S = is_sb | is_sh | is_sw;
     assign  is_B = is_beq | is_bne | is_blt | is_bge | is_bltu | is_bgeu;
-    assign  is_R = is_sub | is_add | is_xor | is_sltu | is_and | is_sll | is_or;
+    assign  is_R = is_sub | is_add | is_xor | is_sltu | is_slt | is_and | is_sll | is_or;
     
 
     // 扩展立即数
@@ -177,6 +179,7 @@ module ysyx_IDU (
         else if(is_sltiu) alu_ctrl = 4'b0011;
         else if(is_xor | is_xori) alu_ctrl = 4'b0100;
         else if(is_sltu) alu_ctrl = 4'b0011;
+        else if(is_slt) alu_ctrl = 4'b0010;
         else if(is_srai) alu_ctrl = 4'b1101;
         else if(is_srli) alu_ctrl = 4'b0101;
         else if(is_and | is_andi) alu_ctrl = 4'b0111;
