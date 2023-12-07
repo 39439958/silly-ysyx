@@ -16,6 +16,7 @@
 #define NPC_ABORT 1
 
 vluint64_t sim_time = 0;
+int cnt = 0;
 int is_quit = 0;
 int quit_state = 0;
 char *ref_so_file = "/home/silly/ysyx-workbench/nemu/build/riscv32-nemu-interpreter-so";
@@ -66,6 +67,10 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
     uint32_t addr = waddr & ~0x3u;
+    if (wmask == 1 || wmask == 3) {
+        wdata <<= ((waddr & 0x3u) * 8);
+        wmask <<= (waddr & 0x3u);
+    }
     uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
     uint32_t mask = 0; 
     for (int i = 0; i < 4; i++) {
@@ -99,6 +104,7 @@ static char* rl_gets() {
 }
 
 void reg_display() {
+    printf("npc regs : \n");
     for (int i = 0; i < 32; i++) {
         printf("%3s: 0x%08x", regs[i], top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i]);
         if (i % 4 == 3) {
@@ -109,8 +115,19 @@ void reg_display() {
     }
 }
 
+void ref_reg_display(cpu_state *ref) {
+    for (int i = 0; i < 32; i++) {
+        printf("%3s: 0x%08x", regs[i], ref->gpr[i]);
+        if (i % 4 == 3) {
+            printf("\n");
+        } else {
+            printf("\t");
+        }   
+    }
+}
+
 void init_mem() {
-    memset(pmem, rand(), 0x8000000);
+    memset(pmem, 0, 0x8000000);
     memcpy(pmem, img, sizeof(img));
     cpu.pc = 0x80000000;
 }
@@ -164,11 +181,11 @@ void npc_rst() {
 bool difftest_checkregs(cpu_state *ref_r, uint32_t pc) {
     for (int i = 0; i < 32; i++) {
         if (ref_r->gpr[i] != cpu.gpr[i]) {
-            printf("ref_r->gpr[%d] = 0x%08x, cpu.gpr[%d] = 0x%08x\n", i, ref_r->gpr[i], i, cpu.gpr[i]);
             return false;
         }
     }
     if (ref_r->pc != cpu.pc) {
+        printf("ref_r->pc = 0x%08x, cpu.pc = 0x%08x\n", ref_r->pc, cpu.pc);
         return false;
     }
     return true;
@@ -179,6 +196,9 @@ static void checkregs(cpu_state *ref, uint32_t pc) {
     is_quit = 1;
     quit_state = NPC_ABORT;
     reg_display();
+    printf("nemu regs : \n");
+    ref_reg_display(ref);
+    printf("cnt : %d\n", cnt);
   }
 }
 
@@ -231,40 +251,52 @@ void npc_exec(int n) {
         m_trace->dump(sim_time);
         sim_time++;
 
-        top->clk ^= 1;
-        pmem_read(top->pc, (int *)&top->inst);
-
-        // print instruction
+        // save pc
         char inst_buf[64];
         char *p = inst_buf;
-        uint8_t *inst = (uint8_t *)&top->inst;
-        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->pc);
+        uint32_t this_pc = top->rootp->top__DOT__pc;
+        p += snprintf(p, sizeof(inst_buf), "0x%08x:", top->rootp->top__DOT__pc);
+
+        if (top->rootp->top__DOT__pc == 0x8000004c) {
+            cnt++;
+        }
+
+        // execute
+        top->clk ^= 1;
+        top->eval();
+        m_trace->dump(sim_time);
+        sim_time++;
+
+        // save inst
+        uint8_t *inst = (uint8_t *)&top->rootp->top__DOT__inst;
         for (int j = 3; j >= 0; j--) {
             p += snprintf(p, 4, " %02x", inst[j]);
         }
         memset(p, ' ', 4);
         p += 4;
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
-        disassemble(p, inst_buf + sizeof(inst_buf) - p, top->pc, (uint8_t *)&top->inst, 4);
+        disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
         printf("%s\n", inst_buf);
 
-        top->eval();
-        m_trace->dump(sim_time);
-        sim_time++;
+        // reset r0 = 0
+        top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
 
         // store cpu state
-        cpu.pc = top->pc;
+        cpu.pc = top->rootp->top__DOT__pc;
         for (int i = 0; i < 32; i++) {
             cpu.gpr[i] = top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[i];
         }
 
-        // difftest
-        difftest_step(top->pc);
+        //printf("%x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
-        if (top->inst == 0x0000006f) {
+        // difftest
+        difftest_step(top->rootp->top__DOT__pc);
+
+        if (top->rootp->top__DOT__inst == 0x0000006f) {
             is_quit = 1;
             quit_state = NPC_ABORT;
         }
+
 
         if (is_quit) {
             break;
@@ -339,6 +371,7 @@ static int cmd_si(char *args) {
 static int cmd_info(char *args) {
     if (strcmp(args, "r") == 0) {
         reg_display();
+
     } else {
         printf("Unknow parma\n");
     }

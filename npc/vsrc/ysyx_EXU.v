@@ -3,27 +3,113 @@ module ysyx_EXU (
     input [31:0] inst,
     input [31:0] pc,
     input rf_wr_en,
-    input rf_wr_sel,
+    input [1:0] rf_wr_sel,
     input alu_a_sel,
     input alu_b_sel,
     input [3:0] alu_ctrl,
     input [31:0] imm,
+    input [2:0] dm_rd_sel,
+    input [1:0] dm_wr_sel,
+    input [2:0] BrType,
+    output BrE,
     output [31:0] jump_addr
 );
     // alu
     wire [31:0] alu_a;
     wire [31:0] alu_b;
     wire [31:0] alu_out;
-
     assign  alu_a = alu_a_sel ? rs1 : pc;
     assign  alu_b = alu_b_sel ? imm : rs2;
 
     // regfile
-    wire [31:0] rf_wdata;
+    reg [31:0] rf_wdata;
     wire [31:0] rs1, rs2;
-
-    assign rf_wdata = rf_wr_sel ? pc + 4 : alu_out;
+    always@(*)
+    begin
+        case(rf_wr_sel)
+        2'b00:  rf_wdata = 32'h0;
+        2'b01:  rf_wdata = pc + 4;
+        2'b10:  rf_wdata = alu_out;
+        2'b11:  rf_wdata = dm_data;
+        default:  rf_wdata = 32'h0;
+        endcase
+    end
     assign jump_addr = alu_a_sel ? ({alu_out[31:1], 1'b0}) : alu_out;
+
+    // // memory
+    import "DPI-C" function void pmem_read(input int raddr, output int rdata);
+    import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
+    reg [31:0] dm_data;
+    // write memory
+    always @(posedge clk) begin
+        if (dm_wr_sel == 2'b01) begin
+            pmem_write(alu_out, rs2, 8'b0000_0001);
+            $display("%2h write in addr:%h", rs2[7:0], alu_out);
+        end
+        else if (dm_wr_sel == 2'b10) begin 
+            pmem_write(alu_out, rs2, 8'b0000_0011);
+            $display("%4h write in addr:%h", rs2[15:0], alu_out);
+        end
+        else if (dm_wr_sel == 2'b11) begin
+            pmem_write(alu_out, rs2, 8'b0000_1111);
+            $display("%8h write in addr:%h", rs2, alu_out);
+        end
+    end
+    // read memory
+    always @(posedge clk) begin 
+        if (dm_rd_sel == 3'b001) begin
+            pmem_read(alu_out, dm_data);
+            if (alu_out[1:0] == 2'b00) 
+                dm_data = {{24{dm_data[7]}}, dm_data[7:0]};
+            else if (alu_out[1:0] == 2'b01)
+                dm_data = {{24{dm_data[15]}}, dm_data[15:8]};
+            else if (alu_out[1:0] == 2'b10)
+                dm_data = {{24{dm_data[23]}}, dm_data[23:16]};
+            else
+                dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
+            $display("read %2h in addr:%h", dm_data, alu_out);
+        end
+        else if (dm_rd_sel == 3'b010) begin
+            pmem_read(alu_out, dm_data);
+            if (alu_out[1:0] == 2'b00) 
+                dm_data = {{24{1'b0}}, dm_data[7:0]};
+            else if (alu_out[1:0] == 2'b01)
+                dm_data = {{24{1'b0}}, dm_data[15:8]};
+            else if (alu_out[1:0] == 2'b10)
+                dm_data = {{24{1'b0}}, dm_data[23:16]};
+            else
+                dm_data = {{24{1'b0}}, dm_data[31:24]};
+            $display("read %2h in addr:%h", dm_data, alu_out);
+        end
+        else if (dm_rd_sel == 3'b011) begin 
+            pmem_read(alu_out, dm_data);
+            if (alu_out[1:0] == 2'b00) 
+                dm_data = {{16{dm_data[15]}}, dm_data[15:0]};
+            else if (alu_out[1:0] == 2'b01)
+                dm_data = {{16{dm_data[23]}}, dm_data[23:8]};
+            else if (alu_out[1:0] == 2'b10)
+                dm_data = {{16{dm_data[31]}}, dm_data[31:16]};
+            else
+                dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
+            $display("read %4h in addr:%h", dm_data, alu_out);
+        end
+        else if (dm_rd_sel == 3'b100) begin
+            pmem_read(alu_out, dm_data);
+            if (alu_out[1:0] == 2'b00) 
+                dm_data = {{16{1'b0}}, dm_data[15:0]};
+            else if (alu_out[1:0] == 2'b01)
+                dm_data = {{16{1'b0}}, dm_data[23:8]};
+            else if (alu_out[1:0] == 2'b10)
+                dm_data = {{16{1'b0}}, dm_data[31:16]};
+            else
+                dm_data = {{24{1'b0}}, dm_data[31:24]};
+            $display("read %4h in addr:%h", dm_data, alu_out);
+        end
+        else if (dm_rd_sel == 3'b101) begin
+            pmem_read(alu_out, dm_data);
+            $display("read %h in addr:%h", dm_data, alu_out);
+        end
+    end
 
     ysyx_ALU alu0(
         .SrcA (alu_a),
@@ -31,7 +117,6 @@ module ysyx_EXU (
         .func (alu_ctrl),
         .ALUout (alu_out)
     );
-
     ysyx_RegisterFile regfile0(
         .clk (clk),
         .rf_wr_en (rf_wr_en),
@@ -42,22 +127,12 @@ module ysyx_EXU (
         .rdata1 (rs1),
         .rdata2 (rs2)
     );
-
-    // memory
-    import "DPI-C" function void pmem_read(input int raddr, output int rdata);
-    import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
-    wire [63:0] rdata;
-    always @(*) begin
-        if (valid) begin // 有读写请求时
-            pmem_read(raddr, rdata);
-            if (wen) begin // 有写请求时
-                pmem_write(waddr, wdata, wmask);
-            end
-        end
-        else begin
-            rdata = 0;
-        end
-    end
+    ysyx_branch branch0(
+        .REG1 (rs1),
+        .REG2 (rs2),
+        .Type (BrType),
+        .BrE (BrE)
+    );
   
 endmodule
 

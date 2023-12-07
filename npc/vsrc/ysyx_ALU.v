@@ -3,7 +3,6 @@ module ysyx_ALU(
     input [3:0]  func,
     output reg [31:0] ALUout
 );
-
     wire signed [31:0] signed_a;
     wire signed [31:0] signed_b;
 
