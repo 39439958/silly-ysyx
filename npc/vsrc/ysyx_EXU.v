@@ -40,6 +40,7 @@ module ysyx_EXU (
     import "DPI-C" function void pmem_read(input int raddr, output int rdata);
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
     reg [31:0] dm_data;
+    // write memory
     always @(posedge clk) begin
         if (dm_wr_sel == 2'b01) begin
             pmem_write(alu_out, rs2, 8'b0000_0001);
@@ -56,6 +57,7 @@ module ysyx_EXU (
             $display("%8h write in addr:%h", rs2, alu_out);
         end
     end
+    // read memory
     always @(posedge clk) begin 
         if (dm_rd_sel == 3'b001) begin
             pmem_read(alu_out, dm_data);
