@@ -67,6 +67,9 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
     uint32_t addr = waddr & ~0x3u;
+    if (wmask == 1 || wmask == 3) {
+        wdata <<= ((waddr & 0x3u) * 8);
+    }
     uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
     uint32_t mask = 0; 
     for (int i = 0; i < 4; i++) {

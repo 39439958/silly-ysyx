@@ -46,10 +46,12 @@ module ysyx_EXU (
             $display("%2h write in addr:%h", rs2[7:0], alu_out);
         end
         else if (dm_wr_sel == 2'b10) begin 
+
             pmem_write(alu_out, rs2, 8'b0000_0011);
             $display("%4h write in addr:%h", rs2[15:0], alu_out);
         end
         else if (dm_wr_sel == 2'b11) begin
+
             pmem_write(alu_out, rs2, 8'b0000_1111);
             $display("%8h write in addr:%h", rs2, alu_out);
         end
