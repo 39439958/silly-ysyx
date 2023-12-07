@@ -26,6 +26,7 @@ module ysyx_IDU (
     wire  is_xori;
     wire  is_srai;
     wire  is_andi;
+    wire  is_srli;
 
     wire  is_auipc;
     wire  is_lui;
@@ -76,7 +77,8 @@ module ysyx_IDU (
     //分析指令类型
     assign  is_addi = (op == 7'h13) && (funct3 == 3'h0);
     assign  is_xori = (op == 7'h13) && (funct3 == 3'h4);
-    assign  is_srai = (op == 7'h13) && (funct3 == 3'h5);
+    assign  is_srai = (op == 7'h13) && (funct3 == 3'h5) && (inst[31:26] == 6'h10);
+    assign  is_srli = (op == 7'h13) && (funct3 == 3'h5) && (inst[31:26] == 6'h00);
     assign  is_andi = (op == 7'h13) && (funct3 == 3'h7);
 
     assign  is_lui = (op == 7'h37);
@@ -117,7 +119,7 @@ module ysyx_IDU (
                           is_add | is_addi;
     assign  is_I = is_jalr |
                    is_lb | is_lbu | is_lh | is_lhu | is_lw | 
-                   is_addi | is_sltiu | is_srai | is_xori | is_andi;
+                   is_addi | is_sltiu | is_srai | is_srli | is_xori | is_andi;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sb | is_sh | is_sw;
@@ -138,7 +140,7 @@ module ysyx_IDU (
     always@(*)
     begin
         if(is_jal | is_jalr) rf_wr_sel = 2'b01;
-        else if(is_U | is_R | is_addi | is_sltiu | is_srai | is_xori | is_andi) rf_wr_sel = 2'b10;
+        else if(is_U | is_R | is_addi | is_sltiu | is_srai | is_srli | is_xori | is_andi) rf_wr_sel = 2'b10;
         else if(is_lb | is_lh | is_lw | is_lbu | is_lhu) rf_wr_sel = 2'b11;
         else rf_wr_sel = 2'b00;
     end 
@@ -174,6 +176,7 @@ module ysyx_IDU (
         else if(is_xor | is_xori) alu_ctrl = 4'b0100;
         else if(is_sltu) alu_ctrl = 4'b0011;
         else if(is_srai) alu_ctrl = 4'b1101;
+        else if(is_srli) alu_ctrl = 4'b0101;
         else if(is_and | is_andi) alu_ctrl = 4'b0111;
         else if(is_sll) alu_ctrl = 4'b0001;
         else if(is_or) alu_ctrl = 4'b0110;
