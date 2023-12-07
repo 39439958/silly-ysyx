@@ -69,6 +69,7 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     uint32_t addr = waddr & ~0x3u;
     if (wmask == 1 || wmask == 3) {
         wdata <<= ((waddr & 0x3u) * 8);
+        wmask <<= (waddr & 0x3u);
     }
     uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
     uint32_t mask = 0; 
