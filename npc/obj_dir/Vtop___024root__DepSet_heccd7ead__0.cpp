@@ -266,6 +266,10 @@ VL_INLINE_OPT void Vtop___024root___act_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                    == 
                                                    (0xfe00707fU 
                                                     & vlSelf->top__DOT__inst)));
+    vlSelf->top__DOT__idu0__DOT__is_sra = (IData)((0x40005033U 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->top__DOT__inst)));
     vlSelf->top__DOT__idu0__DOT__is_and = (IData)((0x7033U 
                                                    == 
                                                    (0xfe00707fU 
@@ -516,7 +520,8 @@ VL_INLINE_OPT void Vtop___024root___act_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                   ((IData)(vlSelf->top__DOT__idu0__DOT__is_slt)
                                                     ? 2U
                                                     : 
-                                                   ((IData)(vlSelf->top__DOT__idu0__DOT__is_srai)
+                                                   (((IData)(vlSelf->top__DOT__idu0__DOT__is_srai) 
+                                                     | (IData)(vlSelf->top__DOT__idu0__DOT__is_sra))
                                                      ? 0xdU
                                                      : 
                                                     ((IData)(vlSelf->top__DOT__idu0__DOT__is_srli)
@@ -540,7 +545,8 @@ VL_INLINE_OPT void Vtop___024root___act_sequent__TOP__0(Vtop___024root* vlSelf) 
                                                   | ((IData)(vlSelf->top__DOT__idu0__DOT__is_slt) 
                                                      | ((IData)(vlSelf->top__DOT__idu0__DOT__is_and) 
                                                         | ((IData)(vlSelf->top__DOT__idu0__DOT__is_sll) 
-                                                           | (IData)(vlSelf->top__DOT__idu0__DOT__is_or))))))));
+                                                           | ((IData)(vlSelf->top__DOT__idu0__DOT__is_sra) 
+                                                              | (IData)(vlSelf->top__DOT__idu0__DOT__is_or)))))))));
     vlSelf->top__DOT__idu0__DOT__is_I = ((IData)(vlSelf->top__DOT__idu0__DOT__is_jalr) 
                                          | ((IData)(vlSelf->top__DOT__idu0__DOT__is_lb) 
                                             | ((IData)(vlSelf->top__DOT__idu0__DOT__is_lbu) 
