@@ -18,9 +18,23 @@
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
 
+static word_t *csr_reg(word_t imm) {
+  switch (imm) {
+    case 0x300 :  return &(cpu.csrs.mstatus);
+    case 0x305 :  return &(cpu.csrs.mtvec);
+    case 0x341 :  return &(cpu.csrs.mepc);
+    case 0x342 :  return &(cpu.csrs.mcause);
+    default : Log("csr error");
+  }
+  return NULL;
+}
+
 #define R(i) gpr(i)
 #define Mr vaddr_read
 #define Mw vaddr_write
+
+#define CSR(i) *csr_reg(i)
+#define ECALL(dnpc) { bool success; dnpc = (isa_raise_intr(isa_reg_str2val("a7", &success), s->pc)); }
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
@@ -39,6 +53,12 @@ enum {
 void iringbuf_write_inst(vaddr_t pc, uint32_t inst);
 void call_trace(paddr_t pc, paddr_t npc);
 void ret_trace(paddr_t pc);
+
+static void etrace() {
+  IFDEF(CONFIG_ETRACE, {
+    printf("ecall in mepc = " FMT_WORD ", mcause = %d\n", cpu.csrs.mepc, cpu.csrs.mcause);
+  });
+}
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -71,6 +91,9 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
   // I-type
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, R(rd) = CSR(imm); CSR(imm) |= src1);
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw  , I, R(rd) = CSR(imm); CSR(imm) = src1);
+
   INSTPAT("??????? ????? ????? 000 ????? 00000 11", lb     , I, R(rd) = SEXT(Mr(src1 + imm, 1), 8));
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu    , I, R(rd) = Mr(src1 + imm, 1));
   INSTPAT("??????? ????? ????? 001 ????? 00000 11", lh     , I, R(rd) = SEXT(Mr(src1 + imm, 2), 16));
@@ -135,6 +158,8 @@ static int decode_exec(Decode *s) {
    )
    );
   // N-type
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, ECALL(s->dnpc); etrace());
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = CSR(0x341) + 4);
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   
