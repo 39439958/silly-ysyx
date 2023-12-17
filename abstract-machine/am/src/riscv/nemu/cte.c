@@ -10,14 +10,13 @@ Context* __am_irq_handle(Context *c) {
     switch (c->mcause) {
       default: ev.event = EVENT_ERROR; break;
     }
-    printf("reg:\n");
+    printf("mepc: %x\n", c->mepc);
+    printf("mstatus: %x\n", c->mstatus);
+    printf("mcause: %x\n", c->mcause);
     for (int i = 0; i < 32; i++) {
       printf("x%d: %x ", i, c->gpr[i]);
     }
-    printf("mcause: %x\n", c->mcause);
-    printf("mstatus: %x\n", c->mstatus);
-    printf("mepc: %x\n", c->mepc);
-
+    
     c = user_handler(ev, c);
     assert(c != NULL);
   }
