@@ -81,6 +81,7 @@ void sim_t::diff_set_regs(void* diff_context) {
   state->mstatus->write(ctx->mstatus);
   state->mtvec->write(ctx->mtvec);
   printf("mtvec: %lx\n", ctx->mtvec);
+  printf("mepc: %lx\n", ctx->mepc);
 }
 
 void sim_t::diff_memcpy(reg_t dest, void* src, size_t n) {
