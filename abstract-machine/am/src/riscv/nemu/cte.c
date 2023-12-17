@@ -12,11 +12,11 @@ Context* __am_irq_handle(Context *c) {
     }
     printf("reg:\n");
     for (int i = 0; i < 32; i++) {
-      printf("x%d: 0x%lx\n", i, c->gpr[i]);
+      printf("x%d: %x ", i, c->gpr[i]);
     }
-    printf("mcause: 0x%lx\n", c->mcause);
-    printf("mstatus: 0x%lx\n", c->mstatus);
-    printf("mepc: 0x%lx\n", c->mepc);
+    printf("mcause: %x\n", c->mcause);
+    printf("mstatus: %x\n", c->mstatus);
+    printf("mepc: %x\n", c->mepc);
 
     c = user_handler(ev, c);
     assert(c != NULL);
