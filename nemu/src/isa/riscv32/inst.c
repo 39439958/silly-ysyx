@@ -34,7 +34,7 @@ static word_t *csr_reg(word_t imm) {
 #define Mw vaddr_write
 
 #define CSR(i) *csr_reg(i)
-#define ECALL(dnpc) { bool success; dnpc = (isa_raise_intr(isa_reg_str2val("a7", &success), s->pc)); }
+#define ECALL(dnpc) { bool success; printf("%d",isa_reg_str2val("a7", &success));dnpc = (isa_raise_intr(isa_reg_str2val("a7", &success), s->pc)); }
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
