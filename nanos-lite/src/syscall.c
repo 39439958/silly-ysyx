@@ -4,7 +4,8 @@
 #define strace(); Log("strace : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall[a[0]], a0, a[2], a[3], c->GPRx);
 
 void yield();
-void halt (int code);
+void halt(int code);
+void putch(char ch);
 
 int sys_yield() {
   yield();
@@ -13,6 +14,15 @@ int sys_yield() {
 
 void sys_exit(int code) {
   halt(code);
+}
+
+int sys_write(int fd, char *buf, size_t len) {
+  if (fd == 1 || fd == 2) {
+    for (int i = 0; i < len; i++) {
+      putch(buf[i]);
+    }
+  }
+  return len;
 }
 
 
@@ -26,8 +36,17 @@ void do_syscall(Context *c) {
   uintptr_t a0 = a[1];
 
   switch (a[0]) {
-    case SYS_exit: strace(); sys_exit(a[0]); break;
-    case SYS_yield: c->GPRx = sys_yield(); strace(); break;
-    default: panic("syscall:Unhandled syscall ID = %d", a[0]);
+    case SYS_exit : 
+      strace(); 
+      sys_exit(a[0]); 
+      break;
+    case SYS_yield : 
+      c->GPRx = sys_yield(); 
+      strace(); 
+      break;
+    case SYS_write : 
+      c->GPRx = sys_write(a[1], (char *)a[2], a[3]);
+      break;
+    default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
 }
