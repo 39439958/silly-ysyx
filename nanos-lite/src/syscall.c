@@ -22,7 +22,6 @@ int sys_write(int fd, char *buf, size_t len) {
       putch(buf[i]);
     }
   }
-  Log("len : %d\n", len);
   return len;
 }
 
