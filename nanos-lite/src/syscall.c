@@ -45,9 +45,6 @@ void do_syscall(Context *c) {
       strace(); 
       break;
     case SYS_write : 
-      Log("a0 : %d\n", a[1]);
-      Log("a1 : %s\n", (char *)a[2]);
-      Log("a2 : %d\n", a[3]);
       c->GPRx = sys_write(a[1], (char *)a[2], a[3]);
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
