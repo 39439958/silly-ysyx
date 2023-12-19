@@ -46,7 +46,7 @@
 #endif
 
 extern char _end;
-intptr_t program_break = (intptr_t)&_end;
+uintptr_t program_break = (uintptr_t)&_end;
 
 void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function);
 
@@ -76,7 +76,7 @@ int _write(int fd, void *buf, size_t count) {
 }
 
 void *_sbrk(intptr_t increment) {
-  intptr_t addr = program_break + increment;
+  uintptr_t addr = program_break + increment;
   if (addr >= (intptr_t)&_end) {
     if (_syscall_(SYS_brk, addr, 0, 0) == 0) {
       program_break = addr;
