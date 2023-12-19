@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 
-#define strace(); Log("\nstrace : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall[a[0]], a0, a[2], a[3], c->GPRx);
+#define strace(); Log("strace : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall[a[0]], a0, a[2], a[3], c->GPRx);
 
 void yield();
 void halt(int code);
@@ -46,7 +46,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_write : 
       c->GPRx = sys_write(a[1], (char *)a[2], a[3]);
-      strace(); 
+      //strace(); 
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
