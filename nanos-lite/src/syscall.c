@@ -50,6 +50,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_brk :
       c->GPRx = 0;
+      printf("%u\n",-2097129904);
       strace();
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
