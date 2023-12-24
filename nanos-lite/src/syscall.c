@@ -42,7 +42,8 @@ void do_syscall(Context *c) {
   uintptr_t a0 = a[1];
 
   switch (a[0]) {
-    case SYS_exit :  
+    case SYS_exit : 
+      strace(); 
       sys_exit(a[0]); 
       break;
     case SYS_yield : 
