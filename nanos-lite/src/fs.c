@@ -37,8 +37,9 @@ static Finfo file_table[] __attribute__((used)) = {
 
 int fs_open(const char *pathname, int flags, int mode) {
   int ft_len = sizeof(file_table) / sizeof(Finfo);
-  for (int i = 0; i < ft_len; i++) {
+  for (int i = 3; i < ft_len; i++) {
     if (strcmp(pathname, file_table[i].name) == 0) {
+      file_table[i].open_offset = 0;
       return i;
     }
   }
@@ -47,28 +48,42 @@ int fs_open(const char *pathname, int flags, int mode) {
 }
 
 size_t fs_read(int fd, void *buf, size_t len) {
-  size_t offset = file_table[fd].disk_offset;
+  // 处理对stdin, stdout和stderr的读操作
+  // if (fd < )
+  
   size_t size = file_table[fd].size;
   size_t open_offset = file_table[fd].open_offset;
   
-  assert(open_offset + len <= size);
-  int ret = ramdisk_read(buf, offset + open_offset, len);
-  file_table[fd].open_offset = open_offset + len;
+  // 处理长度越界
+  int real_len = len;
+  if (open_offset + len > size) {
+    real_len = size - open_offset;
+  }
+
+  // 进行实际读取操作
+  int ret = ramdisk_read(buf, file_table[fd].disk_offset + open_offset, real_len);
+  file_table[fd].open_offset = open_offset + real_len;
 
   return ret;
 }
 
-size_t fs_write(int fd, const void *buf, size_t len) {
-  Finfo *f = file_table + fd;
-
-  if (f->write != NULL) {
-    return f->write(buf, 0, len);
-  } else {
-    assert(f->open_offset + len <= f->size);
-    size_t ret = ramdisk_write(buf, (f->disk_offset) + (f->open_offset), len);
-    f->open_offset += len;
-    return ret;
+size_t fs_write(int fd, const char *buf, size_t len) {
+  size_t ret = 0;
+  if (fd == 1 || fd == 2) {
+    for (int i = 0; i < len; i++) {
+      putch(buf[i]);
+    }
+    ret = len;
   }
+  else if (fd == 0) {
+
+  }
+  else {
+    assert(file_table[fd].open_offset + len <= file_table[fd].size);
+    ret = ramdisk_write(buf, file_table[fd].disk_offset + file_table[fd].open_offset, len);
+    file_table[fd].open_offset += len;
+  }
+  return ret;
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {

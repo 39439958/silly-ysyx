@@ -13,6 +13,13 @@ void yield();
 void halt(int code);
 void putch(char ch);
 
+// file system call
+int fs_open(const char *pathname, int flags, int mode);
+size_t fs_read(int fd, void *buf, size_t len);
+size_t fs_write(int fd, const void *buf, size_t len);
+size_t fs_lseek(int fd, size_t offset, int whence);
+int fs_close(int fd);
+
 int sys_yield() {
   yield();
   return 0;
@@ -22,22 +29,12 @@ void sys_exit(int code) {
   halt(code);
 }
 
-int sys_write(int fd, char *buf, size_t len) {
-  if (fd == 1 || fd == 2) {
-    for (int i = 0; i < len; i++) {
-      putch(buf[i]);
-    }
-  }
-  return len;
-}
-
-
 void do_syscall(Context *c) {
   uintptr_t a[4];
-  a[0] = c->GPR1;
-  a[1] = c->GPR2;
-  a[2] = c->GPR3;
-  a[3] = c->GPR4;
+  a[0] = c->GPR1; // a7
+  a[1] = c->GPR2; // a0
+  a[2] = c->GPR3; // a1
+  a[3] = c->GPR4; // a2
 
   uintptr_t a0 = a[1];
 
@@ -50,10 +47,22 @@ void do_syscall(Context *c) {
       c->GPRx = sys_yield(); 
       break;
     case SYS_write : 
-      c->GPRx = sys_write(a[1], (char *)a[2], a[3]);
+      c->GPRx = fs_write(a[1], (char *)a[2], a[3]);
       break;
     case SYS_brk :
       c->GPRx = 0;
+      break;
+    case SYS_open :
+      c->GPRx = fs_open((char *)a[1], a[2], a[3]);
+      break;
+    case SYS_read :
+      c->GPRx = fs_read(a[1], (char *)a[2], a[3]);
+      break;
+    case SYS_lseek :
+      c->GPRx = fs_lseek(a[1], a[2], a[3]);
+      break;
+    case SYS_close :
+      c->GPRx = fs_close(a[1]);
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }

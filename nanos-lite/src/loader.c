@@ -22,8 +22,8 @@ size_t ramdisk_read(void *buf, size_t offset, size_t len);
 
 int fs_open(const char *pathname, int flags, int mode);
 size_t fs_read(int fd, void *buf, size_t len);
-int fs_close(int fd);
 size_t fs_lseek(int fd, size_t offset, int whence);
+int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   int fd = fs_open(filename, 0, 0);
@@ -48,6 +48,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memset((void *)(ph[i].p_vaddr + ph[i].p_filesz), 0, ph[i].p_memsz - ph[i].p_filesz);
     }
   }
+
+  fs_close(fd);
   return ehdr.e_entry;
 }
 
