@@ -23,7 +23,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.csrs.mstatus &= ~(1<<7);
   cpu.csrs.mstatus |= ((cpu.csrs.mstatus&(1<<3))<<4);
   cpu.csrs.mstatus &= ~(1<<3);
-  //cpu.csrs.mstatus |= ((1<<11)+(1<<12));
+  cpu.csrs.mstatus |= ((1<<11)+(1<<12));
 
   // store pc in mepc
   cpu.csrs.mepc = epc; 
