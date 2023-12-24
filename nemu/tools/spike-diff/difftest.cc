@@ -79,7 +79,6 @@ void sim_t::diff_set_regs(void* diff_context) {
   state->pc = ctx->pc;
   // CSR
   state->mtvec->write(ctx->mtvec);
-  printf("[bedug]               mtvec:%lx\n", ctx->mtvec);
   state->mepc->write(ctx->mepc);
   state->mstatus->write(ctx->mstatus);
   state->mcause->write(ctx->mcause);
