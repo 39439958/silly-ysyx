@@ -20,7 +20,8 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
   // store pc in mepc
-  cpu.csrs.mepc = epc;
+  if (NO == 11)
+    cpu.csrs.mepc = epc + 4; 
   // set err number in mcause
   cpu.csrs.mcause = NO;
   // get the address of the interrupt/exception vector and set pc to it
