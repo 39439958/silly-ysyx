@@ -43,8 +43,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (examine_watchpoint(_this->pc))
     nemu_state.state = NEMU_STOP;
   // breakpoint
-   if (_this->pc == 0x80001610)
-    nemu_state.state = NEMU_STOP;  
+  //  if (_this->pc == 0x80001610)
+  //   nemu_state.state = NEMU_STOP;  
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
