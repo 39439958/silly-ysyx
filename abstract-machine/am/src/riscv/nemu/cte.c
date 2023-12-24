@@ -8,7 +8,6 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
-    //printf("mcause:%d\n", c->mcause);
     switch (c->mcause) {
       case 0: ev.event = EVENT_SYSCALL; break;
       case 11: ev.event = EVENT_YIELD; break;
@@ -17,6 +16,15 @@ Context* __am_irq_handle(Context *c) {
       case 9: ev.event = EVENT_SYSCALL; break;
       default: ev.event = EVENT_ERROR; break;
     }
+    // print reg and csr
+    printf("[REG]:\n");
+    for (int i = 0; i < 32; i++) {
+      printf("gpr[%d] : %d", c->gpr[i]);
+      if (i % 4 == 3) printf("\n");
+    }
+    printf("[CSR]:\n");
+    printf("mcause : %d, mstatus : %d, mepc : %d\n", c->mcause, c->mstatus, c->mepc);
+    
     c = user_handler(ev, c);
     assert(c != NULL);
   }
