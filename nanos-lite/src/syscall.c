@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 
-#define strace(); Log("strace : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall[a[0]], a0, a[2], a[3], c->GPRx);
+#define strace(); Log("strace : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", a[0], a0, a[2], a[3], c->GPRx);
 
 void yield();
 void halt(int code);

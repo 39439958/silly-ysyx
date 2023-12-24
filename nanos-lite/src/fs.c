@@ -3,23 +3,27 @@
 typedef size_t (*ReadFn) (void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn) (const void *buf, size_t offset, size_t len);
 
+size_t ramdisk_read(void *buf, size_t offset, size_t len);
+size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+
 typedef struct {
   char *name;
   size_t size;
   size_t disk_offset;
   ReadFn read;
   WriteFn write;
+  size_t open_offset;
 } Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB};
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
-  panic("should not reach here");
+  panic("Should not reach here");
   return 0;
 }
 
 size_t invalid_write(const void *buf, size_t offset, size_t len) {
-  panic("should not reach here");
+  panic("Should not reach here");
   return 0;
 }
 
@@ -31,6 +35,69 @@ static Finfo file_table[] __attribute__((used)) = {
 #include "files.h"
 };
 
+int fs_open(const char *pathname, int flags, int mode) {
+  int ft_len = sizeof(file_table) / sizeof(Finfo);
+  for (int i = 0; i < ft_len; i++) {
+    if (strcmp(pathname, file_table[i].name) == 0) {
+      return i;
+    }
+  }
+  panic("Should not reach here");
+  return 0;
+}
+
+size_t fs_read(int fd, void *buf, size_t len) {
+  size_t offset = file_table[fd].disk_offset;
+  size_t size = file_table[fd].size;
+  size_t open_offset = file_table[fd].open_offset;
+  
+  assert(open_offset + len <= size);
+  int ret = ramdisk_read(buf, offset + open_offset, len);
+  file_table[fd].open_offset = open_offset + len;
+
+  return ret;
+}
+
+size_t fs_write(int fd, const void *buf, size_t len) {
+  Finfo *f = file_table + fd;
+
+  if (f->write != NULL) {
+    return f->write(buf, 0, len);
+  } else {
+    assert(f->open_offset + len <= f->size);
+    size_t ret = ramdisk_write(buf, (f->disk_offset) + (f->open_offset), len);
+    f->open_offset += len;
+    return ret;
+  }
+}
+
+size_t fs_lseek(int fd, size_t offset, int whence) {
+  size_t cur_offset = file_table[fd].open_offset;
+
+  switch (whence) {
+    case SEEK_SET:
+      assert(offset <= file_table[fd].size);
+      file_table[fd].open_offset = offset;
+      break;
+    case SEEK_CUR:
+      assert(cur_offset + offset <= file_table[fd].size);
+      file_table[fd].open_offset = cur_offset + offset;
+      break;
+    case SEEK_END:
+      assert(file_table[fd].size + offset <= file_table[fd].size);
+      file_table[fd].open_offset =  file_table[fd].size + offset;
+      break;
+    default:
+      assert("Invalid whence parameter\n");
+    }
+    return file_table[fd].open_offset;
+}
+
+int fs_close(int fd) {
+  return 0;
+}
+
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+
 }
