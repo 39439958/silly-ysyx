@@ -63,7 +63,7 @@ void ret_trace(paddr_t pc);
 
 static void etrace() {
   IFDEF(CONFIG_ETRACE, {
-    printf("\n" ANSI_FMT("[ETRACE]", ANSI_FG_RED) "ecall in mepc = " FMT_WORD ", mcause = %d\n", cpu.csrs.mepc, cpu.csrs.mcause);
+    printf("\n" ANSI_FMT("[ETRACE]", ANSI_FG_BLUE) "ecall in mepc = " FMT_WORD ", mcause = %d\n", cpu.csrs.mepc, cpu.csrs.mcause);
   });
 }
 
