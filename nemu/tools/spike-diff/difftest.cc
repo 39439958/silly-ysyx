@@ -81,6 +81,7 @@ void sim_t::diff_set_regs(void* diff_context) {
   state->mtvec->write(ctx->mtvec);
   state->mepc->write(ctx->mepc);
   state->mstatus->write(ctx->mstatus);
+  printf("[mstatus] : %p\n", ctx->mstatus);
   state->mcause->write(ctx->mcause);
 }
 
