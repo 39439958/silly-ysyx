@@ -17,13 +17,13 @@ Context* __am_irq_handle(Context *c) {
       default: ev.event = EVENT_ERROR; break;
     }
     // print reg and csr
-    printf("[REG]:\n");
-    for (int i = 0; i < 32; i++) {
-      printf("gpr[%d] : %p ", i, c->gpr[i]);
-      if (i % 4 == 3) printf("\n");
-    }
-    printf("[CSR]:\n");
-    printf("mcause : %p, mstatus : %p, mepc : %p\n", c->mcause, c->mstatus, c->mepc);
+    // printf("[REG]:\n");
+    // for (int i = 0; i < 32; i++) {
+    //   printf("gpr[%d] : %p ", i, c->gpr[i]);
+    //   if (i % 4 == 3) printf("\n");
+    // }
+    // printf("[CSR]:\n");
+    // printf("mcause : %p, mstatus : %p, mepc : %p\n", c->mcause, c->mstatus, c->mepc);
     
     c = user_handler(ev, c);
     assert(c != NULL);
