@@ -41,7 +41,6 @@ static word_t *csr_reg(word_t imm) {
   cpu.csrs.mstatus |= ((cpu.csrs.mstatus&(1<<7))>>4); \
   cpu.csrs.mstatus |= (1<<7); \
   cpu.csrs.mstatus &= ~((1<<11)+(1<<12)); \
-  printf("[After MRET] mstatus = %x\n", cpu.csrs.mstatus); \
 }
 
 enum {
