@@ -42,7 +42,7 @@ void iringbuf_display() {
     void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
     disassemble(p, logbuf + sizeof(logbuf) - p,
       irb.pcs[irb.iring_rf], (uint8_t *)&irb.insts[irb.iring_rf], 4);
-    Log("%s\n", logbuf); 
+    TRACE("%s\n", logbuf); 
     irb.iring_rf = (irb.iring_rf + 1) % 20; 
   }
 #endif
