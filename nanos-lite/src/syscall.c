@@ -1,7 +1,13 @@
 #include <common.h>
 #include "syscall.h"
 
-#define strace(); Log("strace : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", a[0], a0, a[2], a[3], c->GPRx);
+#define strace(); Log("[strace] : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall_name[a[0]], a0, a[2], a[3], c->GPRx);
+
+static char* syscall_name[] = {"exit", "yield", "open", "read",
+                               "write", "kill", "getpid", "close",
+                               "lseek", "brk", "fstat", "time",
+                               "signal", "execve", "fork", "link",
+                               "unlink", "wait", "times", "gettimeofday"};
 
 void yield();
 void halt(int code);
@@ -36,22 +42,19 @@ void do_syscall(Context *c) {
   uintptr_t a0 = a[1];
 
   switch (a[0]) {
-    case SYS_exit : 
-      strace(); 
+    case SYS_exit :  
       sys_exit(a[0]); 
       break;
     case SYS_yield : 
       c->GPRx = sys_yield(); 
-      strace(); 
       break;
     case SYS_write : 
       c->GPRx = sys_write(a[1], (char *)a[2], a[3]);
-      strace(); 
       break;
     case SYS_brk :
       c->GPRx = 0;
-      strace();
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
+  strace();
 }
