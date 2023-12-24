@@ -23,7 +23,7 @@ Context* __am_irq_handle(Context *c) {
       if (i % 4 == 3) printf("\n");
     }
     printf("[CSR]:\n");
-    printf("mcause : %d, mstatus : %d, mepc : %d\n", c->mcause, c->mstatus, c->mepc);
+    printf("mcause : %p, mstatus : %p, mepc : %p\n", c->mcause, c->mstatus, c->mepc);
     
     c = user_handler(ev, c);
     assert(c != NULL);
