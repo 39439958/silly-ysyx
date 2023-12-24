@@ -19,7 +19,7 @@ Context* __am_irq_handle(Context *c) {
     // print reg and csr
     printf("[REG]:\n");
     for (int i = 0; i < 32; i++) {
-      printf("gpr[%d] : %d ", i, c->gpr[i]);
+      printf("gpr[%d] : %x ", i, c->gpr[i]);
       if (i % 4 == 3) printf("\n");
     }
     printf("[CSR]:\n");
