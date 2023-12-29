@@ -8,7 +8,7 @@ static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static uint32_t init_time = 0;
-int event_fd = 4;
+int event_fd = 3;
 
 
 uint32_t NDL_GetTicks() {
