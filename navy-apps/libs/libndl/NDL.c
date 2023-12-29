@@ -7,7 +7,9 @@
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
-static uint32_t init_time = 0; 
+static uint32_t init_time = 0;
+FILE *event_fp;
+
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -18,6 +20,8 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
+  char k;
+  fscanf(event_fp, "%c", &k);
   return 0;
 }
 
@@ -66,8 +70,12 @@ int NDL_Init(uint32_t flags) {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
+  // 初始化键盘事件
+  event_fp = fopen("/dev/event", "r+");
   return 0;
 }
 
 void NDL_Quit() {
+  // 关闭键盘事件
+  fclose(event_fp);
 }
