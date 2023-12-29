@@ -7,7 +7,7 @@
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
-static uint32_t init_time = 0; 
+static int init_time = 0; 
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -65,7 +65,7 @@ int NDL_Init(uint32_t flags) {
   // 初始化时间
   struct timeval tv;
   _gettimeofday(&tv, NULL);
-  init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
+  init_time = (tv.tv_sec * 1000 + tv.tv_usec / 1000);
   printf("init_time : %d\n", init_time);
   return 0;
 }
