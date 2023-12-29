@@ -32,10 +32,10 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr ehdr;
   fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
   assert(*(uint32_t *)ehdr.e_ident == 0x464c457f);
-
+printf("666\n");
   // check elf type
   assert(ehdr.e_machine == EXPECT_TYPE);
-printf("666\n");
+
   // read phdr
   Elf_Phdr ph[ehdr.e_phnum];
   fs_lseek(fd, ehdr.e_phoff, SEEK_SET);
