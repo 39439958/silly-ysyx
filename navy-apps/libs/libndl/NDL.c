@@ -14,7 +14,6 @@ uint32_t NDL_GetTicks() {
   gettimeofday(&tv, NULL);
   // 返回毫秒数
   uint32_t now_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000) - init_time;
-  printf("now_time : %d\n", now_time);
   return now_time;
 }
 
@@ -65,9 +64,8 @@ int NDL_Init(uint32_t flags) {
   }
   // 初始化时间
   struct timeval tv;
-  _gettimeofday(&tv, NULL);
+  gettimeofday(&tv, NULL);
   init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
-  printf("init_time : %d\n", init_time);
   return 0;
 }
 
