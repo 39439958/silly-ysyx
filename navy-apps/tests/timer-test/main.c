@@ -9,7 +9,7 @@ int main() {
   uint32_t now_time = NDL_GetTicks();
   uint32_t ms = 500;
   while (ms <= 10000) {
-    while ((now_time / 1000) < ms) {
+    while ((now_time) < ms) {
       now_time = NDL_GetTicks();
     }
     printf("ms = %d\n", ms);
