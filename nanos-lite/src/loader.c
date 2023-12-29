@@ -35,7 +35,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
 
   // check elf type
   assert(ehdr.e_machine == EXPECT_TYPE);
-
+printf("666\n");
   // read phdr
   Elf_Phdr ph[ehdr.e_phnum];
   fs_lseek(fd, ehdr.e_phoff, SEEK_SET);
@@ -48,7 +48,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memset((void *)(ph[i].p_vaddr + ph[i].p_filesz), 0, ph[i].p_memsz - ph[i].p_filesz);
     }
   }
-printf("666\n");
   fs_close(fd);
   return ehdr.e_entry;
 }
