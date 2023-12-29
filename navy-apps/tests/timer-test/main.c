@@ -10,6 +10,7 @@ int main() {
       gettimeofday(&tv, NULL);
     }
     ms += 500;
+    printf("time %d ", tv.tv_sec);
    printf("ms = %d\n", ms);
   }
 }
