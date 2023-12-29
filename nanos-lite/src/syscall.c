@@ -40,11 +40,11 @@ void sys_exit(int code) {
 }
 
 int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
-  uint64_t us = io_read(AM_TIMER_UPTIME).us;
-  if (tv != NULL) {
-    tv->tv_sec = us / (1000*1000);
-    tv->tv_usec = us % (1000*1000);
-  }
+  assert(tv != NULL);
+  int us = 0;
+  ioe_read(AM_TIMER_UPTIME, &us);
+  tv->tv_sec = us / (1000*1000);
+  tv->tv_usec = us % (1000*1000);
   return 0;
 }
 
