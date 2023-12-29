@@ -89,5 +89,5 @@ void do_syscall(Context *c) {
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
-  strace();
+  //strace();
 }
