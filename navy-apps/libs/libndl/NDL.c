@@ -8,7 +8,7 @@ static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static uint32_t init_time = 0;
-FILE *event_fp;
+int event_fd;
 
 
 uint32_t NDL_GetTicks() {
@@ -20,8 +20,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  char k;
-  int ret = fscanf(event_fp, "%c", k);
+  int ret = read(event_fd, buf, len);
   return ret;
 }
 
@@ -71,11 +70,11 @@ int NDL_Init(uint32_t flags) {
   gettimeofday(&tv, NULL);
   init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
   // 初始化键盘事件
-  event_fp = fopen("/dev/event", "r+");
+  event_fd = open("/dev/event", "r+");
   return 0;
 }
 
 void NDL_Quit() {
   // 关闭键盘事件
-  fclose(event_fp);
+  close(event_fd);
 }
