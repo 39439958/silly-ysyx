@@ -26,8 +26,9 @@ size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  int fd = fs_open(filename, 0, 0);
 printf("666\n");
+  int fd = fs_open(filename, 0, 0);
+
   // open elf
   Elf_Ehdr ehdr;
   fs_read(fd, &ehdr, sizeof(Elf_Ehdr));
