@@ -26,8 +26,11 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T kbd;
   ioe_read(AM_INPUT_KEYBRD, &kbd);
   if (kbd.keycode != AM_KEY_NONE) {
-    return sprintf((char *)buf, "%s %s\n", kbd.keydown ? "kd" : "ku", keyname[kbd.keycode]);
+    int ret = sprintf((char *)buf, "%s %s\n", kbd.keydown ? "kd" : "ku", keyname[kbd.keycode]);
+    printf("%s\n", buf);
+    return ret;
   }
+  *(char *)buf = '\0';
   return 0;
 }
 
