@@ -26,7 +26,6 @@ size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  printf("666\n");
   int fd = fs_open(filename, 0, 0);
 
   // open elf
@@ -49,7 +48,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
       memset((void *)(ph[i].p_vaddr + ph[i].p_filesz), 0, ph[i].p_memsz - ph[i].p_filesz);
     }
   }
-
+printf("666\n");
   fs_close(fd);
   return ehdr.e_entry;
 }
