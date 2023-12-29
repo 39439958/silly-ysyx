@@ -3,6 +3,16 @@
 
 #define strace(); Log("[strace] : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall_name[a[0]], a0, a[2], a[3], c->GPRx);
 
+struct timeval {
+	long		tv_sec;		/* seconds */
+	long	tv_usec;	/* and microseconds */
+};
+
+struct timezone {
+	int	tz_minuteswest;	/* minutes west of Greenwich */
+	int	tz_dsttime;	/* type of dst correction */
+};
+
 static char* syscall_name[] = {"exit", "yield", "open", "read",
                                "write", "kill", "getpid", "close",
                                "lseek", "brk", "fstat", "time",
@@ -27,6 +37,15 @@ int sys_yield() {
 
 void sys_exit(int code) {
   halt(code);
+}
+
+int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
+  uint64_t us = io_read(AM_TIMER_UPTIME).us;
+  if (tv != NULL) {
+    tv->tv_sec = us / (1000*1000);
+    tv->tv_usec = us % (1000*1000);
+  }
+  return 0;
 }
 
 void do_syscall(Context *c) {
@@ -64,6 +83,9 @@ void do_syscall(Context *c) {
       break;
     case SYS_close :
       c->GPRx = fs_close(a[1]);
+      break;
+    case SYS_gettimeofday :
+      c->GPRx = sys_gettimeofday((struct timeval *)a[1], (struct timezone *)a[2]);
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
