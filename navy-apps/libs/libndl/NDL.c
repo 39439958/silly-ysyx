@@ -8,7 +8,7 @@ static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static uint32_t init_time = 0;
-int event_fd;
+int event_fd = 4;
 
 
 uint32_t NDL_GetTicks() {
@@ -69,8 +69,6 @@ int NDL_Init(uint32_t flags) {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
-  // 初始化键盘事件
-  event_fd = open("/dev/event", "r+");
   return 0;
 }
 
