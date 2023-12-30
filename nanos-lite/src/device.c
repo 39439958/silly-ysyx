@@ -48,11 +48,14 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
   strcpy(ctl.pixels, buf);
+  printf("1\n");
   ctl.x = offset / screen_w;
+  printf("2\n");
   ctl.y = offset % screen_w;
+  printf("3\n");
   ctl.w = len, ctl.h = 1;
+  printf("4\n");
   ctl.sync = true;
-  printf("666\n");
   ioe_write(AM_GPU_FBDRAW, &ctl);
    return 0;
 }
