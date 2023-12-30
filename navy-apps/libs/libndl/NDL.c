@@ -81,9 +81,8 @@ int NDL_Init(uint32_t flags) {
   vga_fd = open("proc/dispinfo", "r");
   char buf[64];
   read(vga_fd, buf, sizeof(buf));
-  printf("%s\n", buf);
-
-
+  sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);
+  printf("Width: %d\nHeight: %d\n", screen_w, screen_h);
   return 0;
 }
 

@@ -29,7 +29,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
   if (kbd.keycode == AM_KEY_NONE) {
     *(char *)buf = '\0';
   } else {
-    ret = sprintf((char *)buf, "%s %s\n\0", kbd.keydown ? "kd" : "ku", keyname[kbd.keycode]);
+    ret = sprintf((char *)buf, "%s %s\n", kbd.keydown ? "kd" : "ku", keyname[kbd.keycode]);
   }
   return ret;
 }
@@ -37,7 +37,7 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
   AM_GPU_CONFIG_T cfg;
   ioe_read(AM_GPU_CONFIG, &cfg);
-  sprintf((char *)buf, "WIDTH:%d\nHEIGHT:%d\n\0", cfg.width, cfg.height);
+  sprintf((char *)buf, "WIDTH:%d\nHEIGHT:%d\n", cfg.width, cfg.height);
   return 0;
 }
 
