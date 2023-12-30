@@ -48,7 +48,7 @@ int fs_open(const char *pathname, int flags, int mode) {
   int ft_len = sizeof(file_table) / sizeof(Finfo);
   for (int i = 3; i < ft_len; i++) {
     if (strcmp(pathname, file_table[i].name) == 0) {
-      file_table[i].open_offset = 0;
+      file_table[i].open_offset = file_table->disk_offset;
       return i;
     }
   }
@@ -66,11 +66,11 @@ size_t fs_read(int fd, void *buf, size_t len) {
   } else {
     // 处理长度越界
     size_t real_len = len;
-    if (f->open_offset + len > f->size) {
-      real_len = f->size - f->open_offset;
+    if ((f->open_offset + len) > (f->disk_offset + f->size)) {
+      real_len = f->disk_offset + f->size - f->open_offset;
     }
     // 进行实际读取操作
-    ret = ramdisk_read(buf, f->disk_offset + f->open_offset, real_len);
+    ret = ramdisk_read(buf, f->open_offset, real_len);
     f->open_offset +=  real_len;
   }
   return ret;
@@ -86,11 +86,11 @@ size_t fs_write(int fd, const void *buf, size_t len) {
   } else {
     // 处理长度越界
     size_t real_len = len;
-    if (f->open_offset + len > f->size) {
-      real_len = f->size - f->open_offset;
+    if ((f->open_offset + len) > (f->disk_offset + f->size)) {
+      real_len = f->disk_offset + f->size - f->open_offset;
     }
     // 进行实际写入操作
-    ret = ramdisk_write(buf, f->disk_offset + f->open_offset, real_len);
+    ret = ramdisk_write(buf, f->open_offset, real_len);
     f->open_offset += real_len;
   }
   return ret;
@@ -102,20 +102,20 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
   switch (whence) {
     case SEEK_SET:
       assert(offset <= file_table[fd].size);
-      file_table[fd].open_offset = offset;
+      file_table[fd].open_offset = file_table[fd].disk_offset + offset;
       break;
     case SEEK_CUR:
-      assert(cur_offset + offset <= file_table[fd].size);
+      assert(cur_offset + offset <= (file_table[fd].disk_offset + file_table[fd].size));
       file_table[fd].open_offset = cur_offset + offset;
       break;
     case SEEK_END:
-      assert(file_table[fd].size + offset <= file_table[fd].size);
-      file_table[fd].open_offset =  file_table[fd].size + offset;
+      assert(file_table[fd].size + offset <= (file_table[fd].disk_offset + file_table[fd].size));
+      file_table[fd].open_offset =  file_table[fd].disk_offset + file_table[fd].size + offset;
       break;
     default:
       assert("Invalid whence parameter\n");
-    }
-    return file_table[fd].open_offset;
+  }
+  return file_table[fd].open_offset-file_table[fd].disk_offset;
 }
 
 int fs_close(int fd) {
