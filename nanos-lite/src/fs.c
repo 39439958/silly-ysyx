@@ -76,7 +76,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
   return ret;
 }
 
-size_t fs_write(int fd, const char *buf, size_t len) {
+size_t fs_write(int fd, const void *buf, size_t len) {
   assert(fd >= 0 && fd <= sizeof(file_table) / sizeof(Finfo));
   size_t ret = 0;
   Finfo *f = &file_table[fd];
@@ -98,6 +98,7 @@ size_t fs_write(int fd, const char *buf, size_t len) {
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
   size_t cur_offset = file_table[fd].open_offset;
+  printf("66643\n");
 
   switch (whence) {
     case SEEK_SET:
