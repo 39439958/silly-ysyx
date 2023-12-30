@@ -60,7 +60,6 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
     int offset = y * screen_w + x;
     int len = w;
     lseek(fb_fd, offset, SEEK_SET);
-    printf("666\n");
     write(fb_fd, pixels, len);
   }
 }
