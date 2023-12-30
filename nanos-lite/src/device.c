@@ -57,7 +57,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
 
   ctl.sync = true;
   printf("666\n");
-  ioe_write(AM_GPU_FBDRAW, &ctl);
+  // ioe_write(AM_GPU_FBDRAW, &ctl);
    return 0;
 }
 
