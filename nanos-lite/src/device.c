@@ -18,7 +18,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
   char *cbuf = (char *)buf;
   for (int i = 0; i < len; i++) {
     putch(cbuf[i]);
-  }
+  } 
   return len;
 }
 
@@ -35,6 +35,9 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
+  AM_GPU_CONFIG_T cfg;
+  ioe_read(AM_INPUT_KEYBRD, &cfg);
+  sprintf((char *)buf, "WIDTH:%d\nHEIGHT:%d\n\0", cfg.width, cfg.height);
   return 0;
 }
 
