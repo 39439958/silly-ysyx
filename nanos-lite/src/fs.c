@@ -124,5 +124,5 @@ int fs_close(int fd) {
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
-  file_table[4].size = 800 * 600;
+  file_table[4].size = 400 * 300;
 }
