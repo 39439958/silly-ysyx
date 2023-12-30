@@ -96,7 +96,6 @@ int NDL_Init(uint32_t flags) {
   char buf[64];
   read(vga_fd, buf, sizeof(buf));
   sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);
-  printf("width:%d, height:%d\n",screen_h, screen_w);
 
   // 打开vga的fb
   fb_fd = open("/dev/fb", "r");
