@@ -62,7 +62,7 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   for (int i = 0; i < h; i++) {
     int offset = (y + i)* screen_w + x;
     lseek(fb_fd, offset, SEEK_SET);
-    write(fb_fd, pixels + w, w);
+    write(fb_fd, pixels + (i * w), w);
   }
 }
 
