@@ -15,7 +15,7 @@ static const char *keyname[256] __attribute__((used)) = {
 };
 
 static int screen_w = 0, screen_h = 0;
-AM_GPU_FBDRAW_T ctl;
+AM_GPU_FBDRAW_T fb_ctl;
 
 size_t serial_write(const void *buf, size_t offset, size_t len) {
   char *cbuf = (char *)buf;
@@ -47,18 +47,16 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  strncpy(ctl.pixels, buf, len);
+  strncpy(fb_ctl.pixels, buf, len);
 
-  ctl.x = offset / screen_w;
+  fb_ctl.x = offset / screen_w;
+  fb_ctl.y = offset % screen_w;
+  fb_ctl.w = len, fb_ctl.h = 1;
+  fb_ctl.sync = true;
 
-  ctl.y = offset % screen_w;
+  ioe_write(AM_GPU_FBDRAW, &fb_ctl);
 
-  ctl.w = len, ctl.h = 1;
-
-  ctl.sync = true;
-  printf("66\n");
-  ioe_write(AM_GPU_FBDRAW, &ctl);
-   return 0;
+  return 0;
 }
 
 void init_device() {
