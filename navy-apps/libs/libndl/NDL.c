@@ -59,8 +59,11 @@ void NDL_OpenCanvas(int *w, int *h) {
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
-  for (int i = 0; i < 128; i++) {
-    printf("%u\n", pixels[i]);
+  for (int j = 0; j < 128; j++) {
+    for (int i = 0; i < 128; i++) {
+      printf("%u ", pixels[i]);
+    }
+    printf("\n");
   }
   for (int i = 0; i < h; i++) {
     int offset = (y + i)* screen_w + x;
