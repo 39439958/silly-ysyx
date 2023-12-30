@@ -16,7 +16,7 @@ char *strcpy(char *dst, const char *src) {
   char *d = dst;
   printf("661\n");
   while ((*d++ = *src++) != 0);
-
+  printf("662\n");
   return dst;
 }
 
