@@ -81,12 +81,8 @@ size_t fs_write(int fd, const void *buf, size_t len) {
   size_t ret = 0;
   Finfo *f = &file_table[fd];
 
-  if (fd == 4) {
-    printf("len : %d\n", len);
-    printf("%s\n", (char *)buf);
-  }
-
   if (f->write != NULL) {
+    printf("666\n");
     return f->write(buf, f->open_offset, len);
   } else {
     // 处理长度越界
