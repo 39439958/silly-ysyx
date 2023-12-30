@@ -82,7 +82,7 @@ size_t fs_write(int fd, const char *buf, size_t len) {
   Finfo *f = &file_table[fd];
 
   if (f->write != NULL) {
-    return f->write(buf, 0, len);
+    return f->write(buf, f->open_offset, len);
   } else {
     // 处理长度越界
     size_t real_len = len;
@@ -124,5 +124,5 @@ int fs_close(int fd) {
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
-
+  file_table[4].size = 800 * 600;
 }

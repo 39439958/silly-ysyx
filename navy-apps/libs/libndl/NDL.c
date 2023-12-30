@@ -12,6 +12,7 @@ static int canvas_w = 0, canvas_h = 0;
 static uint32_t init_time = 0;
 static int event_fd = 0;
 static int vga_fd = 0;
+static int fb_fd = 0;
 
 
 uint32_t NDL_GetTicks() {
@@ -44,10 +45,23 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-
+  // 设置canvas大小
+  if (*w == 0 && *h == 0) {
+    canvas_h = screen_h;
+    canvas_w = screen_w;
+  } else {
+    canvas_h = *h;
+    canvas_w = *w;
+  }
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  for (int i = 0; i < h; i++) {
+    int offset = y * screen_w + x;
+    int len = w;
+    lseek(fb_fd, offset, SEEK_SET);
+    write(fb_fd, pixels, len);
+  }
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -82,7 +96,10 @@ int NDL_Init(uint32_t flags) {
   char buf[64];
   read(vga_fd, buf, sizeof(buf));
   sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);
-  printf("Width: %d\nHeight: %d\n", screen_w, screen_h);
+
+  // 打开vga的fb
+  fb_fd = open("/dev/fb", "r");
+
   return 0;
 }
 
@@ -92,4 +109,7 @@ void NDL_Quit() {
 
   // 关闭dispinfo文件
   close(vga_fd);
+
+  // 关闭fb
+  close(fb_fd);
 }
