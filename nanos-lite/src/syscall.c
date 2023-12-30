@@ -73,7 +73,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_open :
       c->GPRx = fs_open((char *)a[1], a[2], a[3]);
-      Log("open file : %s\n", (char *)a[1]);
+      Log("open file : %s, fd :%d\n", (char *)a[1], c->GPRx);
       break;
     case SYS_read :
       c->GPRx = fs_read(a[1], (char *)a[2], a[3]);
