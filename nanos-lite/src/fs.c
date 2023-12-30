@@ -82,7 +82,7 @@ size_t fs_write(int fd, const void *buf, size_t len) {
   Finfo *f = &file_table[fd];
 
   if (f->write != NULL) {
-    return f->write(buf, f->open_offset, len);
+    return f->write(buf, 0, len);
   } else {
     // 处理长度越界
     size_t real_len = len;
