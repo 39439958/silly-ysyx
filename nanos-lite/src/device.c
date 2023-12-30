@@ -47,7 +47,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
-  strcpy(fb_ctl.pixels, buf);
+  strncpy(fb_ctl.pixels, buf, 1024);
   printf("66\n");
   fb_ctl.x = offset / screen_w;
   fb_ctl.y = offset % screen_w;
