@@ -27,7 +27,6 @@ char *strncpy(char *dst, const char *src, size_t n) {
     if ((*d = *src) != 0) src++;
     ++d;
     --n;
-    printf("%d\n", n);
   }
 
   return dst;
