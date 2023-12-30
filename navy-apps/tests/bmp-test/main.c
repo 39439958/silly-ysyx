@@ -11,7 +11,7 @@ int main() {
   assert(bmp);
   for (int j = 0; j < 128; j++) {
     for (int i = 0; i < 128; i++) {
-      printf("%x ", *(uint32_t *)(bmp + i));
+      printf("%8x ", *(uint32_t *)(bmp + i));
     }
     printf("\n");
   }
