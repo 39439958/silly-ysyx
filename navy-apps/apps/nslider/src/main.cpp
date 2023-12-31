@@ -20,6 +20,7 @@ static SDL_Surface *slide = NULL;
 static int cur = 0;
 
 void render() {
+  printf("666\n");
   if (slide) {
     SDL_FreeSurface(slide);
   }
@@ -53,7 +54,6 @@ int main() {
 
   while (1) {
     SDL_Event e;
-     printf("666\n");
     SDL_WaitEvent(&e);
 
     if (e.type == SDL_KEYDOWN) {
