@@ -17,6 +17,16 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
+  char buf[64];
+  NDL_PollEvent(buf, 0);
+  char type[8], keyname[8];
+  sscanf(buf, "%s %s\n", type, keyname);
+  printf("%s\n", keyname);
+  if (strcmp(type, "kd") == 0) {
+    event.type = SDL_KEYDOWN;
+  } else {
+    event.type = SDL_KEYUP;
+  }
   return 1;
 }
 
