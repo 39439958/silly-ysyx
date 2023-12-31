@@ -23,9 +23,9 @@ int SDL_WaitEvent(SDL_Event *event) {
   sscanf(buf, "%s %s\n", type, keyname);
   printf("%s\n", keyname);
   if (strcmp(type, "kd") == 0) {
-    event.type = SDL_KEYDOWN;
+    event->type = SDL_KEYDOWN;
   } else {
-    event.type = SDL_KEYUP;
+    event->type = SDL_KEYUP;
   }
   return 1;
 }
