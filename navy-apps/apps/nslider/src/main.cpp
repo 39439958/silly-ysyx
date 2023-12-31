@@ -49,13 +49,13 @@ int main() {
   SDL_Surface *screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
 
   int rep = 0, g = 0;
-  printf("666\n");
   render();
 
   while (1) {
     SDL_Event e;
     SDL_WaitEvent(&e);
 
+  printf("666\n");
     if (e.type == SDL_KEYDOWN) {
       switch(e.key.keysym.sym) {
         case SDLK_0: rep = rep * 10 + 0; break;
