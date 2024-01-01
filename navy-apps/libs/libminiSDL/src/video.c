@@ -16,10 +16,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   if (dstrect == NULL) {
-    printf("dst.w=%d,dst.h=%d\n", dst->w, dst->h);
     for(int i = 0; i < dst->h; i++) {
       memset((uint32_t *)dst->pixels + (i * dst->w), color, dst->w);
-      printf("%d\n",(i * dst->w));
     }
   } else {
     for(int i = 0; i < dstrect->h; i++) {
