@@ -52,7 +52,7 @@ int fs_open(const char *pathname, int flags, int mode) {
       return i;
     }
   }
-  panic("Should not reach here");
+  panic("Should not reach here, %s", pathname);
   return 0;
 }
 
