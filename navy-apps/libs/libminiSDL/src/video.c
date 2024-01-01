@@ -22,6 +22,9 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   
   for (int i = 0; i < h; i++) {
     for (int j = 0; j < w; j++) {
+      if (src->w == 7 && src->h == 13) {
+        printf("%d\n", (dst_y * w + dst_x) + (i * w + j) + (i * (dst_w - w)));
+      }
       uint32_t *pixels = (uint32_t *)(dst->pixels) + (dst_y * w + dst_x) + (i * w + j) + (i * (dst_w - w));
       *pixels = *((uint32_t *)(src->pixels) + (src_y * w + src_x) + (i * w + j));
     }
