@@ -121,7 +121,6 @@ int main(int argc, char *argv[], char *envp[]) {
 static void draw_ch(BDF_Font *font, int x, int y, char ch, uint32_t fg, uint32_t bg) {
   SDL_Surface *s = BDF_CreateSurface(font, ch, fg, bg);
   SDL_Rect dstrect = { .x = x, .y = y };
-  printf("%d %d\n",x, y);
   SDL_BlitSurface(s, NULL, screen, &dstrect);
   SDL_FreeSurface(s);
 }
@@ -147,7 +146,7 @@ static void display_menu(int n) {
   printf("Available applications:\n");
   char buf[80];
   int i;
-  for (i = 0; i <= n; i ++) {
+  for (i = 0; i <= 0; i ++) {
     auto *item = &items[page * 10 + i];
     sprintf(buf, "  [%d] %s", i, item->name);
     draw_text_row(buf, i);
