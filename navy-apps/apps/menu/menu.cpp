@@ -121,6 +121,7 @@ int main(int argc, char *argv[], char *envp[]) {
 static void draw_ch(BDF_Font *font, int x, int y, char ch, uint32_t fg, uint32_t bg) {
   SDL_Surface *s = BDF_CreateSurface(font, ch, fg, bg);
   SDL_Rect dstrect = { .x = x, .y = y };
+  printf("%d %d\n",s->w, s->h);
   SDL_BlitSurface(s, NULL, screen, &dstrect);
   SDL_FreeSurface(s);
 }
@@ -152,27 +153,27 @@ static void display_menu(int n) {
     draw_text_row(buf, i);
   }
 
-  i = 11;
+  // i = 11;
 
-  sprintf(buf, "  page = %2d, #total apps = %d", page, nitems);
-  draw_text_row(buf, i);
-  i ++;
+  // sprintf(buf, "  page = %2d, #total apps = %d", page, nitems);
+  // draw_text_row(buf, i);
+  // i ++;
 
-  sprintf(buf, "  help:");
-  draw_text_row(buf, i);
-  i ++;
+  // sprintf(buf, "  help:");
+  // draw_text_row(buf, i);
+  // i ++;
 
-  sprintf(buf, "  <-  Prev Page");
-  draw_text_row(buf, i);
-  i ++;
+  // sprintf(buf, "  <-  Prev Page");
+  // draw_text_row(buf, i);
+  // i ++;
 
-  sprintf(buf, "  ->  Next Page");
-  draw_text_row(buf, i);
-  i ++;
+  // sprintf(buf, "  ->  Next Page");
+  // draw_text_row(buf, i);
+  // i ++;
 
-  sprintf(buf, "  0-9 Choose");
-  draw_text_row(buf, i);
-  i ++;
+  // sprintf(buf, "  0-9 Choose");
+  // draw_text_row(buf, i);
+  // i ++;
 
   SDL_UpdateRect(screen, 0, 0, 0, 0);
 
