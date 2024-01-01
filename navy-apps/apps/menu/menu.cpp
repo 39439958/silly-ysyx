@@ -76,6 +76,9 @@ int main(int argc, char *argv[], char *envp[]) {
   assert(logo_sf);
   set_i_max();
 
+  printf("screen.w = %d, screen.h = %d\n", screen->w, screen->h);
+  printf("logo_sf.w = %d, logo_sf.h = %d\n", logo_sf->w, logo_sf->h);
+
   while (1) {
     display_menu(i_max);
 
