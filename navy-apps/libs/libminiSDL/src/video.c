@@ -24,7 +24,6 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
       memset(dst->pixels + (dstrect->y * dst->w + dstrect->x) + (i * dst->w), color, dstrect->w);
     }
   }
-  //NDL_DrawRect((uint32_t *)dst->pixels, 0, 0, dst->w, dst->h);
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
@@ -108,7 +107,6 @@ void SDL_FreeSurface(SDL_Surface *s) {
 
 SDL_Surface* SDL_SetVideoMode(int width, int height, int bpp, uint32_t flags) {
   if (flags & SDL_HWSURFACE) NDL_OpenCanvas(&width, &height);
-  printf("width:%d,height:%d\n",width, height);
   return SDL_CreateRGBSurface(flags, width, height, bpp,
       DEFAULT_RMASK, DEFAULT_GMASK, DEFAULT_BMASK, DEFAULT_AMASK);
 }
