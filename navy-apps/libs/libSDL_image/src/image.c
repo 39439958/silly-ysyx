@@ -12,30 +12,31 @@ SDL_Surface* IMG_Load_RW(SDL_RWops *src, int freesrc) {
 }
 
 SDL_Surface* IMG_Load(const char *filename) {
-  // FILE *fp = fopen(filename, "r");
-  // if (!fp) return NULL;
+  printf("%s\n", filename);
+  FILE *fp = fopen(filename, "r");
+  if (!fp) return NULL;
 
-  // long file_size = 0;
-  // long cur_offset = ftell(fp);
-  // if (cur_offset == -1) {
-  //   return NULL;
-  // }
-  // if (fseek(fp, 0, SEEK_END) != 0) {
-  //   return NULL;
-  // }
-  // file_size = ftell(fp);
-  // if (file_size == -1) {
-  //   return NULL;
-  // }
-  // if (fseek(fp, cur_offset, SEEK_SET) != 0) {
-  //   return NULL;
-  // }
+  long file_size = 0;
+  long cur_offset = ftell(fp);
+  if (cur_offset == -1) {
+    return NULL;
+  }
+  if (fseek(fp, 0, SEEK_END) != 0) {
+    return NULL;
+  }
+  file_size = ftell(fp);
+  if (file_size == -1) {
+    return NULL;
+  }
+  if (fseek(fp, cur_offset, SEEK_SET) != 0) {
+    return NULL;
+  }
   
-  // char buf[file_size];
-  // fread(buf, 1, file_size, fp);
-  // SDL_Surface *ret = STBIMG_LoadFromMemory(buf, file_size);
+  char buf[file_size];
+  fread(buf, 1, file_size, fp);
+  SDL_Surface *ret = STBIMG_LoadFromMemory(buf, file_size);
 
-  // fclose(fp);
+  fclose(fp);
   return NULL;
 }
 
