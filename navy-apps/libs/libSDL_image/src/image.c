@@ -27,6 +27,8 @@ SDL_Surface* IMG_Load(const char *filename) {
   long file_size = 0;
   long cur_offset = ftell(fp);
 
+  printf("%d\n",cur_offset);
+
   fseek(fp, 0, SEEK_END);
 
   file_size = ftell(fp);
