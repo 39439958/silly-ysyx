@@ -7,9 +7,24 @@
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  for (int i = 0; i < dstrect->h; i++) {
-    memset(dst->pixels + (dstrect->y * dst->w + dstrect->x) + (i * dst->w),
-     *(uint32_t *)(src->pixels + (dstrect->y * src->w + dstrect->x) + (i * src->w)), dstrect->w);
+
+  int w = 0, h = 0;
+  int src_x = 0, src_y = 0, dst_x = dstrect->x, dst_y = dstrect->y;
+  if (srcrect == NULL) {
+    w = src->w;
+    h = src->h;
+  } else {
+    w = srcrect->w;
+    h = srcrect->h;
+    src_x = srcrect->x;
+    src_y = srcrect->y;
+  }
+  
+  for (int i = 0; i < h; i++) {
+    for (int j = 0; j < w; j++) {
+      uint32_t *pixels = (uint32_t *)(dst->pixels) + (dst_y * w + dst_x) + (i * w + j);
+      *pixels = *(uint32_t *)(src->pixels) + (src_y * w + src_x) + (i * w + j);
+    }
   }
 }
 
@@ -17,15 +32,14 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   if (dstrect == NULL) {
     for(int i = 0; i < dst->h; i++) {
       for (int j = 0; j < dst->w; j++) {
-        uint32_t *pixels = (uint32_t *)(dst->pixels)+(i * dst->w + j);
+        uint32_t *pixels = (uint32_t *)(dst->pixels) + (i * dst->w + j);
         *pixels = color;
       }
     }
   } else {
-    printf("666\n");
     for(int i = 0; i < dstrect->h; i++) {
       for (int j = 0; j < dstrect->w; j++) {
-        uint32_t *pixels = (uint32_t *)(dst->pixels + (dstrect->y * dst->w + dstrect->x) + (i * dstrect->w + j));
+        uint32_t *pixels = (uint32_t *)(dst->pixels) + (dstrect->y * dst->w + dstrect->x) + (i * dstrect->w + j);
         *pixels = color;
       }
     }
