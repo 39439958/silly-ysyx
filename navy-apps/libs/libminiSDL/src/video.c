@@ -5,27 +5,51 @@
 #include <stdlib.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
+  // assert(dst && src);
+  // assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+
+  // int src_w = 0, src_h = 0;
+  // int dst_w = dst->w, dst_h = dst->h;
+  // int src_x = 0, src_y = 0;
+  // int dst_x = dstrect->x, dst_y = dstrect->y;
+  // if (srcrect == NULL) {
+  //   src_w = src->w;
+  //   src_h = src->h;
+  // } else {
+  //   src_w = srcrect->w;
+  //   src_h = srcrect->h;
+  //   src_x = srcrect->x;
+  //   src_y = srcrect->y;
+  // }
+  
+  // for (int i = 0; i < src_h; i++) {
+  //   for (int j = 0; j < src_w; j++) {
+  //     uint32_t *pixels = (uint32_t *)(dst->pixels) + (dst_y * dst_w + dst_x) + (i * dst_w + j);
+  //     *pixels = *((uint32_t *)(src->pixels) + (src_y * src_w + src_x) + (i * src_w + j));
+  //   }
+  // }
+
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-
-  int src_w = 0, src_h = 0;
-  int dst_w = dst->w, dst_h = dst->h;
-  int src_x = 0, src_y = 0;
-  int dst_x = dstrect->x, dst_y = dstrect->y;
-  if (srcrect == NULL) {
-    src_w = src->w;
-    src_h = src->h;
+  int w, h;
+  int sx, sy, dx, dy;
+  if (srcrect) {
+    w = srcrect->w; h = srcrect->h;
+    sx = srcrect->x; sy = srcrect->y;
   } else {
-    src_w = srcrect->w;
-    src_h = srcrect->h;
-    src_x = srcrect->x;
-    src_y = srcrect->y;
+    sx = sy = 0;
+    w = src->w; h = src->h;
   }
-  
-  for (int i = 0; i < src_h; i++) {
-    for (int j = 0; j < src_w; j++) {
-      uint32_t *pixels = (uint32_t *)(dst->pixels) + (dst_y * dst_w + dst_x) + (i * dst_w + j);
-      *pixels = *((uint32_t *)(src->pixels) + (src_y * src_w + src_x) + (i * src_w + j));
+  if (dstrect) {
+    dx = dstrect->x; dy = dstrect->y;
+  } else {
+    dx = dy = 0;
+  }
+  uint32_t *sp = (uint32_t *)src->pixels;
+  uint32_t *dp = (uint32_t *)dst->pixels;
+  for (int i = 0; i < h; i++) {
+    for (int j = 0; j < w; j++) {
+      dp[(dy + i) * dst->w + dx + j] = sp[(sy + i) * src->w + sx + j];
     }
   }
 }
