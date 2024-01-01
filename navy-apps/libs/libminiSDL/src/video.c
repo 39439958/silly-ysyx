@@ -11,20 +11,22 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
     memset(dst->pixels + (dstrect->y * dst->w + dstrect->x) + (i * dst->w),
      *(uint32_t *)(src->pixels + (dstrect->y * src->w + dstrect->x) + (i * src->w)), dstrect->w);
   }
-  //NDL_DrawRect((uint32_t *)dst->pixels, 0, 0, dst->w, dst->h);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   if (dstrect == NULL) {
     for(int i = 0; i < dst->h; i++) {
       for (int j = 0; j < dst->w; j++) {
-        uint32_t *pixels = (uint32_t *)(dst->pixels + (i * dst->w) + j);
+        uint32_t *pixels = (uint32_t *)(dst->pixels + (i * dst->w + j));
         *pixels = color;
       }
     }
   } else {
     for(int i = 0; i < dstrect->h; i++) {
-      memset(dst->pixels + (dstrect->y * dst->w + dstrect->x) + (i * dst->w), color, dstrect->w);
+      for (int j = 0; j < dstrect->w; j++) {
+        uint32_t *pixels = (uint32_t *)(dst->pixels + (dstrect->y * dst->w + dstrect->x) + (i * dstrect->w + j));
+        *pixels = color;
+      }
     }
   }
 }
