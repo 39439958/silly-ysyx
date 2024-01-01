@@ -21,12 +21,13 @@ int SDL_WaitEvent(SDL_Event *event) {
   NDL_PollEvent(buf, 0);
   char type[8], key_name[8];
   int keycode;
- // sscanf(buf, "%s %s %d\n", type, key_name, );
-  
+  sscanf(buf, "%s %s %d\n", type, key_name, &keycode);
   if (strcmp(type, "kd") == 0) {
     event->type = SDL_KEYDOWN;
+    event->key.keysym.sym = keycode;
   } else {
     event->type = SDL_KEYUP;
+    event->key.keysym.sym = keycode;
   }
   return 1;
 }
