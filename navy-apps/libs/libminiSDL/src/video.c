@@ -8,32 +8,54 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
 
-  int src_w = 0, src_h = 0;
-  int dst_w = dst->w, dst_h = dst->h;
-  int src_x = 0, src_y = 0;
-  int dst_x = 0, dst_y = 0;
-  if (srcrect == NULL) {
-    src_w = src->w;
-    src_h = src->h;
+  int w, h;
+  int sx, sy, dx, dy;
+  if (srcrect) {
+    w = srcrect->w; h = srcrect->h;
+    sx = srcrect->x; sy = srcrect->y;
   } else {
-    src_w = srcrect->w;
-    src_h = srcrect->h;
-    src_x = srcrect->x;
-    src_y = srcrect->y;
+    sx = sy = 0;
+    w = src->w; h = src->h;
   }
-  if (dstrect != NULL) {
-    dst_x = dstrect->x;
-    dst_y = dstrect->y;
-  } 
-  
+  if (dstrect) {
+    dx = dstrect->x; dy = dstrect->y;
+  } else {
+    dx = dy = 0;
+  }
   uint32_t *sp = (uint32_t *)src->pixels;
   uint32_t *dp = (uint32_t *)dst->pixels;
-  for (int i = 0; i < src_h; i++) {
-    for (int j = 0; j < src_w; j++) {
-      dp[(dst_y + i) * dst_w + dst_x + j] = 
-      sp[(src_y + i) * src_w + src_x + j];
+  for (int i = 0; i < h; i++) {
+    for (int j = 0; j < w; j++) {
+      dp[(dy + i) * dst->w + dx + j] = sp[(sy + i) * src->w + sx + j];
     }
   }
+
+  // int src_w = 0, src_h = 0;
+  // int dst_w = dst->w, dst_h = dst->h;
+  // int src_x = 0, src_y = 0;
+  // int dst_x = 0, dst_y = 0;
+  // if (srcrect == NULL) {
+  //   src_w = src->w;
+  //   src_h = src->h;
+  // } else {
+  //   src_w = srcrect->w;
+  //   src_h = srcrect->h;
+  //   src_x = srcrect->x;
+  //   src_y = srcrect->y;
+  // }
+  // if (dstrect != NULL) {
+  //   dst_x = dstrect->x;
+  //   dst_y = dstrect->y;
+  // } 
+  
+  // uint32_t *sp = (uint32_t *)src->pixels;
+  // uint32_t *dp = (uint32_t *)dst->pixels;
+  // for (int i = 0; i < src_h; i++) {
+  //   for (int j = 0; j < src_w; j++) {
+  //     dp[(dst_y + i) * dst_w + dst_x + j] = 
+  //     sp[(src_y + i) * src_w + src_x + j];
+  //   }
+  // }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
