@@ -101,12 +101,15 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 
   switch (whence) {
     case SEEK_SET:
+      assert(offset <= file_table[fd].size);
       file_table[fd].open_offset = offset;
       break;
     case SEEK_CUR:
+      assert(cur_offset + offset <= file_table[fd].size);
       file_table[fd].open_offset = cur_offset + offset;
       break;
     case SEEK_END:
+      assert(file_table[fd].size + offset <= file_table[fd].size);
       file_table[fd].open_offset =  file_table[fd].size + offset;
       break;
     default:
@@ -122,4 +125,5 @@ int fs_close(int fd) {
 void init_fs() {
   // TODO: initialize the size of /dev/fb
   file_table[FD_FB].size = io_read(AM_GPU_CONFIG).vmemsz;
+  printf("FD_FB size=%d", file_table[FD_FB].size);
 }
