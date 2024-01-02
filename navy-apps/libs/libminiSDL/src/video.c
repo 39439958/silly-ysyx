@@ -108,15 +108,15 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   if (s->format->BytesPerPixel == 4) {
     NDL_DrawRect((uint32_t *)s->pixels, x, y, w, h);
   } else if (s->format->BytesPerPixel == 1) {
-    uint32_t *pixel = malloc(w * h * 4);
+    uint32_t *pixels = malloc(w * h * 4);
     uint8_t *src = (uint8_t *)s->pixels;
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
-        pixel[i * w + j] = color_translater(&s->format->palette->colors[src[(y + i) * s->w + x + j]]);
+        pixels[i * w + j] = color_translater(&s->format->palette->colors[src[i * w + j]]);
       }
     }
-    NDL_DrawRect(pixel, x, y, w, h);
-    free(pixel);
+    NDL_DrawRect(pixels, x, y, w, h);
+    free(pixels);
   }
 }
 
