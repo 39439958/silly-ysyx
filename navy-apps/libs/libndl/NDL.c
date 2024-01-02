@@ -11,8 +11,8 @@ static int screen_w = 0, screen_h = 0;
 static int canvas_w = 0, canvas_h = 0;
 
 static uint32_t init_time = 0;
-
 static int event_fd = 0;
+static int fb_fd = 0;
 
 
 uint32_t NDL_GetTicks() {
@@ -58,13 +58,11 @@ void NDL_OpenCanvas(int *w, int *h) {
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
   x += (screen_w - canvas_w) / 2;
   y += (screen_h - canvas_h) / 2;
-  int fb_fd = open("/dev/fb", 0, 0);
   for (int i = 0; i < h; i++) {
     int offset = (y + i)* screen_w + x;
     lseek(fb_fd, offset, SEEK_SET);
     write(fb_fd, pixels + (i * w), w);
   }
-  close(fb_fd);
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -96,14 +94,18 @@ int NDL_Init(uint32_t flags) {
   char buf[64];
   read(vga_fd, buf, sizeof(buf));
   sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);
+  close(vga_fd);
   
   // 打开键盘事件
   event_fd = open("/dev/event", 0, 0);
+
+  // 打开fb
+  fb_fd = open("/dev/fb", 0, 0);
 
   return 0;
 }
 
 void NDL_Quit() {
-
   close(event_fd);
+  close(fb_fd);
 }
