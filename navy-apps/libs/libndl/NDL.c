@@ -46,7 +46,6 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
-  assert(screen_h >= *h && screen_w >= *w);
   // 设置canvas大小
   if (*w == 0 && *h == 0) {
     canvas_h = screen_h;
