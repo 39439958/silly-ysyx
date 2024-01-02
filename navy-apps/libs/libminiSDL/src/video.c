@@ -101,30 +101,23 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
 
   NDL_DrawRect((uint32_t *)s->pixels, x, y, s->w, s->h);
-  // if (w == 0 && h == 0) { // w=h=0时，使用默认大小即全屏
-  //   w = s->w;
-  //   h = s->h;
-  // }  
-  // if (s->format->BytesPerPixel == 4) {
-  //   uint32_t *pixel = malloc(w * h * 4);
-  //   uint32_t *src = (uint32_t *)s->pixels;
-  //   for (int i = 0; i < h; i++) {
-  //     memcpy(pixel + w * i, src + (y + i) * s->w + x, w * 4);
-  //   }
-  //   NDL_DrawRect(pixel, x, y, w, h);
-  //   free(pixel);
-  // } else if (s->format->BytesPerPixel == 1) {
-  //   printf("666\n");
-  //   uint32_t *pixel = malloc(w * h * 4);
-  //   uint8_t *src = (uint8_t *)s->pixels;
-  //   for (int i = 0; i < h; i++) {
-  //     for (int j = 0; j < w; j++) {
-  //       pixel[i * w + j] = color_translater(&s->format->palette->colors[src[(y + i) * s->w + x + j]]);
-  //     }
-  //   }
-  //   NDL_DrawRect(pixel, x, y, w, h);
-  //   free(pixel);
-  // }
+  if (w == 0 && h == 0) { 
+    w = s->w;
+    h = s->h;
+  }  
+  if (s->format->BytesPerPixel == 4) {
+    NDL_DrawRect((uint32_t *)s->pixels, x, y, w, h);
+  } else if (s->format->BytesPerPixel == 1) {
+    uint32_t *pixel = malloc(w * h * 4);
+    uint8_t *src = (uint8_t *)s->pixels;
+    for (int i = 0; i < h; i++) {
+      for (int j = 0; j < w; j++) {
+        pixel[i * w + j] = color_translater(&s->format->palette->colors[src[(y + i) * s->w + x + j]]);
+      }
+    }
+    NDL_DrawRect(pixel, x, y, w, h);
+    free(pixel);
+  }
 }
 
 // APIs below are already implemented.
