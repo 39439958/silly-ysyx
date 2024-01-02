@@ -14,8 +14,7 @@ int SDL_PushEvent(SDL_Event *ev) {
 
 int SDL_PollEvent(SDL_Event *ev) {
   char buf[64];
-  NDL_PollEvent(buf, 0);
-  if (buf == NULL) {
+  if (NDL_PollEvent(buf, 0) == 0) {
     return 0;
   }
   char type[8], key_name[8];
