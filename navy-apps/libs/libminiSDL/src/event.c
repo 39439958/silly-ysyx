@@ -16,6 +16,7 @@ int SDL_PollEvent(SDL_Event *ev) {
   char buf[64];
   NDL_PollEvent(buf, 0);
   if (buf == NULL) {
+    printf("666\n");
     return 0;
   }
   char type[8], key_name[8];
