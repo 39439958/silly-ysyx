@@ -12,6 +12,8 @@ static int canvas_w = 0, canvas_h = 0;
 
 static uint32_t init_time = 0;
 
+static int event_fd = 0;
+
 
 uint32_t NDL_GetTicks() {
   struct timeval tv;
@@ -22,10 +24,7 @@ uint32_t NDL_GetTicks() {
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  int event_fd = open("/dev/event", 0, 0);
-  int ret = read(event_fd, buf, len);
-  close(event_fd);
-  return ret;
+  return read(event_fd, buf, len);
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
@@ -98,8 +97,13 @@ int NDL_Init(uint32_t flags) {
   read(vga_fd, buf, sizeof(buf));
   sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);
   
+  // 打开键盘事件
+  event_fd = open("/dev/event", 0, 0);
+
   return 0;
 }
 
 void NDL_Quit() {
+
+  close(event_fd);
 }
