@@ -4,7 +4,7 @@
 #define strace(); Log("[strace] : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall_name[a[0]], a0, a[2], a[3], c->GPRx);
 
 struct timeval {
-	long		tv_sec;		/* seconds */
+	long	tv_sec;		/* seconds */
 	long	tv_usec;	/* and microseconds */
 };
 

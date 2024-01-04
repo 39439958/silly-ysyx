@@ -90,7 +90,7 @@ int NDL_Init(uint32_t flags) {
   init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
   
   // 打开vga的dispinfo文件并解析出屏幕大小
-  int vga_fd = open("proc/dispinfo", "r");
+  int vga_fd = open("/proc/dispinfo", "r");
   char buf[64];
   read(vga_fd, buf, sizeof(buf));
   sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);

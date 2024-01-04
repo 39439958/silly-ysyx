@@ -10,6 +10,8 @@ size_t serial_write(const void *buf, size_t offset, size_t len);
 size_t events_read(void *buf, size_t offset, size_t len);
 size_t dispinfo_read(void *buf, size_t offset, size_t len);
 size_t fb_write(const void *buf, size_t offset, size_t len);
+size_t am_ioe_read(void *buf, size_t offset, size_t len);
+size_t am_ioe_write(const void *buf, size_t offset, size_t len);
 
 typedef struct {
   char *name;
@@ -20,7 +22,7 @@ typedef struct {
   size_t open_offset;
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT, FD_FB, FB_DP};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_EVENT, FD_FB, FD_DP, FD_AM_IOE};
 
 
 size_t invalid_read(void *buf, size_t offset, size_t len) {
@@ -35,12 +37,13 @@ size_t invalid_write(const void *buf, size_t offset, size_t len) {
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
-  [FD_STDIN]  = {"stdin", 0, 0, invalid_read, serial_write},
+  [FD_STDIN]  = {"stdin", 0, 0, invalid_read, invalid_write},
   [FD_STDOUT] = {"stdout", 0, 0, invalid_read, serial_write},
-  [FD_STDERR] = {"stderr", 0, 0, invalid_read, invalid_write},
+  [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
   [FD_EVENT] = {"/dev/event", 0 ,0, events_read, invalid_write},
   [FD_FB] = {"/dev/fb", 0, 0, invalid_read, fb_write},
-  [FB_DP] = {"proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
+  [FD_DP] = {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
+  [FD_AM_IOE] = {"/dev/am_ioe", 0, 0, am_ioe_read, am_ioe_write},
 #include "files.h"
 };
 
@@ -62,7 +65,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
   Finfo *f = &file_table[fd];
 
   if (f->read != NULL) {
-    return f->read(buf, 0, len);
+    return f->read(buf, f->open_offset, len);
   } else {
     // 处理长度越界
     size_t real_len = len;
