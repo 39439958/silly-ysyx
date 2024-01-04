@@ -43,7 +43,7 @@ static Finfo file_table[] __attribute__((used)) = {
   [FD_EVENT] = {"/dev/event", 0 ,0, events_read, invalid_write},
   [FD_FB] = {"/dev/fb", 0, 0, invalid_read, fb_write},
   [FD_DP] = {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
-  [FD_AM_IOE] = {"/dev/am_ioe", 0, 0, am_ioe_read, am_ioe_write},
+  [FD_AM_IOE] = {"/dev/am_ioe", 30, 0, am_ioe_read, am_ioe_write},
 #include "files.h"
 };
 
