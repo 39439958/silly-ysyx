@@ -14,11 +14,12 @@ struct timezone {
 	int	tz_dsttime;	/* type of dst correction */
 };
 
-static char* syscall_name[] = {"exit", "yield", "open", "read",
-                               "write", "kill", "getpid", "close",
-                               "lseek", "brk", "fstat", "time",
-                               "signal", "execve", "fork", "link",
-                               "unlink", "wait", "times", "gettimeofday"};
+// static char* syscall_name[] = {"exit", "yield", "open", "read",
+//                                "write", "kill", "getpid", "close",
+//                                "lseek", "brk", "fstat", "time",
+//                                "signal", "execve", "fork", "link",
+//                                "unlink", "wait", "times", "gettimeofday"};
+
 // am
 void yield();
 void halt(int code);
@@ -69,11 +70,11 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3; // a1
   a[3] = c->GPR4; // a2
 
-  uintptr_t a0 = a[1];
+  //uintptr_t a0 = a[1];
 
   switch (a[0]) {
     case SYS_exit : 
-      strace(); 
+      //strace(); 
       sys_exit(a[0]); 
       break;
     case SYS_yield : 
@@ -87,7 +88,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_open :
       c->GPRx = fs_open((char *)a[1], a[2], a[3]);
-      Log("open file : %s, fd :%d\n", (char *)a[1], c->GPRx);
+      //Log("open file : %s, fd :%d\n", (char *)a[1], c->GPRx);
       break;
     case SYS_read :
       c->GPRx = fs_read(a[1], (char *)a[2], a[3]);
