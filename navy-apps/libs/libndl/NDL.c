@@ -3,17 +3,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <assert.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
+static int canvas_w = 0, canvas_h = 0;
+
+static uint32_t init_time = 0;
+static int event_fd = 0;
+static int fb_fd = 0;
+
 
 uint32_t NDL_GetTicks() {
-  return 0;
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  // 返回毫秒数
+  uint32_t now_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000) - init_time;
+  return now_time;
 }
 
 int NDL_PollEvent(char *buf, int len) {
-  return 0;
+  return read(event_fd, buf, len);
 }
 
 void NDL_OpenCanvas(int *w, int *h) {
@@ -34,9 +45,24 @@ void NDL_OpenCanvas(int *w, int *h) {
     }
     close(fbctl);
   }
+  // 设置canvas大小
+  if (*w == 0 && *h == 0) {
+    *w = screen_w;
+    *h = screen_h;
+  }
+  canvas_h = *h;
+  canvas_w = *w;
+  
 }
 
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h) {
+  x += (screen_w - canvas_w) / 2;
+  y += (screen_h - canvas_h) / 2;
+  for (int i = 0; i < h; i++) {
+    int offset = (y + i)* screen_w + x;
+    lseek(fb_fd, offset, SEEK_SET);
+    write(fb_fd, pixels + (i * w), w);
+  }
 }
 
 void NDL_OpenAudio(int freq, int channels, int samples) {
@@ -57,8 +83,29 @@ int NDL_Init(uint32_t flags) {
   if (getenv("NWM_APP")) {
     evtdev = 3;
   }
+
+  // 初始化时间
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  init_time = (uint32_t)(tv.tv_sec * 1000 + tv.tv_usec / 1000);
+  
+  // 打开vga的dispinfo文件并解析出屏幕大小
+  int vga_fd = open("/proc/dispinfo", "r");
+  char buf[64];
+  read(vga_fd, buf, sizeof(buf));
+  sscanf(buf, "WIDTH:%d\nHEIGHT:%d\n", &screen_w, &screen_h);
+  close(vga_fd);
+  
+  // 打开键盘事件
+  event_fd = open("/dev/event", 0, 0);
+
+  // 打开fb
+  fb_fd = open("/dev/fb", 0, 0);
+
   return 0;
 }
 
 void NDL_Quit() {
+  close(event_fd);
+  close(fb_fd);
 }

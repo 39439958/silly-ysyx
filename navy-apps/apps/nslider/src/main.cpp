@@ -12,7 +12,7 @@
 //   gg - first page
 
 // number of slides
-const int N = 10;
+const int N = 6;
 // slides path pattern (starts from 0)
 const char *path = "/share/slides/slides-%d.bmp";
 
@@ -40,7 +40,7 @@ void prev(int rep) {
 void next(int rep) {
   if (rep == 0) rep = 1;
   cur += rep;
-  if (cur >= N) cur = N - 1;
+  if (cur >= N) cur = 0;
   render();
 }
 
@@ -49,7 +49,6 @@ int main() {
   SDL_Surface *screen = SDL_SetVideoMode(W, H, 32, SDL_HWSURFACE);
 
   int rep = 0, g = 0;
-
   render();
 
   while (1) {

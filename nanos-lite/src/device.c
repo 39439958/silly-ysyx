@@ -14,21 +14,58 @@ static const char *keyname[256] __attribute__((used)) = {
   AM_KEYS(NAME)
 };
 
+static int screen_w = 0, screen_h = 0;
+
 size_t serial_write(const void *buf, size_t offset, size_t len) {
-  return 0;
+  char *cbuf = (char *)buf;
+  for (int i = 0; i < len; i++) {
+    putch(cbuf[i]);
+  } 
+  return len;
 }
 
 size_t events_read(void *buf, size_t offset, size_t len) {
-  return 0;
+  AM_INPUT_KEYBRD_T kbd;
+  ioe_read(AM_INPUT_KEYBRD, &kbd);
+  int ret = 0;
+  if (kbd.keycode == AM_KEY_NONE) {
+    *(char *)buf = '\0';
+  } else {
+    ret = sprintf((char *)buf, "%s %s %d\n", kbd.keydown ? "kd" : "ku", keyname[kbd.keycode], kbd.keycode);
+  }
+  return ret;
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-  return 0;
+  AM_GPU_CONFIG_T cfg;
+  ioe_read(AM_GPU_CONFIG, &cfg);
+  int ret = sprintf((char *)buf, "WIDTH:%d\nHEIGHT:%d\n", cfg.width, cfg.height);
+  screen_h = cfg.height;
+  screen_w = cfg.width;
+  return ret;
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) {
+  AM_GPU_FBDRAW_T fb_ctl;
+  fb_ctl.pixels = (uint32_t *)buf;
+  fb_ctl.x = offset % screen_w;
+  fb_ctl.y = offset / screen_w;
+  fb_ctl.w = len, fb_ctl.h = 1;
+  fb_ctl.sync = true;
+  ioe_write(AM_GPU_FBDRAW, &fb_ctl);
   return 0;
 }
+
+size_t am_ioe_read(void *buf, size_t offset, size_t len) {
+  ioe_read(offset, buf);
+  return 0;
+}
+
+size_t am_ioe_write(const void *buf, size_t offset, size_t len) {
+  ioe_write(offset, (void *)buf);
+  return 0;
+}
+
 
 void init_device() {
   Log("Initializing devices...");

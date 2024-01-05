@@ -35,6 +35,13 @@ static word_t *csr_reg(word_t imm) {
 
 #define CSR(i) *csr_reg(i)
 #define ECALL(dnpc) { bool success; dnpc = (isa_raise_intr(isa_reg_str2val("a7", &success), s->pc)); }
+#define MRET() { \
+  s->dnpc = CSR(0x341); \
+  cpu.csrs.mstatus &= ~(1<<3); \
+  cpu.csrs.mstatus |= ((cpu.csrs.mstatus&(1<<7))>>4); \
+  cpu.csrs.mstatus |= (1<<7); \
+  cpu.csrs.mstatus &= ~((1<<11)+(1<<12)); \
+}
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
@@ -56,7 +63,8 @@ void ret_trace(paddr_t pc);
 
 static void etrace() {
   IFDEF(CONFIG_ETRACE, {
-    printf("ecall in mepc = " FMT_WORD ", mcause = %d\n", cpu.csrs.mepc, cpu.csrs.mcause);
+    TRACE("\necall in mepc = " FMT_WORD ", mcause = " FMT_WORD "\n",
+      cpu.csrs.mepc, cpu.csrs.mcause);
   });
 }
 
@@ -159,7 +167,7 @@ static int decode_exec(Decode *s) {
    );
   // N-type
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, ECALL(s->dnpc); etrace());
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, s->dnpc = CSR(0x341) + 4);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret   , N, MRET());
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak , N, NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));
   

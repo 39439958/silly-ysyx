@@ -82,6 +82,30 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
                 char tmp_char = va_arg(ap, int);
                 *out++ = tmp_char;
             }
+            else if (*fmt == 'p') {
+                *out++ = '0';
+                *out++ = 'x';
+                unsigned int tmp_int = va_arg(ap, unsigned int);
+                int number = tmp_int;
+                int len  = 0;
+                do {
+                    number /= 16;
+                    len++;
+                } while (number);
+                out = out + len - 1;
+                int tmp_len = len;
+                while (tmp_len--) {
+                    int tmp = tmp_int % 16;
+                    if (tmp < 10) {
+                        *out-- = tmp + 48;
+                    }
+                    else {
+                        *out-- = tmp + 87;
+                    }
+                    tmp_int /= 16;
+                }
+                out += (len+1);
+            }
             else {
                 return -1;
             }
