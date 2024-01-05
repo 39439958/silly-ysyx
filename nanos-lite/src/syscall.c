@@ -56,7 +56,6 @@ int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
 }
 
 int sys_execve(const char *pathname, char *const argv[], char *const envp[]) {
-  printf("%s\n", pathname);
   if (pathname == NULL)
     return -1;
   naive_uload(NULL, pathname);
