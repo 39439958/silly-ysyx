@@ -34,13 +34,16 @@ size_t fs_write(int fd, const void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
+int sys_execve(const char *pathname, char *const argv[], char *const envp[]);
+
 int sys_yield() {
   yield();
   return 0;
 }
 
 void sys_exit(int code) {
-  halt(code);
+  sys_execve("/bin/menu", NULL, NULL);
+  //halt(code);
 }
 
 int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
