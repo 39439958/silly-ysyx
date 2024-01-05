@@ -23,7 +23,7 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
-  printf("%d\n", sizeof(cmd));
+  printf("%s%d\n", cmd, strlen(cmd));
   execve(cmd, NULL, NULL);
 }
 
