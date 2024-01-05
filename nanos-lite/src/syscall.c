@@ -1,4 +1,5 @@
 #include <common.h>
+#include <proc.h>
 #include "syscall.h"
 
 #define strace(); Log("[strace] : %s , a0 : %d, a1 : %d, a2 : %d, ret : %d\n", syscall_name[a[0]], a0, a[2], a[3], c->GPRx);
@@ -18,10 +19,13 @@ static char* syscall_name[] = {"exit", "yield", "open", "read",
                                "lseek", "brk", "fstat", "time",
                                "signal", "execve", "fork", "link",
                                "unlink", "wait", "times", "gettimeofday"};
-
+// am
 void yield();
 void halt(int code);
 void putch(char ch);
+
+// os
+void naive_uload(PCB *pcb, const char *filename);
 
 // file system call
 int fs_open(const char *pathname, int flags, int mode);
@@ -45,6 +49,14 @@ int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
   ioe_read(AM_TIMER_UPTIME, &us);
   tv->tv_sec = us / (1000*1000);
   tv->tv_usec = us % (1000*1000);
+  return 0;
+}
+
+int sys_execve(const char *pathname, char *const argv[], char *const envp[]) {
+  printf("%s\n", pathname);
+  if (pathname == NULL)
+    return -1;
+  naive_uload(NULL, pathname);
   return 0;
 }
 
@@ -86,6 +98,9 @@ void do_syscall(Context *c) {
       break;
     case SYS_gettimeofday :
       c->GPRx = sys_gettimeofday((struct timeval *)a[1], (struct timezone *)a[2]);
+      break;
+    case SYS_execve :
+      c->GPRx = sys_execve((char *)a[1], (char * const *)a[2], (char * const *)a[3]);
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
