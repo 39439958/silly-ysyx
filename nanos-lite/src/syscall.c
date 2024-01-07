@@ -14,11 +14,11 @@ struct timezone {
 	int	tz_dsttime;	/* type of dst correction */
 };
 
-static char* syscall_name[] = {"exit", "yield", "open", "read",
-                               "write", "kill", "getpid", "close",
-                               "lseek", "brk", "fstat", "time",
-                               "signal", "execve", "fork", "link",
-                               "unlink", "wait", "times", "gettimeofday"};
+// static char* syscall_name[] = {"exit", "yield", "open", "read",
+//                                "write", "kill", "getpid", "close",
+//                                "lseek", "brk", "fstat", "time",
+//                                "signal", "execve", "fork", "link",
+//                                "unlink", "wait", "times", "gettimeofday"};
 
 // am
 void yield();
@@ -70,7 +70,7 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3; // a1
   a[3] = c->GPR4; // a2
 
-  uintptr_t a0 = a[1];
+  // uintptr_t a0 = a[1];
 
   switch (a[0]) {
     case SYS_exit : 
@@ -107,5 +107,5 @@ void do_syscall(Context *c) {
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
-  strace();
+  // strace();
 }
