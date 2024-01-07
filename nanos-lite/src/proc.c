@@ -42,5 +42,6 @@ Context* schedule(Context *prev) {
   current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   current->cp->mepc += 4;
+  printf("666\n");
   return current->cp;
 }
