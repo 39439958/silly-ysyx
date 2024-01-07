@@ -7,7 +7,7 @@ static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
 
-void naive_uload(PCB *pcb, const char *filename);
+uintptr_t naive_uload(PCB *pcb, const char *filename);
 
 void switch_boot_pcb() {
   current = &pcb_boot;
@@ -26,11 +26,16 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
   p->cp = kcontext((Area) { p->stack, p + 1 }, hello_fun, arg);
 }
 
+void context_uload(PCB *p, const char *filename) {
+  uintptr_t entry = naive_uload(p, filename);
+  p->cp = ucontext(&p->as, (Area) { p->stack, p + 1 }, (void *)entry);
+  p->cp->GPRx = (uintptr_t)heap.end;
+}
+
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)1L);
-  context_kload(&pcb[1], hello_fun, (void *)2L);
+  context_uload(&pcb[1], "/bin/pal");
   switch_boot_pcb();
-  yield();
 
   Log("Initializing processes...");
 
