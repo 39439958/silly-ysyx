@@ -33,7 +33,7 @@ void context_uload(PCB *p, const char *filename) {
 }
 
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, (void *)1L);
+  context_kload(&pcb[0], hello_fun, (void *)2L);
   context_uload(&pcb[1], "/bin/pal");
   switch_boot_pcb();
 
