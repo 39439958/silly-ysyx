@@ -10,10 +10,8 @@ char **argv;
 char **envp;
 
 void call_main(uintptr_t *args) {
-  argc = (int)(*args);
-  argv = args + 1;
-  envp = args + argc + 2;
-  environ = envp;
-  exit(main(argc, argv, envp));
+  char *empty[] =  {NULL };
+  environ = empty;
+  exit(main(0, empty, empty));
   assert(0);
 }
