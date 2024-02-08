@@ -75,7 +75,7 @@ void init_proc() {
    context_kload(&pcb[0], hello_fun, (void *)1L);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
 
-  char *argv[] = {NULL}; 
+  char *argv[] = {"/bin/exec-test"}; 
   char *envp[] = {NULL}; 
   context_uload(&pcb[1], "/bin/exec-test", argv, envp);
   switch_boot_pcb();
