@@ -9,8 +9,8 @@ void call_main(uintptr_t *args) {
   int argc = (int)args[0];
   char **argv = (char **)(args + 1);
 
-  printf("666\n");
-  printf("%s\n", argv[0]);
+  if (argv[0] == NULL)
+    printf("666\n");
 
   char **envp = (char **)(args + argc + 2);
   environ = envp;
