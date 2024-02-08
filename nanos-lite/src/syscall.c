@@ -14,6 +14,8 @@ struct timezone {
 	int	tz_dsttime;	/* type of dst correction */
 };
 
+extern PCB *current;
+
 // static char* syscall_name[] = {"exit", "yield", "open", "read",
 //                                "write", "kill", "getpid", "close",
 //                                "lseek", "brk", "fstat", "time",
@@ -27,6 +29,8 @@ void putch(char ch);
 
 // os
 void naive_uload(PCB *pcb, const char *filename);
+void context_uload(PCB *p, const char *filename, char *const argv[], char *const envp[]);
+void switch_boot_pcb();
 
 // file system call
 int fs_open(const char *pathname, int flags, int mode);
@@ -59,7 +63,10 @@ int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
 int sys_execve(const char *pathname, char *const argv[], char *const envp[]) {
   if (pathname == NULL)
     return -1;
-  naive_uload(NULL, pathname);
+  //naive_uload(NULL, pathname);
+  context_uload(current, pathname, argv, envp);
+  switch_boot_pcb();
+  yield();
   return 0;
 }
 
@@ -70,7 +77,7 @@ void do_syscall(Context *c) {
   a[2] = c->GPR3; // a1
   a[3] = c->GPR4; // a2
 
-  //uintptr_t a0 = a[1];
+  // uintptr_t a0 = a[1];
 
   switch (a[0]) {
     case SYS_exit : 
@@ -107,5 +114,5 @@ void do_syscall(Context *c) {
       break;
     default : panic("syscall:Unhandled syscall ID = %d", a[0]);
   }
-  //strace();
+  // strace();
 }
