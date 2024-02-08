@@ -30,10 +30,10 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   uintptr_t entry = naive_uload(p, filename);
 
   int argc = 0, envc = 0;
-  while (argv[argc] != NULL) argc++;
-  while (envp[envc] != NULL) envc++;
 
   printf("666\n");
+  while (argv[argc] != NULL) argc++;
+  while (envp[envc] != NULL) envc++;
 
   char* us1 = (char*)heap.end;
   // clone argv
