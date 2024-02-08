@@ -35,7 +35,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 
   uintptr_t* us = (uintptr_t*)heap.end;
 
-  printf("heap.end:%d\n", *us);
+  // printf("heap.end:%d\n", *us);
 
   // // clone argv
   // for (int i = 0; i < argc; i++) {
