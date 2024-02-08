@@ -13,7 +13,8 @@ void call_main(uintptr_t *args) {
   environ = envp;
   exit(main(argc, argv, envp));
 
-  printf("666%s\n", argv[0]);
+  printf("666\n");
+  printf("%s\n", argv[0]);
 
   // char *empty[] = {NULL};
   // environ = empty;
