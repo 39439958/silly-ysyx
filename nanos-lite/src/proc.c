@@ -74,7 +74,7 @@ void init_proc() {
   // context_kload(&pcb[0], hello_fun, (void *)1L);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
 
-  char *argv[] = {NULL}; 
+  char *argv[] = {"/bin/exec-test"}; 
   char *envp[] = {NULL}; 
   context_uload(&pcb[0], "/bin/exec-test", argv, envp);
   switch_boot_pcb();
@@ -87,8 +87,6 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   current->cp = prev;
-  printf("%d\n", (current == &pcb[0] ? 0 : 1));
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("%d\n", (current == &pcb[0] ? 0 : 1));
   return current->cp;
 }
