@@ -33,8 +33,8 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
   
-  char* us1 = (char*)new_page(8);
-  char* us_tmp = us1;
+  char* us1 = (char*)heap.end;
+  //char* us_tmp = us1;
   // clone argv
   for (int i = 0; i < argc; i++) {
     size_t len = strlen(argv[i]) + 1; // include null character
@@ -53,7 +53,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 
   us2[0] = argc;
 
-  //char* us_tmp = (char*)heap.end;
+  char* us_tmp = (char*)heap.end;
   for (int i = 0; i < argc; i++) {
     size_t len = strlen(argv[i]) + 1; 
     us_tmp -= len;
