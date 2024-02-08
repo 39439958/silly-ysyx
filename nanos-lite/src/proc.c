@@ -33,41 +33,41 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
 
-  // char* us1 = (char*)heap.end;
-  // // clone argv
-  // for (int i = 0; i < argc; i++) {
-  //   size_t len = strlen(argv[i]) + 1; // include null character
-  //   us1 -= len;
-  //   strncpy(us1, argv[i], len);
-  // }
-  // // clone envp
-  // for (int i = 0; i < envc; i++) {
-  //   size_t len = strlen(envp[i]) + 1; // include null character
-  //   us1 -= len;
-  //   strncpy(us1, envp[i], len);
-  // }
+  char* us1 = (char*)heap.end;
+  // clone argv
+  for (int i = 0; i < argc; i++) {
+    size_t len = strlen(argv[i]) + 1; // include null character
+    us1 -= len;
+    strncpy(us1, argv[i], len);
+  }
+  // clone envp
+  for (int i = 0; i < envc; i++) {
+    size_t len = strlen(envp[i]) + 1; // include null character
+    us1 -= len;
+    strncpy(us1, envp[i], len);
+  }
 
-  // uintptr_t* us2 = (uintptr_t *)us1;
-  // us2 -= (argc + envc + 3);
+  uintptr_t* us2 = (uintptr_t *)us1;
+  us2 -= (argc + envc + 3);
 
-  // us2[0] = argc;
+  us2[0] = argc;
 
-  // char* us_tmp = (char*)heap.end;
-  // for (int i = 0; i < argc; i++) {
-  //   size_t len = strlen(argv[i]) + 1; 
-  //   us_tmp -= len;
-  //   us2[i + 1] = (uintptr_t)us_tmp;
-  // }
-  // us2[argc + 1] = 0;
-  // for (int i = 0; i < envc; i++) {
-  //   size_t len = strlen(envp[i]) + 1; // include null character
-  //   us_tmp -= len;
-  //   us2[argc + i + 2] = (uintptr_t)us_tmp;
-  // }
-  // us2[argc + 2 + envc] = 0;
+  char* us_tmp = (char*)heap.end;
+  for (int i = 0; i < argc; i++) {
+    size_t len = strlen(argv[i]) + 1; 
+    us_tmp -= len;
+    us2[i + 1] = (uintptr_t)us_tmp;
+  }
+  us2[argc + 1] = 0;
+  for (int i = 0; i < envc; i++) {
+    size_t len = strlen(envp[i]) + 1; // include null character
+    us_tmp -= len;
+    us2[argc + i + 2] = (uintptr_t)us_tmp;
+  }
+  us2[argc + 2 + envc] = 0;
 
   p->cp = ucontext(&p->as, (Area) { p->stack, p + 1 }, (void *)entry);
-  p->cp->GPRx = (uintptr_t)heap.end;
+  p->cp->GPRx = (uintptr_t)us2;
 }
 
 void init_proc() {
