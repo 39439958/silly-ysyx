@@ -34,6 +34,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (envp[envc] != NULL) envc++;
   
   char* us1 = (char*)heap.end;
+  printf("%p\n", (uintptr_t)heap.end);
   // clone argv
   for (int i = 0; i < argc; i++) {
     size_t len = strlen(argv[i]) + 1; // include null character
