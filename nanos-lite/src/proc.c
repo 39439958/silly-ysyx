@@ -55,23 +55,23 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 
   us[0] = argc;
 
-  // uintptr_t* us_tmp = (uintptr_t*)heap.end;
-  // for (int i = 0; i < argc; i++) {
-  //   size_t len = strlen(argv[i]) + 1;
-  //   us_tmp -= len;
-  //   us[i + 1] = (uintptr_t)us_tmp;
-  // }
-  // us_tmp = (uintptr_t*)((uintptr_t)us_tmp & ~(sizeof(uintptr_t) - 1)); // floor
+  uintptr_t* us_tmp = (uintptr_t*)heap.end;
+  for (int i = 0; i < argc; i++) {
+    size_t len = strlen(argv[i]) + 1;
+    us_tmp -= len;
+    us[i + 1] = (uintptr_t)us_tmp;
+  }
+  us_tmp = (uintptr_t*)((uintptr_t)us_tmp & ~(sizeof(uintptr_t) - 1)); // floor
 
-  // us[argc + 1] = 0;
+  us[argc + 1] = 0;
 
-  // for (int i = 0; i < envc; i++) {
-  //   size_t len = strlen(envp[i]) + 1; // include null character
-  //   us_tmp -= len;
-  //   us[argc + 2 + i] = (uintptr_t)us_tmp;
-  // }
+  for (int i = 0; i < envc; i++) {
+    size_t len = strlen(envp[i]) + 1; // include null character
+    us_tmp -= len;
+    us[argc + 2 + i] = (uintptr_t)us_tmp;
+  }
 
-  // us[argc + envc + 2] = 0;
+  us[argc + envc + 2] = 0;
 
   p->cp = ucontext(&p->as, (Area) { p->stack, p + 1 }, (void *)entry);
   p->cp->GPRx = (uintptr_t)us;
