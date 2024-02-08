@@ -59,7 +59,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   for (int i = 0; i < argc; i++) {
     size_t len = strlen(argv[i]) + 1;
     us_tmp -= len;
-    us[i + 1] = (uintptr_t)us_tmp;
+    us[i + 1] = *us_tmp;
   }
   us_tmp = (uintptr_t*)((uintptr_t)us_tmp & ~(sizeof(uintptr_t) - 1)); // floor
 
@@ -68,7 +68,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   for (int i = 0; i < envc; i++) {
     size_t len = strlen(envp[i]) + 1; // include null character
     us_tmp -= len;
-    us[argc + 2 + i] = (uintptr_t)us_tmp;
+    us[argc + 2 + i] = *us_tmp;
   }
 
   us[argc + envc + 2] = 0;
