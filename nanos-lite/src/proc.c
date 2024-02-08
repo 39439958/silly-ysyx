@@ -33,50 +33,49 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
 
-  uintptr_t* us = (uintptr_t*)heap.end;
+  char* us = (char*)heap.end;
 
-  // printf("heap.end:%d\n", *us);
+  // clone argv
+  for (int i = 0; i < argc; i++) {
+    size_t len = strlen(argv[i]) + 1; // include null character
+    us -= len;
+    strncpy(us, argv[i], len);
+  }
 
-  // // clone argv
-  // for (int i = 0; i < argc; i++) {
-  //   size_t len = strlen(argv[i]) + 1; // include null character
-  //   us -= len;
-  //   strncpy((char *)us, argv[i], len);
-  // }
-  // us = (uintptr_t*)((uintptr_t)us & ~(sizeof(uintptr_t) - 1)); // floor
+  // clone envp
+  for (int i = 0; i < envc; i++) {
+    size_t len = strlen(envp[i]) + 1; // include null character
+    us -= len;
+    strncpy(us, envp[i], len);
+  }
 
-  // // clone envp
-  // for (int i = 0; i < envc; i++) {
-  //   size_t len = strlen(envp[i]) + 1; // include null character
-  //   us -= len;
-  //   strncpy((char*)us, envp[i], len);
-  // }
-  // us = (uintptr_t*)((uintptr_t)us & ~(sizeof(uintptr_t) - 1)); // floor
+  us -= (argc + envc + 3);
+  p->cp->GPRx = (uintptr_t)us;
 
-  // us -= (argc + envc + 3);
+  *us = argc;
+  us++;
 
-  // us[0] = argc;
+  char* us_tmp = (char*)heap.end;
+  for (int i = 0; i < argc; i++) {
+    size_t len = strlen(argv[i]) + 1;
+    us_tmp -= len;
+    us = us_tmp;
+    us++;
+  }
 
-  // uintptr_t* us_tmp = (uintptr_t*)heap.end;
-  // for (int i = 0; i < argc; i++) {
-  //   size_t len = strlen(argv[i]) + 1;
-  //   us_tmp -= len;
-  //   us[i + 1] = *us_tmp;
-  // }
-  // us_tmp = (uintptr_t*)((uintptr_t)us_tmp & ~(sizeof(uintptr_t) - 1)); // floor
+  *us = '\0';
+  us++;
 
-  // us[argc + 1] = 0;
+  for (int i = 0; i < envc; i++) {
+    size_t len = strlen(envp[i]) + 1; // include null character
+    us_tmp -= len;
+    us = us_tmp;
+    us++;
+  }
 
-  // for (int i = 0; i < envc; i++) {
-  //   size_t len = strlen(envp[i]) + 1; // include null character
-  //   us_tmp -= len;
-  //   us[argc + 2 + i] = *us_tmp;
-  // }
-
-  // us[argc + envc + 2] = 0;
+  *us = '\0';
 
   p->cp = ucontext(&p->as, (Area) { p->stack, p + 1 }, (void *)entry);
-  p->cp->GPRx = (uintptr_t)us;
 }
 
 void init_proc() {
