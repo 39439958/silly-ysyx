@@ -59,7 +59,6 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
     us2[i + 1] = (uintptr_t)us_tmp;
   }
   us2[argc + 1] = 0;
-
   for (int i = 0; i < envc; i++) {
     size_t len = strlen(envp[i]) + 1; // include null character
     us_tmp -= len;
