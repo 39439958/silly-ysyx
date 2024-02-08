@@ -9,8 +9,6 @@ void call_main(uintptr_t *args) {
   int argc = (int)args[0];
   char **argv = (char **)(args + 1);
   char **envp = (char **)(args + argc + 2);
-
-  printf("navy%s\n", argv[0]);
   environ = envp;
   exit(main(argc, argv, envp));
 
