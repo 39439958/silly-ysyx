@@ -5,7 +5,7 @@ Context* schedule(Context *prev);
 
 static Context* do_event(Event e, Context* c) {
   switch (e.event) {
-    case EVENT_YIELD : c = schedule(c); c->mepc += 4; printf("666\n"); break;
+    case EVENT_YIELD : c = schedule(c); c->mepc += 4; break;
     case EVENT_SYSCALL : do_syscall(c); c->mepc += 4; break;
     default: panic("irq:Unhandled event ID = %d", e.event);
   }
