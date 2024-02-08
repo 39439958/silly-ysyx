@@ -33,7 +33,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
 
-  char* us1 = (char*)heap.end;
+  // char* us1 = (char*)heap.end;
   // // clone argv
   // for (int i = 0; i < argc; i++) {
   //   size_t len = strlen(argv[i]) + 1; // include null character
@@ -67,7 +67,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   // us2[argc + 2 + envc] = 0;
 
   p->cp = ucontext(&p->as, (Area) { p->stack, p + 1 }, (void *)entry);
-  p->cp->GPRx = (uintptr_t)us1;
+  p->cp->GPRx = (uintptr_t)heap.end;
 }
 
 void init_proc() {
