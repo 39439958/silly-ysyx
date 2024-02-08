@@ -29,31 +29,31 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 void context_uload(PCB *p, const char *filename, char *const argv[], char *const envp[]) {
   uintptr_t entry = naive_uload(p, filename);
 
-  // int argc = 0, envc = 0;
-  // while (argv[argc] != NULL) argc++;
-  // while (envp[envc] != NULL) envc++;
+  int argc = 0, envc = 0;
+  while (argv[argc] != NULL) argc++;
+  while (envp[envc] != NULL) envc++;
 
   uintptr_t* us = (uintptr_t*)heap.end;
 
-  // // clone argv
-  // for (int i = 0; i < argc; i++) {
-  //   size_t len = strlen(argv[i]) + 1; // include null character
-  //   us -= len;
-  //   strncpy((char *)us, argv[i], len);
-  // }
-  // us = (uintptr_t*)((uintptr_t)us & ~(sizeof(uintptr_t) - 1)); // floor
+  // clone argv
+  for (int i = 0; i < argc; i++) {
+    size_t len = strlen(argv[i]) + 1; // include null character
+    us -= len;
+    strncpy((char *)us, argv[i], len);
+  }
+  us = (uintptr_t*)((uintptr_t)us & ~(sizeof(uintptr_t) - 1)); // floor
 
-  // // clone envp
-  // for (int i = 0; i < envc; i++) {
-  //   size_t len = strlen(envp[i]) + 1; // include null character
-  //   us -= len;
-  //   strncpy((char*)us, envp[i], len);
-  // }
-  // us = (uintptr_t*)((uintptr_t)us & ~(sizeof(uintptr_t) - 1)); // floor
+  // clone envp
+  for (int i = 0; i < envc; i++) {
+    size_t len = strlen(envp[i]) + 1; // include null character
+    us -= len;
+    strncpy((char*)us, envp[i], len);
+  }
+  us = (uintptr_t*)((uintptr_t)us & ~(sizeof(uintptr_t) - 1)); // floor
 
-  // us -= (argc + envc + 3);
+  us -= (argc + envc + 3);
 
-  // us[0] = argc;
+  us[0] = argc;
 
   // uintptr_t* us_tmp = (uintptr_t*)heap.end;
   // for (int i = 0; i < argc; i++) {
