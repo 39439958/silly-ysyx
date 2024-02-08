@@ -27,8 +27,9 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 }
 
 void context_uload(PCB *p, const char *filename, char *const argv[], char *const envp[]) {
-  printf("666\n");
   uintptr_t entry = naive_uload(p, filename);
+
+  printf("666\n");
 
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) argc++;
