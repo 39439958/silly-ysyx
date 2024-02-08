@@ -29,9 +29,9 @@ void context_kload(PCB *p, void (*entry)(void *), void *arg) {
 void context_uload(PCB *p, const char *filename, char *const argv[], char *const envp[]) {
   uintptr_t entry = naive_uload(p, filename);
 
-  int argc = 0, envc = 0;
+  printf("%s\n", argv[0]);
 
-  printf("666\n");
+  int argc = 0, envc = 0;
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
 
@@ -74,8 +74,9 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)2L);
-  char *empty[] = {NULL}; 
-  context_uload(&pcb[1], "/bin/pal", empty, empty);
+  char *argv[] = {"--skip"}; 
+  char *envp[] = {NULL}; 
+  context_uload(&pcb[1], "/bin/pal", argv, envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
