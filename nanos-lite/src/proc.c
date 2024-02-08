@@ -77,6 +77,7 @@ void init_proc() {
   char *argv[] = {NULL}; 
   char *envp[] = {NULL}; 
   context_uload(&pcb[0], "/bin/exec-test", argv, envp);
+  printf("666\n");
   switch_boot_pcb();
 
   Log("Initializing processes...");
