@@ -68,7 +68,6 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 
   p->cp = ucontext(&p->as, (Area) { p->stack, p + 1 }, (void *)entry);
   p->cp->GPRx = (uintptr_t)us2;
-  printf("666\n");
 }
 
 void init_proc() {
