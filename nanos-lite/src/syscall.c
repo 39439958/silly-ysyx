@@ -63,7 +63,6 @@ int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
 int sys_execve(const char *pathname, char *const argv[], char *const envp[]) {
   if (pathname == NULL)
     return -1;
-  printf("666\n");
   context_uload(current, pathname, argv, envp);
   switch_boot_pcb();
   yield();
@@ -86,6 +85,7 @@ void do_syscall(Context *c) {
       break;
     case SYS_yield : 
       c->GPRx = sys_yield(); 
+      printf("666\n");
       break;
     case SYS_brk :
       c->GPRx = 0;
