@@ -33,6 +33,8 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
 
+  printf("666\n");
+
   char* us1 = (char*)heap.end;
   // clone argv
   for (int i = 0; i < argc; i++) {
