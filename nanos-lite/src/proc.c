@@ -35,7 +35,7 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   
   char* us1 = (char*)new_page(8);
 
-  printf("kernel stack:%p, user stack:%p\n", (uintptr_t)p->stack, (uintptr_t)us1);
+  // printf("kernel stack:%p, user stack:%p\n", (uintptr_t)p->stack, (uintptr_t)us1);
 
   char* us_tmp = us1;
   // clone argv
