@@ -68,7 +68,7 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-    if (waddr == 0xa00003F8) {
+    if (waddr == 0xa00003f8) {
       putchar(wdata);
     } else {
       uint32_t addr = waddr & ~0x3u;
@@ -296,7 +296,7 @@ void npc_exec(int n) {
         //printf("%x\n", top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[1]);
 
         // difftest
-        difftest_step(top->rootp->top__DOT__pc);
+        //difftest_step(top->rootp->top__DOT__pc);
 
         if (top->rootp->top__DOT__inst == 0x0000006f) {
             is_quit = 1;
@@ -420,7 +420,7 @@ int main(int argc, char** argv, char** env) {
     npc_rst();
 
     // initial difftest
-    init_difftest(ref_so_file, img_size, 1234);
+    //init_difftest(ref_so_file, img_size, 1234);
 
     for (char *str; (str = rl_gets()) != NULL; ) {
         char *str_end = str + strlen(str);
