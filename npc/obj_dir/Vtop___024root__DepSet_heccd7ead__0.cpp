@@ -724,63 +724,36 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
     IData/*31:0*/ __Vtemp_hba363faa__0;
     IData/*31:0*/ __Vtemp_h9f56714d__0;
     // Body
-    if (VL_UNLIKELY((1U == ((IData)((0x23U == (0x707fU 
+    if ((1U == ((IData)((0x23U == (0x707fU & vlSelf->top__DOT__inst)))
+                 ? 1U : ((IData)((0x1023U == (0x707fU 
+                                              & vlSelf->top__DOT__inst)))
+                          ? 2U : ((IData)((0x2023U 
+                                           == (0x707fU 
                                                & vlSelf->top__DOT__inst)))
-                             ? 1U : ((IData)((0x1023U 
-                                              == (0x707fU 
-                                                  & vlSelf->top__DOT__inst)))
-                                      ? 2U : ((IData)(
-                                                      (0x2023U 
-                                                       == 
-                                                       (0x707fU 
-                                                        & vlSelf->top__DOT__inst)))
-                                               ? 3U
-                                               : 0U)))))) {
+                                   ? 3U : 0U))))) {
         Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, vlSelf->top__DOT__exu0__DOT__rs2, 1U);
-        VL_WRITEF("%2x write in addr:%x\n",8,(0xffU 
-                                              & vlSelf->top__DOT__exu0__DOT__rs2),
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
-    } else if (VL_UNLIKELY((2U == ((IData)((0x23U == 
-                                            (0x707fU 
-                                             & vlSelf->top__DOT__inst)))
-                                    ? 1U : ((IData)(
-                                                    (0x1023U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->top__DOT__inst)))
-                                             ? 2U : 
-                                            ((IData)(
-                                                     (0x2023U 
-                                                      == 
-                                                      (0x707fU 
-                                                       & vlSelf->top__DOT__inst)))
-                                              ? 3U : 0U)))))) {
+    } else if ((2U == ((IData)((0x23U == (0x707fU & vlSelf->top__DOT__inst)))
+                        ? 1U : ((IData)((0x1023U == 
+                                         (0x707fU & vlSelf->top__DOT__inst)))
+                                 ? 2U : ((IData)((0x2023U 
+                                                  == 
+                                                  (0x707fU 
+                                                   & vlSelf->top__DOT__inst)))
+                                          ? 3U : 0U))))) {
         Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, vlSelf->top__DOT__exu0__DOT__rs2, 3U);
-        VL_WRITEF("%4x write in addr:%x\n",16,(0xffffU 
-                                               & vlSelf->top__DOT__exu0__DOT__rs2),
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
-    } else if (VL_UNLIKELY((3U == ((IData)((0x23U == 
-                                            (0x707fU 
-                                             & vlSelf->top__DOT__inst)))
-                                    ? 1U : ((IData)(
-                                                    (0x1023U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->top__DOT__inst)))
-                                             ? 2U : 
-                                            ((IData)(
-                                                     (0x2023U 
-                                                      == 
-                                                      (0x707fU 
-                                                       & vlSelf->top__DOT__inst)))
-                                              ? 3U : 0U)))))) {
+    } else if ((3U == ((IData)((0x23U == (0x707fU & vlSelf->top__DOT__inst)))
+                        ? 1U : ((IData)((0x1023U == 
+                                         (0x707fU & vlSelf->top__DOT__inst)))
+                                 ? 2U : ((IData)((0x2023U 
+                                                  == 
+                                                  (0x707fU 
+                                                   & vlSelf->top__DOT__inst)))
+                                          ? 3U : 0U))))) {
         Vtop___024root____Vdpiimwrap_top__DOT__exu0__DOT__pmem_write_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, vlSelf->top__DOT__exu0__DOT__rs2, 0xfU);
-        VL_WRITEF("%8x write in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__rs2,
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
     }
     __Vdly__top__DOT__pc = vlSelf->top__DOT__pc;
     __Vdlyvset__top__DOT__exu0__DOT__regfile0__DOT__rf__v0 = 0U;
-    if (VL_UNLIKELY((1U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
+    if ((1U == (IData)(vlSelf->top__DOT__dm_rd_sel))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__5__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__5__rdata;
         __Vtemp_hba363faa__0 = ((0U == (3U & vlSelf->top__DOT__exu0__DOT__alu_out))
@@ -814,9 +787,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                             | (vlSelf->top__DOT__exu0__DOT__dm_data 
                                                >> 0x18U)))));
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtemp_hba363faa__0;
-        VL_WRITEF("read %2x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
-    } else if (VL_UNLIKELY((2U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
+    } else if ((2U == (IData)(vlSelf->top__DOT__dm_rd_sel))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__6__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__6__rdata;
         vlSelf->top__DOT__exu0__DOT__dm_data = ((0U 
@@ -847,9 +818,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__dm_data 
                                                    >> 0x18U))));
-        VL_WRITEF("read %2x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
-    } else if (VL_UNLIKELY((3U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
+    } else if ((3U == (IData)(vlSelf->top__DOT__dm_rd_sel))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__7__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__7__rdata;
         __Vtemp_h9f56714d__0 = ((0U == (3U & vlSelf->top__DOT__exu0__DOT__alu_out))
@@ -882,9 +851,7 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                             | (vlSelf->top__DOT__exu0__DOT__dm_data 
                                                >> 0x18U)))));
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtemp_h9f56714d__0;
-        VL_WRITEF("read %4x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
-    } else if (VL_UNLIKELY((4U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
+    } else if ((4U == (IData)(vlSelf->top__DOT__dm_rd_sel))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__8__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__8__rdata;
         vlSelf->top__DOT__exu0__DOT__dm_data = ((0U 
@@ -914,13 +881,9 @@ VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__1(Vtop___024root* vlSelf) 
                                                    : 
                                                   (vlSelf->top__DOT__exu0__DOT__dm_data 
                                                    >> 0x18U))));
-        VL_WRITEF("read %4x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
-    } else if (VL_UNLIKELY((5U == (IData)(vlSelf->top__DOT__dm_rd_sel)))) {
+    } else if ((5U == (IData)(vlSelf->top__DOT__dm_rd_sel))) {
         Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(vlSelf->top__DOT__exu0__DOT__alu_out, __Vtask_top__DOT__exu0__DOT__pmem_read__9__rdata);
         vlSelf->top__DOT__exu0__DOT__dm_data = __Vtask_top__DOT__exu0__DOT__pmem_read__9__rdata;
-        VL_WRITEF("read %x in addr:%x\n",32,vlSelf->top__DOT__exu0__DOT__dm_data,
-                  32,vlSelf->top__DOT__exu0__DOT__alu_out);
     }
     __Vdly__top__DOT__pc = ((IData)(vlSelf->rst) ? 0x80000000U
                              : ((1U & (((4U & (IData)(vlSelf->top__DOT__BrType))
