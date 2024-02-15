@@ -32,7 +32,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 }
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  printf("kstack.start:%p, kstack.end:%p\n", kstack.start, kstack.end);
+  // printf("kstack.start:%p, kstack.end:%p\n", kstack.start, kstack.end);
   Context *cp = (Context *)(kstack.end - sizeof(Context));
   cp->mepc = (uintptr_t)entry - 4;
   cp->gpr[10] = (uintptr_t)(arg);
