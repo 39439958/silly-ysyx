@@ -69,7 +69,7 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
     if (waddr == 0xa00003F8) {
-      putchar(wdata);
+      
     } else {
       uint32_t addr = waddr & ~0x3u;
       if (wmask == 1 || wmask == 3) {
