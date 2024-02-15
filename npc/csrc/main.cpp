@@ -49,6 +49,7 @@ cpu_state cpu;
 enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 
 void init_disasm(const char *triple);
+void putch();
 
 void difftest_step(uint32_t pc);
 void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
@@ -58,6 +59,7 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 extern "C" void pmem_read(int raddr, int *rdata) {
     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
+    
     uint32_t addr = raddr & ~0x3u;
     *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
 }
@@ -66,19 +68,23 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-    uint32_t addr = waddr & ~0x3u;
-    if (wmask == 1 || wmask == 3) {
-        wdata <<= ((waddr & 0x3u) * 8);
-        wmask <<= (waddr & 0x3u);
+    if (waddr == 0xa00003F8) {
+      putchar(wdata);
+    } else {
+      uint32_t addr = waddr & ~0x3u;
+      if (wmask == 1 || wmask == 3) {
+          wdata <<= ((waddr & 0x3u) * 8);
+          wmask <<= (waddr & 0x3u);
+      }
+      uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
+      uint32_t mask = 0; 
+      for (int i = 0; i < 4; i++) {
+          if (wmask & (1 << i)) {
+              mask |= 0xff << (i * 8);
+          }
+      }
+      *p = (*p & ~mask) | (wdata & mask);
     }
-    uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
-    uint32_t mask = 0; 
-    for (int i = 0; i < 4; i++) {
-        if (wmask & (1 << i)) {
-            mask |= 0xff << (i * 8);
-        }
-    }
-    *p = (*p & ~mask) | (wdata & mask);
 }
 
 void ebreak() {
@@ -276,7 +282,7 @@ void npc_exec(int n) {
         p += 4;
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
-        printf("%s\n", inst_buf);
+        //printf("%s\n", inst_buf);
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;

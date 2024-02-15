@@ -34,6 +34,9 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
   while (envp[envc] != NULL) envc++;
   
   char* us1 = (char*)new_page(8);
+
+  // printf("kernel stack:%p, user stack:%p\n", (uintptr_t)p->stack, (uintptr_t)us1);
+
   char* us_tmp = us1;
   // clone argv
   for (int i = 0; i < argc; i++) {
@@ -73,11 +76,11 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)1L);
-  // context_kload(&pcb[1], hello_fun, (void *)2L);
+  context_kload(&pcb[1], hello_fun, (void *)2L);
 
-  char *argv[] = {"--skip"}; 
-  char *envp[] = {NULL}; 
-  context_uload(&pcb[0], "/bin/pal", argv, envp);
+  // char *argv[] = {"--skip"}; 
+  // char *envp[] = {NULL}; 
+  // context_uload(&pcb[0], "/bin/pal", argv, envp);
   switch_boot_pcb();
 
   Log("Initializing processes...");
@@ -88,8 +91,6 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   current->cp = prev;
-  //int a = (current == &pcb[0] ? 0 : 1);
-  //printf("now:%d, next:%d\n", a, !a);
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
 }
