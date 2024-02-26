@@ -10,6 +10,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <dlfcn.h>
+#include <sys/time.h>
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 #define NPC_QUIT 0
@@ -43,8 +44,11 @@ typedef struct cpu_state{
 } cpu_state;
 
 Vtop *top = new Vtop;
-VerilatedVcdC *m_trace = new VerilatedVcdC;
+//VerilatedVcdC *m_trace = new VerilatedVcdC;
 cpu_state cpu;
+
+struct timeval start, end;
+long seconds, microseconds;
 
 enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 
@@ -59,9 +63,16 @@ void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
 extern "C" void pmem_read(int raddr, int *rdata) {
     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
-    
-    uint32_t addr = raddr & ~0x3u;
-    *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
+    if (raddr == 0xa0000048 || raddr == 0xa000004c) {
+      gettimeofday(&end, NULL);
+      seconds = end.tv_sec - start.tv_sec;
+      microseconds = end.tv_usec - start.tv_usec;
+      long res = seconds * 1000000 + microseconds;
+      *rdata = (raddr == 0xa0000048) ? (res & 0xffffffff) : (res >> 32);
+    } else {
+      uint32_t addr = raddr & ~0x3u;
+      *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
+    }
 }
 
 extern "C" void pmem_write(int waddr, int wdata, char wmask) {
@@ -70,7 +81,11 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
     if (waddr == 0xa00003f8) {
       putchar(wdata);
-    } else {
+    } 
+    else if (waddr == 0xa0000048 || waddr == 0xa000004c){
+      gettimeofday(&start, NULL);
+    }
+    else {
       uint32_t addr = waddr & ~0x3u;
       if (wmask == 1 || wmask == 3) {
           wdata <<= ((waddr & 0x3u) * 8);
@@ -174,13 +189,13 @@ void npc_rst() {
     top->clk = 0;
     top->rst = 1;
     top->eval();
-    m_trace->dump(sim_time);
+    //m_trace->dump(sim_time);
     sim_time++;
 
     top->clk = 1;
     top->rst = 1;
     top->eval();
-    m_trace->dump(sim_time);
+    //m_trace->dump(sim_time);
     sim_time++;
 }
 
@@ -254,7 +269,7 @@ void npc_exec(int n) {
         top->clk ^= 1;
         top->rst = 0;
         top->eval();
-        m_trace->dump(sim_time);
+        //m_trace->dump(sim_time);
         sim_time++;
 
         // save pc
@@ -270,7 +285,7 @@ void npc_exec(int n) {
         // execute
         top->clk ^= 1;
         top->eval();
-        m_trace->dump(sim_time);
+        //m_trace->dump(sim_time);
         sim_time++;
 
         // save inst
@@ -398,7 +413,7 @@ static int cmd_x(char *args) {
 
 void exit_work() {
     quit_state ? printf("\33[1;41mHIT BAD TRAP\33[0m\n") : printf("\33[1;32mHIT GOOD TRAP\33[0m\n");
-    m_trace->close();
+    //m_trace->close();
     delete top;
     exit(EXIT_SUCCESS);
 }
@@ -406,9 +421,9 @@ void exit_work() {
 
 int main(int argc, char** argv, char** env) {
     // start waveform trace
-    Verilated::traceEverOn(true);
-    top->trace(m_trace, 5);
-    m_trace->open("waveform.vcd");
+    //Verilated::traceEverOn(true);
+    //top->trace(m_trace, 5);
+    //m_trace->open("waveform.vcd");
 
     // initial memory and instruction
     init_mem();
