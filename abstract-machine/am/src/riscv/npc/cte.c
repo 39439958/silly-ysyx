@@ -1,5 +1,6 @@
 #include <am.h>
 #include <riscv/riscv.h>
+#include <arch/riscv.h>
 #include <klib.h>
 
 static Context* (*user_handler)(Event, Context*) = NULL;
@@ -8,9 +9,9 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
+      case 11: ev.event = EVENT_YIELD; break;
       default: ev.event = EVENT_ERROR; break;
     }
-
     c = user_handler(ev, c);
     assert(c != NULL);
   }
@@ -31,14 +32,17 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 }
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+  Context *cp = (Context *)(kstack.end - sizeof(Context));
+  cp->mepc = (uintptr_t)entry - 4;
+  cp->gpr[10] = (uintptr_t)(arg);
+  return cp;
 }
 
 void yield() {
 #ifdef __riscv_e
-  asm volatile("li a5, -1; ecall");
+  asm volatile("li a5, 11; ecall");
 #else
-  asm volatile("li a7, -1; ecall");
+  asm volatile("li a7, 11; ecall");
 #endif
 }
 

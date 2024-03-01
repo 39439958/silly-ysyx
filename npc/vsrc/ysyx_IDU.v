@@ -3,7 +3,11 @@ module ysyx_IDU (
   input [31:0] pc,
 
   output wire rf_wr_en,
-  output reg[1:0] rf_wr_sel,
+  output wire csr_wr_en,
+  output reg[2:0] rf_wr_sel,
+
+  output wire is_ecall,
+  output wire is_mret,
 
   output wire do_jump,
   output reg[2:0] BrType,
@@ -29,6 +33,9 @@ module ysyx_IDU (
     wire  is_srli;
     wire  is_slli;
 
+    wire  is_csrrs;
+    wire  is_csrrw;
+
     wire  is_auipc;
     wire  is_lui;
     wire  is_jal;
@@ -46,7 +53,6 @@ module ysyx_IDU (
     wire  is_sra;
     wire  is_srl;
     wire  is_or;
-
 
     wire  is_beq;
     wire  is_bne;
@@ -72,6 +78,7 @@ module ysyx_IDU (
     wire  is_R;
     wire  is_S;
     wire  is_B;
+    wire  is_CSR;
 
     // 解析指令
     assign  op = inst[6:0];
@@ -86,10 +93,15 @@ module ysyx_IDU (
     assign  is_srli = (op == 7'h13) && (funct3 == 3'h5) && (inst[31:26] == 6'h00);
     assign  is_slli = (op == 7'h13) && (funct3 == 3'h1);
     assign  is_andi = (op == 7'h13) && (funct3 == 3'h7);
+    
+    assign  is_csrrs = (op == 7'h73) && (funct3 == 3'h2);
+    assign  is_csrrw = (op == 7'h73) && (funct3 == 3'h1);
+    assign  is_ecall = (op == 7'h73) && (inst[31:20] == 12'h0);
 
     assign  is_lui = (op == 7'h37);
     assign  is_auipc = (op == 7'h17);
-    assign  is_ebreak = (op == 7'h73);
+    assign  is_ebreak = (op == 7'h73) && (inst[31:20] == 12'h1);
+    assign  is_mret = (inst == 32'h30200073);
 
     assign  is_jal = (op == 7'h6f);
     assign  is_jalr = (op == 7'h67) && (funct3 == 3'h0);
@@ -129,6 +141,7 @@ module ysyx_IDU (
     assign  is_I = is_jalr |
                    is_lb | is_lbu | is_lh | is_lhu | is_lw | 
                    is_addi | is_sltiu | is_srai | is_srli | is_slli | is_xori | is_andi;
+    assign  is_CSR = is_csrrs | is_csrrw;
     assign  is_U = is_auipc | is_lui;
     assign  is_J = is_jal;
     assign  is_S = is_sb | is_sh | is_sw;
@@ -143,15 +156,19 @@ module ysyx_IDU (
     );
 
     // rf_wr_en
-    assign rf_wr_en = is_I | is_U | is_J | is_R;
+    assign rf_wr_en = is_I | is_U | is_J | is_R | is_CSR;
+
+    // csr_wr_en
+    assign csr_wr_en = is_CSR;
     
     // rf_wr_sel
     always@(*)
     begin
-        if(is_jal | is_jalr) rf_wr_sel = 2'b01;
-        else if(is_U | is_R | is_addi | is_sltiu | is_srai | is_srli | is_slli | is_xori | is_andi) rf_wr_sel = 2'b10;
-        else if(is_lb | is_lh | is_lw | is_lbu | is_lhu) rf_wr_sel = 2'b11;
-        else rf_wr_sel = 2'b00;
+        if(is_jal | is_jalr) rf_wr_sel = 3'b001;
+        else if(is_U | is_R | is_addi | is_sltiu | is_srai | is_srli | is_slli | is_xori | is_andi) rf_wr_sel = 3'b010;
+        else if(is_lb | is_lh | is_lw | is_lbu | is_lhu) rf_wr_sel = 3'b011;
+        else if(is_CSR) rf_wr_sel = 3'b100;
+        else rf_wr_sel = 3'b000;
     end 
 
     // do_jump

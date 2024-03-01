@@ -16,7 +16,7 @@ int printf(const char *fmt, ...) {
     
     int val = vsnprintf(print_buf, 1024, fmt, ap);
     char *tmp = print_buf;
-    while (*tmp != 0) {
+    while (*tmp != '\0') {
         putch(*tmp);
         tmp++;
     }

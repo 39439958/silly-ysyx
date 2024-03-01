@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include <iostream>
+// #include <iostream>
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 #include "Vtop.h"
@@ -61,6 +61,35 @@ void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
+uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - 0x80000000; }
+
+static inline void host_write(void *addr, int len, uint32_t data) {
+  switch (len) {
+    case 1: *(uint8_t  *)addr = data; return;
+    case 2: *(uint16_t *)addr = data; return;
+    case 4: *(uint32_t *)addr = data; return;
+    default : return;
+  }
+}
+
+extern "C" void pmem_write(int waddr, int wdata, char wmask) {
+    // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
+    // `wmask`中每比特表示`wdata`中1个字节的掩码,
+    // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
+    if ((uint32_t)waddr == 0xa00003f8) {;
+      putchar(wdata);
+      return;
+    } 
+    else if (waddr == 0xa0000048 || waddr == 0xa000004c){
+      gettimeofday(&start, NULL);
+    }
+    else {
+      if (wmask == 0x1) host_write(guest_to_host(waddr), 1, wdata);
+      else if (wmask == 0x3) host_write(guest_to_host(waddr), 2, wdata);
+      else if (wmask == 0xf) host_write(guest_to_host(waddr), 4, wdata);
+    }
+}
+
 extern "C" void pmem_read(int raddr, int *rdata) {
     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
     if (raddr == 0xa0000048 || raddr == 0xa000004c) {
@@ -71,34 +100,7 @@ extern "C" void pmem_read(int raddr, int *rdata) {
       *rdata = (raddr == 0xa0000048) ? (res & 0xffffffff) : (res >> 32);
     } else {
       uint32_t addr = raddr & ~0x3u;
-      *rdata = *(uint32_t *)(pmem + addr - 0x80000000);
-    }
-}
-
-extern "C" void pmem_write(int waddr, int wdata, char wmask) {
-    // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
-    // `wmask`中每比特表示`wdata`中1个字节的掩码,
-    // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-    if (waddr == 0xa00003f8) {
-      putchar(wdata);
-    } 
-    else if (waddr == 0xa0000048 || waddr == 0xa000004c){
-      gettimeofday(&start, NULL);
-    }
-    else {
-      uint32_t addr = waddr & ~0x3u;
-      if (wmask == 1 || wmask == 3) {
-          wdata <<= ((waddr & 0x3u) * 8);
-          wmask <<= (waddr & 0x3u);
-      }
-      uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
-      uint32_t mask = 0; 
-      for (int i = 0; i < 4; i++) {
-          if (wmask & (1 << i)) {
-              mask |= 0xff << (i * 8);
-          }
-      }
-      *p = (*p & ~mask) | (wdata & mask);
+      *rdata = *(uint32_t *)(pmem + (uint32_t)raddr - 0x80000000);
     }
 }
 
@@ -297,7 +299,7 @@ void npc_exec(int n) {
         p += 4;
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
-        //printf("%s\n", inst_buf);
+        printf("%s\n", inst_buf);
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
@@ -313,12 +315,10 @@ void npc_exec(int n) {
         // difftest
         //difftest_step(top->rootp->top__DOT__pc);
 
-        if (top->rootp->top__DOT__inst == 0x0000006f) {
-            is_quit = 1;
-            quit_state = NPC_ABORT;
-        }
-
-
+        // if (top->rootp->top__DOT__inst == 0x00078463) {
+        //     is_quit = 1;
+        //     quit_state = NPC_ABORT;
+        // }
         if (is_quit) {
             break;
         }

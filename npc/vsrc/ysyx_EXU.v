@@ -3,7 +3,8 @@ module ysyx_EXU (
     input [31:0] inst,
     input [31:0] pc,
     input rf_wr_en,
-    input [1:0] rf_wr_sel,
+    input csr_wr_en,
+    input [2:0] rf_wr_sel,
     input alu_a_sel,
     input alu_b_sel,
     input [3:0] alu_ctrl,
@@ -12,7 +13,11 @@ module ysyx_EXU (
     input [1:0] dm_wr_sel,
     input [2:0] BrType,
     output BrE,
-    output [31:0] jump_addr
+    output [31:0] jump_addr,
+    input is_ecall,
+    output reg[31:0] mtvecdata,
+    input is_mret,
+    output reg[31:0] mepcdata
 );
     // alu
     wire [31:0] alu_a;
@@ -24,19 +29,23 @@ module ysyx_EXU (
     // regfile
     reg [31:0] rf_wdata;
     wire [31:0] rs1, rs2;
+    wire [31:0] csr;
+    wire [31:0] csrwdata;
+    assign csrwdata = (inst[14:12] == 3'b010 ? (csr | rs1) : rs1);
     always@(*)
     begin
         case(rf_wr_sel)
-        2'b00:  rf_wdata = 32'h0;
-        2'b01:  rf_wdata = pc + 4;
-        2'b10:  rf_wdata = alu_out;
-        2'b11:  rf_wdata = dm_data;
+        3'b000:  rf_wdata = 32'h0;
+        3'b001:  rf_wdata = pc + 4;
+        3'b010:  rf_wdata = alu_out;
+        3'b011:  rf_wdata = dm_data;
+        3'b100:  rf_wdata = csr;
         default:  rf_wdata = 32'h0;
         endcase
     end
     assign jump_addr = alu_a_sel ? ({alu_out[31:1], 1'b0}) : alu_out;
 
-    // // memory
+    // memory
     import "DPI-C" function void pmem_read(input int raddr, output int rdata);
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
     reg [31:0] dm_data;
@@ -48,11 +57,15 @@ module ysyx_EXU (
         end
         else if (dm_wr_sel == 2'b10) begin 
             pmem_write(alu_out, rs2, 8'b0000_0011);
-            // $display("%4h write in addr:%h", rs2[15:0], alu_out);
+            if (alu_out == 32'h800308c3) begin
+            $display("%4h write in addr:%h", rs2[15:0], alu_out);
+            end
         end
         else if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
-            // $display("%8h write in addr:%h", rs2, alu_out);
+            if (alu_out == 32'h800308c3) begin
+              $display("%8h write in addr:%h", rs2, alu_out);
+            end
         end
     end
     // read memory
@@ -119,13 +132,22 @@ module ysyx_EXU (
     );
     ysyx_RegisterFile regfile0(
         .clk (clk),
+        .pc (pc),
         .rf_wr_en (rf_wr_en),
         .waddr (inst[11:7]),
         .wdata (rf_wdata),
         .raddr1 (inst[19:15]),
         .raddr2 (inst[24:20]),
         .rdata1 (rs1),
-        .rdata2 (rs2)
+        .rdata2 (rs2),
+        .csr_wr_en (csr_wr_en),
+        .csraddr (inst[31:20]),
+        .csrwdata (csrwdata),
+        .csrrdata (csr),
+        .is_ecall (is_ecall),
+        .mtvecdata (mtvecdata),
+        .is_mret (is_mret),
+        .mepcdata (mepcdata)
     );
     ysyx_branch branch0(
         .REG1 (rs1),
