@@ -3,12 +3,12 @@ module top (
     input wire rst
 );
     // pc
-    import "DPI-C" function void pmem_read(input int raddr, output int rdata);
+    import "DPI-C" function void pmem_read(input int raddr, output int rdata, input byte rmask);
     wire [31:0] inst;
     wire [31:0] pc;
     wire jump;
     always @(posedge clk) begin
-        if(~rst) pmem_read(pc, inst);
+        if(~rst) pmem_read(pc, inst, 8'b0000_1111);
     end
     assign jump = BrE | do_jump;
 

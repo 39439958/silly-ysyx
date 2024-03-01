@@ -8,15 +8,17 @@
 #include "Vtop__Syms.h"
 #include "Vtop___024root.h"
 
-extern "C" void pmem_read(int raddr, int* rdata);
+extern "C" void pmem_read(int raddr, int* rdata, char rmask);
 
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(IData/*31:0*/ raddr, IData/*31:0*/ &rdata) {
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP(IData/*31:0*/ raddr, IData/*31:0*/ &rdata, CData/*7:0*/ rmask) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__pmem_read_TOP\n"); );
     // Body
     int raddr__Vcvt;
     for (size_t raddr__Vidx = 0; raddr__Vidx < 1; ++raddr__Vidx) raddr__Vcvt = raddr;
     int rdata__Vcvt;
-    pmem_read(raddr__Vcvt, &rdata__Vcvt);
+    char rmask__Vcvt;
+    for (size_t rmask__Vidx = 0; rmask__Vidx < 1; ++rmask__Vidx) rmask__Vcvt = rmask;
+    pmem_read(raddr__Vcvt, &rdata__Vcvt, rmask__Vcvt);
     rdata = rdata__Vcvt;
 }
 

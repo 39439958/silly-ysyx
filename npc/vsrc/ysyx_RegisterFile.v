@@ -55,7 +55,7 @@ module ysyx_RegisterFile (
 
         if (is_ecall) begin
           mtvecdata = mtvec;
-          mcause = rf[5'd17];
+          mcause = rf[5'd15];
           mepc = pc;
         end
 

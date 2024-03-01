@@ -46,7 +46,7 @@ module ysyx_EXU (
     assign jump_addr = alu_a_sel ? ({alu_out[31:1], 1'b0}) : alu_out;
 
     // memory
-    import "DPI-C" function void pmem_read(input int raddr, output int rdata);
+    import "DPI-C" function void pmem_read(input int raddr, output int rdata, input byte rmask);
     import "DPI-C" function void pmem_write(input int waddr, input int wdata, input byte wmask);
     reg [31:0] dm_data;
     // write memory
@@ -71,55 +71,27 @@ module ysyx_EXU (
     // read memory
     always @(posedge clk) begin 
         if (dm_rd_sel == 3'b001) begin
-            pmem_read(alu_out, dm_data);
-            if (alu_out[1:0] == 2'b00) 
-                dm_data = {{24{dm_data[7]}}, dm_data[7:0]};
-            else if (alu_out[1:0] == 2'b01)
-                dm_data = {{24{dm_data[15]}}, dm_data[15:8]};
-            else if (alu_out[1:0] == 2'b10)
-                dm_data = {{24{dm_data[23]}}, dm_data[23:16]};
-            else
-                dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
+            pmem_read(alu_out, dm_data, 8'b0000_0001);
+            dm_data = {{24{dm_data[7]}}, dm_data[7:0]};
             // $display("read %2h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b010) begin
-            pmem_read(alu_out, dm_data);
-            if (alu_out[1:0] == 2'b00) 
-                dm_data = {{24{1'b0}}, dm_data[7:0]};
-            else if (alu_out[1:0] == 2'b01)
-                dm_data = {{24{1'b0}}, dm_data[15:8]};
-            else if (alu_out[1:0] == 2'b10)
-                dm_data = {{24{1'b0}}, dm_data[23:16]};
-            else
-                dm_data = {{24{1'b0}}, dm_data[31:24]};
+            pmem_read(alu_out, dm_data, 8'b0000_0001);
+            dm_data = {{24{1'b0}}, dm_data[7:0]};
             // $display("read %2h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b011) begin 
-            pmem_read(alu_out, dm_data);
-            if (alu_out[1:0] == 2'b00) 
-                dm_data = {{16{dm_data[15]}}, dm_data[15:0]};
-            else if (alu_out[1:0] == 2'b01)
-                dm_data = {{16{dm_data[23]}}, dm_data[23:8]};
-            else if (alu_out[1:0] == 2'b10)
-                dm_data = {{16{dm_data[31]}}, dm_data[31:16]};
-            else
-                dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
+            pmem_read(alu_out, dm_data, 8'b0000_0011);
+            dm_data = {{16{dm_data[15]}}, dm_data[15:0]};
             // $display("read %4h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b100) begin
-            pmem_read(alu_out, dm_data);
-            if (alu_out[1:0] == 2'b00) 
-                dm_data = {{16{1'b0}}, dm_data[15:0]};
-            else if (alu_out[1:0] == 2'b01)
-                dm_data = {{16{1'b0}}, dm_data[23:8]};
-            else if (alu_out[1:0] == 2'b10)
-                dm_data = {{16{1'b0}}, dm_data[31:16]};
-            else
-                dm_data = {{24{1'b0}}, dm_data[31:24]};
+            pmem_read(alu_out, dm_data, 8'b0000_0011);
+            dm_data = {{16{1'b0}}, dm_data[15:0]};
             // $display("read %4h in addr:%h", dm_data, alu_out);
         end
         else if (dm_rd_sel == 3'b101) begin
-            pmem_read(alu_out, dm_data);
+            pmem_read(alu_out, dm_data, 8'b0000_1111);
             // $display("read %h in addr:%h", dm_data, alu_out);
         end
     end

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 // #include <iostream>
+#include <cstdio>
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 #include "Vtop.h"
@@ -15,6 +16,8 @@
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 #define NPC_QUIT 0
 #define NPC_ABORT 1
+
+// #define INST_DISPLAY 1
 
 vluint64_t sim_time = 0;
 int cnt = 0;
@@ -72,25 +75,35 @@ static inline void host_write(void *addr, int len, uint32_t data) {
   }
 }
 
+static inline uint32_t host_read(void *addr, int len) {
+  switch (len) {
+    case 1: return *(uint8_t  *)addr;
+    case 2: return *(uint16_t *)addr;
+    case 4: return *(uint32_t *)addr;
+    default: return 0;
+  }
+}
+
 extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
     if ((uint32_t)waddr == 0xa00003f8) {;
       putchar(wdata);
+      fflush(stdout);
       return;
     } 
     else if (waddr == 0xa0000048 || waddr == 0xa000004c){
       gettimeofday(&start, NULL);
     }
     else {
-      if (wmask == 0x1) host_write(guest_to_host(waddr), 1, wdata);
-      else if (wmask == 0x3) host_write(guest_to_host(waddr), 2, wdata);
-      else if (wmask == 0xf) host_write(guest_to_host(waddr), 4, wdata);
+      if (wmask == 0x1) host_write(guest_to_host((uint32_t)waddr), 1, wdata);
+      else if (wmask == 0x3) host_write(guest_to_host((uint32_t)waddr), 2, wdata);
+      else if (wmask == 0xf) host_write(guest_to_host((uint32_t)waddr), 4, wdata);
     }
 }
 
-extern "C" void pmem_read(int raddr, int *rdata) {
+extern "C" void pmem_read(int raddr, int *rdata, char rmask) {
     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
     if (raddr == 0xa0000048 || raddr == 0xa000004c) {
       gettimeofday(&end, NULL);
@@ -99,8 +112,9 @@ extern "C" void pmem_read(int raddr, int *rdata) {
       long res = seconds * 1000000 + microseconds;
       *rdata = (raddr == 0xa0000048) ? (res & 0xffffffff) : (res >> 32);
     } else {
-      uint32_t addr = raddr & ~0x3u;
-      *rdata = *(uint32_t *)(pmem + (uint32_t)raddr - 0x80000000);
+      if (rmask == 0x1) *rdata = host_read(guest_to_host((uint32_t)raddr), 1);
+      else if (rmask == 0x3) *rdata = host_read(guest_to_host((uint32_t)raddr), 2);
+      else if (rmask == 0xf) *rdata = host_read(guest_to_host((uint32_t)raddr), 4);
     }
 }
 
@@ -299,7 +313,10 @@ void npc_exec(int n) {
         p += 4;
         void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
         disassemble(p, inst_buf + sizeof(inst_buf) - p, this_pc, (uint8_t *)&top->rootp->top__DOT__inst, 4);
-        printf("%s\n", inst_buf);
+
+        #ifdef INST_DISPLAY
+          printf("%s\n", inst_buf);
+        #endif
 
         // reset r0 = 0
         top->rootp->top__DOT__exu0__DOT__regfile0__DOT__rf[0] = 0;
@@ -405,7 +422,7 @@ static int cmd_x(char *args) {
     sscanf(args, "%d 0x%x", &n, &addr);
     for (int i = 0; i < n; i++) {
         uint32_t data;
-        pmem_read(addr + i * 4, (int *)&data);
+        pmem_read(addr + i * 4, (int *)&data, 0xf);
         printf("0x%08x: 0x%08x\n", addr + i * 4, data);
     }
     return 0;
@@ -436,6 +453,8 @@ int main(int argc, char** argv, char** env) {
 
     // initial difftest
     //init_difftest(ref_so_file, img_size, 1234);
+
+
 
     for (char *str; (str = rl_gets()) != NULL; ) {
         char *str_end = str + strlen(str);
