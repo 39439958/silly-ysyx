@@ -88,7 +88,7 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
     // 总是往地址为`waddr & ~0x3u`的4字节按写掩码`wmask`写入`wdata`
     // `wmask`中每比特表示`wdata`中1个字节的掩码,
     // 如`wmask = 0x3`代表只写入最低2个字节, 内存中的其它字节保持不变
-    if ((uint32_t)waddr == 0xa00003f8) {;
+    if ((uint32_t)waddr == 0xa00003f8) {
       putchar(wdata);
       fflush(stdout);
       return;
@@ -97,13 +97,34 @@ extern "C" void pmem_write(int waddr, int wdata, char wmask) {
       gettimeofday(&start, NULL);
     }
     else {
-      if (wmask == 0x1) host_write(guest_to_host((uint32_t)waddr), 1, wdata);
-      else if (wmask == 0x3) host_write(guest_to_host((uint32_t)waddr), 2, wdata);
-      else if (wmask == 0xf) host_write(guest_to_host((uint32_t)waddr), 4, wdata);
+      // plan 1
+      uint32_t addr = waddr & ~0x3u;
+      // if (wmask == 1 || wmask == 3) {
+      //     wdata <<= ((waddr & 0x3u) * 8);
+      //     wmask <<= (waddr & 0x3u);
+      // }
+      // uint32_t *p = (uint32_t *)(pmem + addr - 0x80000000);
+      // uint32_t mask = 0; 
+      // for (int i = 0; i < 4; i++) {
+      //     if (wmask & (1 << i)) {
+      //         mask |= 0xff << (i * 8);
+      //     }
+      // }
+      // *p = (*p & ~mask) | (wdata & mask);
+
+      // plan 2
+      if (wmask == 0x1) host_write(guest_to_host(waddr), 1, wdata);
+      else if (wmask == 0x3) host_write(guest_to_host(waddr), 2, wdata);
+      else if (wmask == 0xf) host_write(guest_to_host(waddr), 4, wdata);
+
+      // plan 3
+      // if (wmask == 0x1) host_write(guest_to_host((uint32_t)waddr), 1, wdata);
+      // else if (wmask == 0x3) host_write(guest_to_host((uint32_t)waddr), 2, wdata);
+      // else if (wmask == 0xf) host_write(guest_to_host((uint32_t)waddr), 4, wdata);
     }
 }
 
-extern "C" void pmem_read(int raddr, int *rdata, char rmask) {
+extern "C" void pmem_read(int raddr, int *rdata) {
     // 总是读取地址为`raddr & ~0x3u`的4字节返回给`rdata`
     if (raddr == 0xa0000048 || raddr == 0xa000004c) {
       gettimeofday(&end, NULL);
@@ -112,9 +133,11 @@ extern "C" void pmem_read(int raddr, int *rdata, char rmask) {
       long res = seconds * 1000000 + microseconds;
       *rdata = (raddr == 0xa0000048) ? (res & 0xffffffff) : (res >> 32);
     } else {
-      if (rmask == 0x1) *rdata = host_read(guest_to_host((uint32_t)raddr), 1);
-      else if (rmask == 0x3) *rdata = host_read(guest_to_host((uint32_t)raddr), 2);
-      else if (rmask == 0xf) *rdata = host_read(guest_to_host((uint32_t)raddr), 4);
+      // plan 1
+      uint32_t addr = raddr & (~0x3u);
+      *rdata = host_read(guest_to_host(addr), 4);
+      // plan 2
+      // *rdata = host_read(guest_to_host((uint32_t)raddr), 4);
     }
 }
 
@@ -422,7 +445,7 @@ static int cmd_x(char *args) {
     sscanf(args, "%d 0x%x", &n, &addr);
     for (int i = 0; i < n; i++) {
         uint32_t data;
-        pmem_read(addr + i * 4, (int *)&data, 0xf);
+        pmem_read(addr + i * 4, (int *)&data);
         printf("0x%08x: 0x%08x\n", addr + i * 4, data);
     }
     return 0;
