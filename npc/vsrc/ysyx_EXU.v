@@ -57,19 +57,16 @@ module ysyx_EXU (
         end
         else if (dm_wr_sel == 2'b10) begin 
             pmem_write(alu_out, rs2, 8'b0000_0011);
-            // if (alu_out == 32'h800308c3) begin
-            // // $display("%4h write in addr:%h", rs2[15:0], alu_out);
-            // end
+            // $display("%4h write in addr:%h", rs2[15:0], alu_out);
         end
         else if (dm_wr_sel == 2'b11) begin
             pmem_write(alu_out, rs2, 8'b0000_1111);
-            // if (alu_out == 32'h800308c3) begin
-            //   // $display("%8h write in addr:%h", rs2, alu_out);
-            // end
+            // $display("%8h write in addr:%h", rs2, alu_out);
         end
     end
     // read memory
     always @(posedge clk) begin 
+      // lb
         if (dm_rd_sel == 3'b001) begin
             pmem_read(alu_out, dm_data);
             if (alu_out[1:0] == 2'b00) 
@@ -82,6 +79,7 @@ module ysyx_EXU (
                 dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
             // $display("read %2h in addr:%h", dm_data, alu_out);
         end
+      // lbu
         else if (dm_rd_sel == 3'b010) begin
             pmem_read(alu_out, dm_data);
             if (alu_out[1:0] == 2'b00) 
@@ -94,6 +92,7 @@ module ysyx_EXU (
                 dm_data = {{24{1'b0}}, dm_data[31:24]};
             // $display("read %2h in addr:%h", dm_data, alu_out);
         end
+      // lh
         else if (dm_rd_sel == 3'b011) begin 
             pmem_read(alu_out, dm_data);
             if (alu_out[1:0] == 2'b00) 
@@ -106,6 +105,7 @@ module ysyx_EXU (
                 dm_data = {{24{dm_data[31]}}, dm_data[31:24]};
             // $display("read %4h in addr:%h", dm_data, alu_out);
         end
+      // lhu
         else if (dm_rd_sel == 3'b100) begin
             pmem_read(alu_out, dm_data);
             if (alu_out[1:0] == 2'b00) 
@@ -118,6 +118,7 @@ module ysyx_EXU (
                 dm_data = {{24{1'b0}}, dm_data[31:24]};
             // $display("read %4h in addr:%h", dm_data, alu_out);
         end
+      // lw
         else if (dm_rd_sel == 3'b101) begin
             pmem_read(alu_out, dm_data);
             // $display("read %h in addr:%h", dm_data, alu_out);

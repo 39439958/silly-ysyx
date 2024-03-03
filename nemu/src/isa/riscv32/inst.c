@@ -35,13 +35,12 @@ static word_t *csr_reg(word_t imm) {
 
 #define CSR(i) *csr_reg(i)
 #define ECALL(dnpc) { bool success; dnpc = (isa_raise_intr(isa_reg_str2val("a7", &success), s->pc)); }
-#define MRET() { \
-  s->dnpc = CSR(0x341); \
-  cpu.csrs.mstatus &= ~(1<<3); \
-  cpu.csrs.mstatus |= ((cpu.csrs.mstatus&(1<<7))>>4); \
-  cpu.csrs.mstatus |= (1<<7); \
-  cpu.csrs.mstatus &= ~((1<<11)+(1<<12)); \
-}
+#define MRET() { s->dnpc = CSR(0x341); } 
+  // cpu.csrs.mstatus &= ~(1<<3); 
+  // cpu.csrs.mstatus |= ((cpu.csrs.mstatus&(1<<7))>>4); 
+  // cpu.csrs.mstatus |= (1<<7); 
+  // cpu.csrs.mstatus &= ~((1<<11)+(1<<12)); 
+
 
 enum {
   TYPE_I, TYPE_U, TYPE_S,
