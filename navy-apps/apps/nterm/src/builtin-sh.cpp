@@ -22,11 +22,13 @@ static void sh_prompt() {
   sh_printf("sh> ");
 }
 
+
 static void sh_handle_cmd(const char *cmd) {
-  char tmp_cmd[64];
+  char tmp_cmd[strlen(cmd)];
   strcpy(tmp_cmd, cmd);
   tmp_cmd[strlen(cmd) - 1] = '\0';
   setenv("PATH", "/bin", 0);
+  printf("%s\n", tmp_cmd);
   execvp(tmp_cmd, NULL);
 }
 

@@ -23,19 +23,22 @@ void hello_fun(void *arg) {
 }
 
 void context_kload(PCB *p, void (*entry)(void *), void *arg) {
+  // printf("kernel stack:%p\n", (uintptr_t)p->stack);
   p->cp = kcontext((Area) { p->stack, p + 1 }, hello_fun, arg);
 }
 
 void context_uload(PCB *p, const char *filename, char *const argv[], char *const envp[]) {
+  protect(&pcb->as);
+  
   uintptr_t entry = naive_uload(p, filename);
 
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) argc++;
   while (envp[envc] != NULL) envc++;
-  
-  char* us1 = (char*)new_page(8);
 
-  // printf("kernel stack:%p, user stack:%p\n", (uintptr_t)p->stack, (uintptr_t)us1);
+  char* us1 = (char*)new_page(8);
+  // char* us1 = heap.end;
+  // printf("user stack.start:%p, user stack.end:%p\n", (uintptr_t)(us1 - 8 * 4096), (uintptr_t)us1);
 
   char* us_tmp = us1;
   // clone argv
@@ -75,14 +78,20 @@ void context_uload(PCB *p, const char *filename, char *const argv[], char *const
 }
 
 void init_proc() {
-  // context_kload(&pcb[0], hello_fun, (void *)1L);
+  context_kload(&pcb[0], hello_fun, (void *)1L);
   // context_kload(&pcb[1], hello_fun, (void *)2L);
+  printf("kernel stack1.start:%p, kernel stack1.end:%p\n", (uintptr_t)pcb[0].stack, (uintptr_t)(&pcb[0] + 1));
 
-  char *argv[] = {"--skip"}; 
-  char *envp[] = {NULL}; 
-  context_uload(&pcb[0], "/bin/pal", argv, envp);
+  char *argv[] = {"/bin/pal"}; 
+  char *envp[] = {"--skip"}; 
+  // context_uload(&pcb[0], "/bin/hello", envp, envp);
+  context_uload(&pcb[1], "/bin/pal", argv, envp);
+  // context_uload(&pcb[0], "/bin/exec-test", argv, envp);
+  printf("kernel stack2.start:%p, kernel stack2.end:%p\n", (uintptr_t)pcb[1].stack, (uintptr_t)(&pcb[1] + 1));
   switch_boot_pcb();
 
+//  printf("user stack1.start:%p, user stack1.end:%p\n", (uintptr_t)pcb[0].stack, (uintptr_t)(&pcb[0] + 1));
+//  printf("heap.start:%p, heap.end:%p\n", heap.start, heap.end);
   Log("Initializing processes...");
 
   // load program here

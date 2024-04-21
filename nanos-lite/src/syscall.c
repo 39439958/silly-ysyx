@@ -63,8 +63,12 @@ int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
 int sys_execve(const char *pathname, char *const argv[], char *const envp[]) {
   if (pathname == NULL)
     return -1;
-  //naive_uload(NULL, pathname);
-  context_uload(current, pathname, argv, envp);
+
+  char *argv_tmp[] = {""};
+  strcpy(argv_tmp[0], pathname);
+  char *envp_tmp[] = {NULL}; 
+
+  context_uload(current, pathname, argv_tmp, envp_tmp);
   switch_boot_pcb();
   yield();
   return 0;

@@ -34,7 +34,7 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   for (i = 0; i < LENGTH(segments); i ++) {
     void *va = segments[i].start;
     for (; va < segments[i].end; va += PGSIZE) {
-      map(&kas, va, va, 0);
+      map(&kas, va, va, PTE_R | PTE_W | PTE_X);
     }
   }
 
@@ -66,7 +66,21 @@ void __am_switch(Context *c) {
   }
 }
 
+#define PGT1_INDEX(i) (i >> 22)
+#define PGT2_INDEX(i) ((i & 0x3fffff) >> 12)
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  uint32_t pa_raw = (uint32_t)pa;
+  uint32_t va_raw = (uint32_t)va;
+  uint32_t **pt1 = (uint32_t **)as->ptr;
+  if (pt1[PGT1_INDEX(va_raw)] == NULL) {
+    pt1[PGT1_INDEX(va_raw)] = (uint32_t *)pgalloc_usr(PGSIZE);
+  }
+  uint32_t *pt2 = pt1[PGT1_INDEX(va_raw)];
+  if (pt2[PGT2_INDEX(va_raw)] == 0) {
+    pt2[PGT2_INDEX(va_raw)] = (pa_raw & (~0xfff)) | prot;
+  } else {
+    assert(0);
+  }
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {

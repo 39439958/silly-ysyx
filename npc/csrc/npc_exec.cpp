@@ -1,5 +1,5 @@
 #include <common.h>
-#define INST_DISPLAY 1
+// #define INST_DISPLAY 1
 
 void difftest_step(uint32_t pc);
 
@@ -58,7 +58,7 @@ void npc_exec(int n) {
         }
 
         // difftest
-        difftest_step(top->rootp->top__DOT__pc);
+        // difftest_step(top->rootp->top__DOT__pc);
 
         // if (top->rootp->top__DOT__inst == 0x00078463) {
         //     npc_state = NPC_ABORT;

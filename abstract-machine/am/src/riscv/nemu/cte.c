@@ -2,6 +2,7 @@
 #include <riscv/riscv.h>
 #include <arch/riscv.h>
 #include <klib.h>
+#include <nemu.h>
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
@@ -27,6 +28,9 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 
   // register event handler
   user_handler = handler;
+
+  // printf("pmem_start:%p, pmem_end:%p\n", &_pmem_start, PMEM_END);
+  // printf("head_start:%p\n", _heap_start);
 
   return true;
 }

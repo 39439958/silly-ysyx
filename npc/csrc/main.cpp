@@ -1,8 +1,11 @@
 #include <common.h>
 
 int npc_state = NPC_RUNNING;
+
 cpu_state cpu = {.pc = 0x80000000};
+
 Vtop *top = new Vtop;
+
 uint8_t pmem[0x8000000] __attribute((aligned(4096))) = {};
 
 
@@ -33,7 +36,7 @@ int main(int argc, char** argv, char** env) {
     // initial asm to c instruction
     init_disasm( "riscv32" "-pc-linux-gnu" );
 
-    init_difftest(ref_so_file, img_size, 1234);
+    // init_difftest(ref_so_file, img_size, 1234);
 
     npc_rst();
 

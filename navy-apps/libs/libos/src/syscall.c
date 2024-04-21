@@ -66,12 +66,12 @@ void _exit(int status) {
 }
 
 int _open(const char *path, int flags, mode_t mode) {
-  int ret = _syscall_(SYS_open, path, flags, mode);
+  int ret = _syscall_(SYS_open, (intptr_t)path, flags, mode);
   return ret;
 }
 
 int _write(int fd, void *buf, size_t count) {
-  int ret = _syscall_(SYS_write, fd, buf, count);
+  int ret = _syscall_(SYS_write, fd, (intptr_t)buf, count);
   return ret;
 }
 
@@ -87,7 +87,7 @@ void *_sbrk(intptr_t increment) {
 }
 
 int _read(int fd, void *buf, size_t count) {
-  int ret = _syscall_(SYS_read, fd, buf, count);
+  int ret = _syscall_(SYS_read, fd, (intptr_t)buf, count);
   return ret;
 }
 
@@ -102,12 +102,12 @@ off_t _lseek(int fd, off_t offset, int whence) {
 }
 
 int _gettimeofday(struct timeval *tv, struct timezone *tz) {
-  int ret = _syscall_(SYS_gettimeofday, tv, tz, 0);
+  int ret = _syscall_(SYS_gettimeofday, (intptr_t)tv, (intptr_t)tz, 0);
   return ret;
 }
 
 int _execve(const char *fname, char * const argv[], char *const envp[]) {
-  int ret = _syscall_(SYS_execve, fname, argv, envp);
+  int ret = _syscall_(SYS_execve, (intptr_t)fname, (intptr_t)argv, (intptr_t)envp);
   return ret;
 }
 
