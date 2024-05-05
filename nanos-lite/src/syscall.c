@@ -39,6 +39,9 @@ size_t fs_write(int fd, const void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
+// memory
+int mm_brk(uintptr_t brk);
+
 int sys_execve(const char *pathname, char *const argv[], char *const envp[]);
 
 int sys_yield() {
@@ -47,8 +50,8 @@ int sys_yield() {
 }
 
 void sys_exit(int code) {
-  sys_execve("/bin/nterm", NULL, NULL);
-  //halt(code);
+  //sys_execve("/bin/nterm", NULL, NULL);
+  halt(code);
 }
 
 int sys_gettimeofday(struct timeval *tv, struct timezone* tz) {
@@ -92,7 +95,7 @@ void do_syscall(Context *c) {
       c->GPRx = sys_yield(); 
       break;
     case SYS_brk :
-      c->GPRx = 0;
+      c->GPRx = (int)mm_brk(a[1]);
       break;
     case SYS_write : 
       c->GPRx = fs_write(a[1], (char *)a[2], a[3]);

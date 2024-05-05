@@ -12,6 +12,7 @@ static Area segments[] = {      // Kernel memory mappings
 };
 
 #define USER_SPACE RANGE(0x40000000, 0x80000000)
+#define KERNEL_SPACE RANGE(0x80000000, 0x88000000)
 
 static inline void set_satp(void *pdir) {
   uintptr_t mode = 1ul << (__riscv_xlen - 1);
@@ -39,6 +40,8 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   }
 
   set_satp(kas.ptr);
+  kas.area = KERNEL_SPACE;
+  kas.pgsize = PGSIZE;
   vme_enable = 1;
 
   return true;
@@ -57,7 +60,9 @@ void unprotect(AddrSpace *as) {
 }
 
 void __am_get_cur_as(Context *c) {
-  c->pdir = (vme_enable ? (void *)get_satp() : NULL);
+  if (c->pdir != NULL) {
+    c->pdir = (vme_enable ? (void *)get_satp() : NULL);
+  }
 }
 
 void __am_switch(Context *c) {
@@ -86,5 +91,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *cp = (Context *)(kstack.end - sizeof(Context));
   cp->mepc = (uintptr_t)entry - 4;
+  cp->pdir = as->ptr;
   return cp;
 }

@@ -1,10 +1,15 @@
 #include <memory.h>
+#include <proc.h>
+
+#define PG_MASK ~0xfff
 
 static void *pf = NULL;
+extern PCB *current;
 
 void* new_page(size_t nr_page) {
+  void *old_pf = pf;
   pf += nr_page * PGSIZE;
-  return pf;
+  return old_pf;
 }
 
 #ifdef HAS_VME
@@ -21,6 +26,15 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
+  if (current->max_brk == 0)
+  {
+    current->max_brk = (brk & ~PG_MASK) ? ((brk & PG_MASK) + PGSIZE) : brk;
+    return 0;
+  }
+
+  for (; current->max_brk < brk; current->max_brk += PGSIZE) {
+    map(&current->as, (void *)current->max_brk, pg_alloc(PGSIZE), PTE_R | PTE_W | PTE_X);
+  }
   return 0;
 }
 
