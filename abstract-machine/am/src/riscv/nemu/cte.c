@@ -4,6 +4,8 @@
 #include <klib.h>
 #include <nemu.h>
 
+#define IRQ_TIMER 0x80000007  // for riscv32
+
 static Context* (*user_handler)(Event, Context*) = NULL;
 
 void __am_get_cur_as(Context *c);
@@ -15,6 +17,7 @@ Context* __am_irq_handle(Context *c) {
     Event ev = {0};
     switch (c->mcause) {
       case 0: case 1: case 2: case 3: case 4: case 7: case 8: case 9: case 13: case 19: ev.event = EVENT_SYSCALL; break;
+      case IRQ_TIMER: ev.event = EVENT_IRQ_TIMER; break;
       case -1: ev.event = EVENT_YIELD; break;
       default: ev.event = EVENT_ERROR; break;
     }
@@ -46,6 +49,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   cp->mepc = (uintptr_t)entry - 4;
   cp->gpr[10] = (uintptr_t)(arg);
   cp->pdir = NULL;
+  cp->mstatus = 0x1800 | 0x00000080;
   return cp;
 }
 

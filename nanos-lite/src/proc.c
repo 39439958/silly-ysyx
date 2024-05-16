@@ -18,7 +18,7 @@ void hello_fun(void *arg) {
   while (1) {
     Log("Hello World from Nanos-lite with arg '%p' for the %dth time!", (uintptr_t)arg, j);
     j ++;
-    yield();
+    //yield();
   }
 }
 
@@ -101,6 +101,9 @@ void init_proc() {
 
 Context* schedule(Context *prev) {
   current->cp = prev;
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  printf("current = %d\n", (current == &pcb_boot ? 2 : (current == &pcb[0] ? 0 : 1)));
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[1]);
+  printf("current = %d\n", (current == &pcb_boot ? 2 : (current == &pcb[0] ? 0 : 1)));
+  printf("current cp status:%p\n", current->cp->mstatus);
   return current->cp;
 }
